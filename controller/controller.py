@@ -4,6 +4,8 @@ from ressources.constantes import *
 from view import *
 import pygame
 from pygame.locals import *
+from threading import Thread
+from time import sleep
 
 class Controller:
 
@@ -70,14 +72,20 @@ class Controller:
             # Comptage des ticks/Days
             if tick % TICK_DAY == 0:
                 # Suppression de la nourritue restante
-                # self.removefood(self.grille)
+                self.removefood(self.grille)
                 day += 1
                 # Spawn de la nouvelle food
                 self.spawnfood(self.grille)
                 print(day, len(self.listebob))
             tick += 1
+
             # Update de la fenêtre
-            self.view.affichage(self.grille, self.listebob)
+            while self.view.run:
+                # Limitation de vitesse de la boucle
+                sleep(0.001)
+            self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
+            self._thread.start()
+
             # Update des Bobs
             self.update(self.grille, self.listebob)
 
@@ -85,7 +93,3 @@ class Controller:
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
                 if event.type == KEYDOWN and event.key == K_ESCAPE:  # Si un de ces événements est de type QUIT
                     continuer = False  # On arrête la boucle
-
-            # Limitation de vitesse de la boucle
-
-            pygame.time.Clock().tick(60)
