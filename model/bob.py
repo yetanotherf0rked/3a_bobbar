@@ -65,7 +65,7 @@ class Bob:
 
             #Nouveau bob
             son = Bob([self.i,self.j])
-
+            son.energy=ENERGY_SON
             #Ajout du fils dans la liste des Bobs et sur la grille
             listebob.append(son)
             grille[self.i][self.j].place.append(son)
