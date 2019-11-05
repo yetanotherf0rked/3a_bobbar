@@ -1,5 +1,5 @@
 from model import *
-from random import randint
+from random import randint,choice
 from ressources.constantes import *
 from view import *
 import pygame
@@ -48,7 +48,8 @@ class Controller:
             bob.eat(grille)
 
             # Déplacement du Bob
-            is_moving = bob.move(is_moving,grille)
+            di,dj = choice([(-1,0),(1,0),(0,-1),(0,1)])
+            is_moving = bob.move(grille,di,dj)
 
             # Bob mange
             bob.eat(grille)
