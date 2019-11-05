@@ -8,7 +8,7 @@ from pygame.locals import *
 from threading import Thread
 from time import sleep
 import os 
-STAT=True
+AFFICHAGE=False
 
 class Controller:
 
@@ -17,7 +17,7 @@ class Controller:
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
         self.listebob = self.initbob(self.grille)
-        if not STAT:
+        if AFFICHAGE:
             self.view = View()
         self.run()
 
@@ -83,12 +83,12 @@ class Controller:
                 self.spawnfood(self.grille)
                 #print(day, len(self.listebob))
             tick += 1
-            if STAT :
-                self.update(self.grille, self.listebob)
-                drawStats(self.grille, self.listebob, tick)
-                sleep(0.1)
-                os.system('cls' if os.name == 'nt' else 'clear')
-            else: 
+            
+            self.update(self.grille, self.listebob)
+            drawStats(self.grille, self.listebob, tick)
+            sleep(0.01)
+            os.system('cls' if os.name == 'nt' else 'clear')
+            if AFFICHAGE: 
                 # Update de la fenêtre
                 while self.view.run:
                     # Limitation de vitesse de la boucle
