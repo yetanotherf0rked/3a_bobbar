@@ -10,16 +10,12 @@ from time import sleep
 class Controller:
 
     def __init__(self):
-        #Initialisaion de la grille et des bobs
-        self.initgame()
-        self.view = View()
-        self.run(0,0)
-
-
-    def initgame(self):
         # Initialisation de la grille
         self.grille = [[Case(i, j) for j in range(TAILLE)] for i in range(TAILLE)]
+        #Initialisation des Bobs
         self.listebob = self.initbob(self.grille)
+        self.view = View()
+        self.run()
 
     #Initialisation des Bobs
     def initbob(self,grille):
@@ -66,7 +62,9 @@ class Controller:
             #Si le bob est mort on le retire
             bob.is_dead(listebob,grille)
 
-    def run(self,tick,day):
+    def run(self):
+        tick = 0
+        day = 0
         continuer = True
         while continuer:
             # Comptage des ticks/Days
