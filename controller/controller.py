@@ -2,10 +2,13 @@ from model import *
 from random import randint,choice
 from ressources.constantes import *
 from view import *
+from view.debug import *
 import pygame
 from pygame.locals import *
 from threading import Thread
 from time import sleep
+import os 
+STAT=True
 
 class Controller:
 
@@ -14,7 +17,8 @@ class Controller:
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
         self.listebob = self.initbob(self.grille)
-        self.view = View()
+        if not STAT:
+            self.view = View()
         self.run()
 
     #Initialisation des Bobs
@@ -77,20 +81,25 @@ class Controller:
                 day += 1
                 # Spawn de la nouvelle food
                 self.spawnfood(self.grille)
-                print(day, len(self.listebob))
+                #print(day, len(self.listebob))
             tick += 1
+            if STAT :
+                self.update(self.grille, self.listebob)
+                drawStats(self.grille, self.listebob, tick)
+                sleep(0.1)
+                os.system('cls' if os.name == 'nt' else 'clear')
+            else: 
+                # Update de la fenêtre
+                while self.view.run:
+                    # Limitation de vitesse de la boucle
+                    sleep(0.001)
+                self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
+                self._thread.start()
 
-            # Update de la fenêtre
-            while self.view.run:
-                # Limitation de vitesse de la boucle
-                sleep(0.001)
-            self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
-            self._thread.start()
+                # Update des Bobs
+                self.update(self.grille, self.listebob)
 
-            # Update des Bobs
-            self.update(self.grille, self.listebob)
-
-            # Test de fin
-            for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
-                if event.type == KEYDOWN and event.key == K_ESCAPE:  # Si un de ces événements est de type QUIT
-                    continuer = False  # On arrête la boucle
+                # Test de fin
+                for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
+                    if event.type == KEYDOWN and event.key == K_ESCAPE:  # Si un de ces événements est de type QUIT
+                        continuer = False  # On arrête la boucle
