@@ -11,7 +11,7 @@ class Controller:
 
     def __init__(self):
         # Initialisation de la grille
-        self.grille = [[Case(i, j) for j in range(TAILLE)] for i in range(TAILLE)]
+        self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
         self.listebob = self.initbob(self.grille)
         self.view = View()
@@ -22,22 +22,22 @@ class Controller:
         listebob = []
         for bob in range(NB_POP):
             #Position du Bob
-            i,j = randint(0, TAILLE-1), randint(0, TAILLE-1)
-            bob = Bob([i,j])
-            grille[i][j].place.append(bob)
+            x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
+            bob = Bob([x, y])
+            grille[x][y].place.append(bob)
             listebob.append(bob)
         return listebob
 
     #Spawn de food
     def spawnfood(self,grille):
         for k in range(NB_FOOD):
-            i,j = randint(0,TAILLE-1),randint(0,TAILLE-1)
-            grille[i][j].food += ENERGY_FOOD
+            x, y = randint(0,TAILLE-1),randint(0,TAILLE-1)
+            grille[x][y].food += ENERGY_FOOD
 
     def removefood(self,grille):
-        for i in range(TAILLE):
-            for j in range(TAILLE):
-                grille[i][j].food = 0
+        for x in range(TAILLE):
+            for y in range(TAILLE):
+                grille[x][y].food = 0
 
     def update(self,grille,listebob):
         for bob in listebob:
@@ -49,7 +49,7 @@ class Controller:
 
             # Déplacement du Bob
             di,dj = choice([(-1,0),(1,0),(0,-1),(0,1)])
-            is_moving = bob.move(grille,di,dj)
+            is_moving = bob.move(grille,dx,dy)
 
             # Bob mange
             bob.eat(grille)
