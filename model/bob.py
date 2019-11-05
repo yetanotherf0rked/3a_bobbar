@@ -12,8 +12,8 @@ class Bob:
         self.energy_move = self.velocity**2*self.masse
 
     def move(self, grille, dx, dy):
-        ni=self.x+dx
-        nj=self.y+dy
+        nx=self.x+dx
+        ny=self.y+dy
         if(0<=nx<TAILLE and 0<=ny<TAILLE ) :
             grille[self.x][self.y].place.remove(self)
             self.x=nx
