@@ -14,16 +14,13 @@ class Bob:
     def move(self, grille, dx, dy):
         nx=self.x+dx
         ny=self.y+dy
-        if(0<=nx<TAILLE and 0<=ny<TAILLE ) :
+        if(0<=nx<TAILLE and 0<=ny<TAILLE ) : #test limites du monde 
             grille[self.x][self.y].place.remove(self)
             self.x=nx
             self.y=ny
             grille[self.x][self.y].place.append(self)
             return True
         return False
-
-
-        
 
     def is_dead(self, listebob, grille):
         #Test si le bob est mort et le supprime si c'est le cas
@@ -33,19 +30,15 @@ class Bob:
             return True
         return False
 
-    def eat(self, grille, rate = 1):
-        #Test si il y a de la bouffe la ou il est
-        if grille[self.x][self.y].food != 0:
-
-            #bouffe disponible
-            food = grille[self.x][self.y].food * rate
-
-            if food + self.energy <= ENERGY_MAX :
-                self.energy += food
-                grille[self.x][self.y].food -= food
-            else:
-                grille[self.x][self.y].food -= ENERGY_MAX-self.energy
-                self.energy = 200
+    def eat(self, food, rate = 1):
+        eaten_food = rate*food
+        if eaten_food + self.energy <= ENERGY_MAX :
+            self.energy += eaten_food
+            food-=eaten_food
+        else:
+            food -= ENERGY_MAX-self.energy
+            self.energy = 200
+        return food
 
     def parthenogenesis(self, listebob, grille):
         #Naissance d'un nouveau Bob

@@ -45,14 +45,16 @@ class Controller:
             is_moving = False
 
             # Mange la nourriture restante si possible
-            bob.eat(grille)
+            if grille[bob.x][bob.y].food != 0 :
+                grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
 
             # Déplacement du Bob
             dx, dy = choice([(-1,0),(1,0),(0,-1),(0,1)])
             is_moving = bob.move(grille,dx,dy)
 
             # Bob mange
-            bob.eat(grille)
+            if grille[bob.x][bob.y].food != 0 :
+                grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
 
             # Naissance d'un enfant si possible
             bob.parthenogenesis(listebob,grille)
