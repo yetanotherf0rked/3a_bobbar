@@ -37,7 +37,7 @@ class View:
                     self.fenetre.blit(self.food, (935 + x * 21 - 21 * y,3 + y * 12 + x * 12))
         # Affichage des Bobs
         for bob in listebob:
-            x, y = bob.i, bob.j
+            x, y = bob.x, bob.y
             self.fenetre.blit(self.perso, (939 + x * 21 - 21 * y,8 + y * 12 + x * 12))
         # Update
         pygame.display.flip()
