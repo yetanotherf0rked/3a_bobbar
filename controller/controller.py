@@ -48,7 +48,7 @@ class Controller:
             bob.eat(grille)
 
             # Déplacement du Bob
-            di,dj = choice([(-1,0),(1,0),(0,-1),(0,1)])
+            dx, dy = choice([(-1,0),(1,0),(0,-1),(0,1)])
             is_moving = bob.move(grille,dx,dy)
 
             # Bob mange
