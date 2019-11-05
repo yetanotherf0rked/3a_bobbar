@@ -11,7 +11,7 @@ class Bob:
         self.masse = 1
         self.energy_move = self.velocity**2*self.masse
 
-    def move(self,is_moving,grille):
+    def move(self, is_moving, grille):
         direction = randint(0,3) #0 Nord 1 Sud 2 Est 3 Ouest
         if direction == 0 and self.i!=TAILLE-1:
             grille[self.i][self.j].place.remove(self)
@@ -36,7 +36,7 @@ class Bob:
         return is_moving
 
 
-    def is_dead(self,listebob,grille):
+    def is_dead(self, listebob, grille):
         #Test si le bob est mort et le supprime si c'est le cas
         if self.energy <= 0:
             listebob.remove(self)
@@ -44,7 +44,7 @@ class Bob:
             return True
         return False
 
-    def eat(self,grille,rate = 1):
+    def eat(self, grille, rate = 1):
         #Test si il y a de la bouffe la ou il est
         if grille[self.i][self.j].food != 0:
 
@@ -58,7 +58,7 @@ class Bob:
                 grille[self.i][self.j].food -= ENERGY_MAX-self.energy
                 self.energy = 200
 
-    def parthenogenesis(self,listebob,grille):
+    def parthenogenesis(self, listebob, grille):
         #Naissance d'un nouveau Bob
         if self.energy == ENERGY_MAX:
             self.energy = ENERGY_MOTHER
