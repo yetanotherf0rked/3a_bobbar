@@ -26,9 +26,9 @@ def drawStats(grille, liste_bobs, tick):
     print_bar(TICK_DAY, tick%TICK_DAY)
     print(f'population : {len(liste_bobs)}' )
     mstat =mass_stat(liste_bobs)
-    print(f'masse moyenne : {mstat[0]} masse max : {mstat[0]} masse min : {mstat[0]}')
+    print(f'masse moyenne : {mstat[0]} masse max : {mstat[1]} masse min : {mstat[2]}')
     vstat =velocity_stat(liste_bobs)
-    print(f'vitesse moyenne : {vstat[0]} vitesse max : {vstat[0]} vitesse min : {vstat[0]}')
+    print(f'vitesse moyenne : {vstat[0]} vitesse max : {vstat[1]} vitesse min : {vstat[2]}')
     print('food :')
     print_bar(NB_FOOD*ENERGY_FOOD,total_food(grille))
 
