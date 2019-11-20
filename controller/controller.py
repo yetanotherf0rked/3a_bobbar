@@ -45,24 +45,38 @@ class Controller:
 
     def update(self, grille, listebob):
         for bob in listebob:
-            # Test si le Bob à bouger ou non
+            # Test si le Bob a bougé ou non
             is_moving = False
-
+            # Test si le Bob est mort ou non
+            is_dead = False
             # Mange la nourriture restante si possible
             if grille[bob.x][bob.y].food != 0:
                 grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
-
+            if len(grille[bob.x][bob.y].place) > 1:  # Fight
+                for other_bob in grille[bob.x][bob.y].place:
+                    # if other_bob != bob:  # inutile car bob.masse/bob.masse > 2/3
+                    if other_bob.masse/bob.masse < 2/3:
+                        bob.energy = min(ENERGY_MAX, bob.energy + 0.5*other_bob.energy*(1-(other_bob.masse/bob.masse)))
+                        other_bob.energy = 0
+                        other_bob.is_dead(listebob, grille)
+                    elif bob.masse/other_bob.masse < 2/3:
+                        other_bob.energy = min(ENERGY_MAX, other_bob.energy + 0.5*bob.energy*(1-(bob.masse/other_bob.masse)))
+                        bob.energy = 0
+                        bob.is_dead(listebob, grille)
+                        is_dead = True
+                        break
+            if is_dead:  # si le bob actuel est mort dévoré
+                continue
             # Déplacement du Bob
             tmp = bob.speed_buffer + bob.velocity
             while tmp >= 1:
                 tmp -= 1
                 dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
                 is_moving = bob.move(grille, dx, dy) or is_moving
+                # Bob mange
+                if grille[bob.x][bob.y].food != 0:
+                    grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
             bob.speed_buffer = tmp
-
-            # Bob mange
-            if grille[bob.x][bob.y].food != 0:
-                grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
 
             # Naissance d'un enfant si possible
             bob.parthenogenesis(listebob, grille)

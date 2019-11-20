@@ -1,5 +1,4 @@
 from random import uniform
-from random import choice
 from model.case import *
 from ressources.constantes import *
 
@@ -52,6 +51,7 @@ class Bob:
             son.energy = ENERGY_SON
             # Fonction max pour eviter qu'un bob est une vitesse < 1
             son.velocity = max(1.0, self.velocity + uniform(-MUT_VELOCITY, MUT_VELOCITY))
+            son.masse = max(1.0, self.masse + uniform(-MUT_MASSE, MUT_MASSE))
             #Ajout du fils dans la liste des Bobs et sur la grille
             listebob.append(son)
             grille[self.x][self.y].place.append(son)
