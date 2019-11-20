@@ -7,8 +7,11 @@ import pygame
 from pygame.locals import *
 from threading import Thread
 from time import sleep
-import os 
-AFFICHAGE=True
+import os
+
+
+AFFICHAGE = False
+
 
 class Controller:
 
@@ -35,7 +38,7 @@ class Controller:
     #Spawn de food
     def spawnfood(self, grille):
         for k in range(NB_FOOD):
-            x, y = randint(0,TAILLE-1),randint(0,TAILLE-1)
+            x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
             grille[x][y].food += ENERGY_FOOD
 
     def removefood(self, grille):

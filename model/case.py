@@ -6,4 +6,4 @@ class Case:
         self.x = x
         self.y = y
         self.food = 0
-        self.place =[]        #Contenue de la Case
+        self.place = []        #Contenue de la Case
