@@ -1,4 +1,5 @@
 from random import uniform
+from random import choice
 from model.case import *
 from ressources.constantes import *
 
@@ -7,14 +8,15 @@ class Bob:
     def __init__(self, pos):
         self.x, self.y = pos      #Case où ce trouve le Bob
         self.energy = ENERGY_SPAWN
-        self.velocity = 1
-        self.masse = 1
+        self.velocity = 1.0
+        self.masse = 1.0
         self.energy_move = self.velocity**2*self.masse
+        self.speed_buffer = 0.0
 
     def move(self, grille, dx, dy):
         nx=self.x+dx
         ny=self.y+dy
-        if(0<=nx<TAILLE and 0<=ny<TAILLE ) : #test limites du monde 
+        if(0<=nx<TAILLE and 0<=ny<TAILLE): #test limites du monde
             grille[self.x][self.y].place.remove(self)
             self.x=nx
             self.y=ny
@@ -30,7 +32,7 @@ class Bob:
             return True
         return False
 
-    def eat(self, food, rate = 1):
+    def eat(self, food, rate=1):
         eaten_food = rate*food
         if eaten_food + self.energy <= ENERGY_MAX :
             self.energy += eaten_food
@@ -47,7 +49,9 @@ class Bob:
 
             #Nouveau bob
             son = Bob([self.x, self.y])
-            son.energy=ENERGY_SON
+            son.energy = ENERGY_SON
+            # Fonction max pour eviter qu'un bob est une vitesse < 1
+            son.velocity = max(1.0, self.velocity + uniform(-MUT_VELOCITY, MUT_VELOCITY))
             #Ajout du fils dans la liste des Bobs et sur la grille
             listebob.append(son)
             grille[self.x][self.y].place.append(son)

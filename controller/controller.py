@@ -8,7 +8,7 @@ from pygame.locals import *
 from threading import Thread
 from time import sleep
 import os 
-AFFICHAGE=False
+AFFICHAGE=True
 
 class Controller:
 
@@ -49,12 +49,16 @@ class Controller:
             is_moving = False
 
             # Mange la nourriture restante si possible
-            if grille[bob.x][bob.y].food != 0 :
+            if grille[bob.x][bob.y].food != 0:
                 grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
 
             # Déplacement du Bob
-            dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
-            is_moving = bob.move(grille, dx, dy)
+            tmp = bob.speed_buffer + bob.velocity
+            while tmp >= 1:
+                tmp -= 1
+                dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
+                is_moving = bob.move(grille, dx, dy) or is_moving
+            bob.speed_buffer = tmp
 
             # Bob mange
             if grille[bob.x][bob.y].food != 0:
