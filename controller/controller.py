@@ -22,7 +22,7 @@ class Controller:
         self.run()
 
     #Initialisation des Bobs
-    def initbob(self,grille):
+    def initbob(self, grille):
         listebob = []
         for bob in range(NB_POP):
             #Position du Bob
@@ -33,17 +33,17 @@ class Controller:
         return listebob
 
     #Spawn de food
-    def spawnfood(self,grille):
+    def spawnfood(self, grille):
         for k in range(NB_FOOD):
             x, y = randint(0,TAILLE-1),randint(0,TAILLE-1)
             grille[x][y].food += ENERGY_FOOD
 
-    def removefood(self,grille):
+    def removefood(self, grille):
         for x in range(TAILLE):
             for y in range(TAILLE):
                 grille[x][y].food = 0
 
-    def update(self,grille,listebob):
+    def update(self, grille, listebob):
         for bob in listebob:
             # Test si le Bob à bouger ou non
             is_moving = False
@@ -53,21 +53,21 @@ class Controller:
                 grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
 
             # Déplacement du Bob
-            dx, dy = choice([(-1,0),(1,0),(0,-1),(0,1)])
-            is_moving = bob.move(grille,dx,dy)
+            dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
+            is_moving = bob.move(grille, dx, dy)
 
             # Bob mange
-            if grille[bob.x][bob.y].food != 0 :
+            if grille[bob.x][bob.y].food != 0:
                 grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
 
             # Naissance d'un enfant si possible
-            bob.parthenogenesis(listebob,grille)
+            bob.parthenogenesis(listebob, grille)
 
             # Retire de l'énergie
             bob.energy -= bob.energy_move if is_moving else ENERGY_STAY
 
             #Si le bob est mort on le retire
-            bob.is_dead(listebob,grille)
+            bob.is_dead(listebob, grille)
 
     def run(self):
         tick = 0
