@@ -20,6 +20,8 @@ ENERGY_MAX = 200
 ENERGY_MOTHER = 50
 #Energy enfant 50
 ENERGY_SON = 50
+#Taux de mutation de la vitesse
+MUT_VELOCITY = 0.1
 
 # Chargement des images
 image_SOL = "ressources/images/isometric_pixel_0046.png"
