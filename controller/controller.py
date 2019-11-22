@@ -63,14 +63,7 @@ class Controller:
                         bob.energy = min(ENERGY_MAX, bob.energy + 0.5*other_bob.energy*(1-(other_bob.masse/bob.masse)))
                         other_bob.energy = 0
                         other_bob.is_dead(listebob, grille)
-                    elif bob.masse/other_bob.masse < 2/3:
-                        other_bob.energy = min(ENERGY_MAX, other_bob.energy + 0.5*bob.energy*(1-(bob.masse/other_bob.masse)))
-                        bob.energy = 0
-                        bob.is_dead(listebob, grille)
-                        is_dead = True
-                        break
-            if is_dead:  # si le bob actuel est mort dévoré
-                continue
+
             # Déplacement du Bob
             tmp = bob.speed_buffer + bob.velocity
             while tmp >= 1:
