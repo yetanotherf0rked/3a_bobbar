@@ -118,3 +118,16 @@ class Controller:
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
                     if event.type == KEYDOWN and event.key == K_ESCAPE:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
+        
+    #simule un nombre de tick donné et affiche l'etat de la simulation.
+     def simul(self, ticks):
+        tick = 0
+        day = 0
+        for _ in range(ticks):
+            if tick % TICK_DAY == 0:
+                self.removefood(self.grille)
+                day += 1
+                self.spawnfood(self.grille)
+            tick += 1
+            self.update(self.grille, self.listebob)
+        drawStats(self.grille, self.listebob, tick)
