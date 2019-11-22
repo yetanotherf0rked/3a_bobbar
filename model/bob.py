@@ -12,6 +12,9 @@ class Bob:
         self.energy_move = self.velocity**2*self.masse
         self.speed_buffer = 0.0
 
+    def perception(self):
+        return None
+
     def move(self, grille, dx, dy):
         nx=self.x+dx
         ny=self.y+dy
