@@ -10,7 +10,7 @@ from time import sleep
 import os
 
 
-AFFICHAGE = False
+AFFICHAGE = True
 
 
 class Controller:
@@ -72,7 +72,7 @@ class Controller:
             tmp = bob.speed_buffer + bob.velocity
             while tmp >= 1:
                 tmp -= 1
-                dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
+                dx, dy = bob.move_preference(grille)  # choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
                 is_moving = bob.move(grille, dx, dy) or is_moving
                 # Bob mange
                 if grille[bob.x][bob.y].food != 0:
