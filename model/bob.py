@@ -2,6 +2,7 @@ from random import uniform, choice
 from model.case import *
 from ressources.constantes import *
 
+
 class Bob:
 
     def __init__(self, pos):
@@ -9,9 +10,11 @@ class Bob:
         self.energy = ENERGY_SPAWN
         self.velocity = 1.0
         self.masse = 1.0
-        self.energy_move = self.velocity**2*self.masse
+        self.memory_points = 0
+        self.energy_move = self.velocity**2*self.masse + self.memory_points/5
         self.speed_buffer = 0.0
         self.perception = 0.0
+        self.memory = ([],[])# memory[0] -> cases deja visités  memory [1]-> food vu mais pas prio.
 
     def move_preference(self, grille):
         if self.perception < 1:
@@ -46,6 +49,8 @@ class Bob:
 
 
 
+        
+        
 
     def move(self, grille, dx, dy):
         nx=self.x+dx
@@ -54,7 +59,7 @@ class Bob:
             grille[self.x][self.y].place.remove(self)
             self.x=nx
             self.y=ny
-            grille[self.x][self.y].place.append(self)
+            grille[self.x][self.y].place.append(self)   
             return True
         return False
 
@@ -89,6 +94,31 @@ class Bob:
             son.masse = max(1.0, self.masse + uniform(-MUT_MASSE, MUT_MASSE))
             son.perception = max(1.0, self.perception + uniform(0, 1))
             son.energy_move = son.velocity**2*son.masse
+            son.memory_points=max(0,self.memory_points + choice([-MUT_MEMORY,0,MUT_MEMORY]))
             #Ajout du fils dans la liste des Bobs et sur la grille
             listebob.insert(0,son)
             grille[self.x][self.y].place.append(son)
+
+    def save(self, case, mode=0):
+        """ le bob stocke une case dans sa memoire
+        mode = 0 pour stocker une case visitée 
+        mode = 1 pour stocker une case vue interressante.
+        """
+        copy = Case(case.x,case.y)
+        copy.food = case.food
+        copy.place = case.place.copy()
+        self.memory[mode].insert(0,copy)
+        if len(self.memory[mode]) > 10*self.memory_points : # on vide les vieux souvenirs 
+            self.memory[mode].pop(10*self.memory_points)
+
+    def remember(self, mode=0, number=1):
+        """ renvoie la ou les number dernieres cases stockés en memoire
+        mode = 0 pour les cases déjà visitées 
+        mode = 1 pour les case vues interressantes.
+        """
+        return tuple(self.memory[mode][i] for i in range(number))
+
+    
+
+    
+

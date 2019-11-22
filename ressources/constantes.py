@@ -24,6 +24,8 @@ ENERGY_SON = 50
 MUT_VELOCITY = 0.1
 #Taux de mutation de la masse
 MUT_MASSE = 0.1
+#taux de Mutation de la memoire
+MUT_MEMORY = 1
 
 # Chargement des images
 image_SOL = "ressources/images/isometric_pixel_0046.png"
