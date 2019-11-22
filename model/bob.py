@@ -54,5 +54,5 @@ class Bob:
             son.masse = max(1.0, self.masse + uniform(-MUT_MASSE, MUT_MASSE))
             son.energy_move = son.velocity**2*son.masse
             #Ajout du fils dans la liste des Bobs et sur la grille
-            listebob = [son] + listebob
+            listebob.insert(0,son)
             grille[self.x][self.y].place.append(son)

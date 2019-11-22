@@ -23,6 +23,9 @@ class Controller:
         if AFFICHAGE:
             self.view = View()
         self.run()
+        
+
+
 
     #Initialisation des Bobs
     def initbob(self, grille):
@@ -47,7 +50,6 @@ class Controller:
                 grille[x][y].food = 0
 
     def update(self, grille, listebob):
-        listebob.sort(key=lambda x: x.velocity, reverse=True)
         for bob in listebob:
             # Test si le Bob a bougé ou non
             is_moving = False
@@ -98,7 +100,7 @@ class Controller:
                 self.spawnfood(self.grille)
                 #print(day, len(self.listebob))
             tick += 1
-            
+            self.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.update(self.grille, self.listebob)
             drawStats(self.grille, self.listebob, tick)
             sleep(0.01)
@@ -119,8 +121,9 @@ class Controller:
                     if event.type == KEYDOWN and event.key == K_ESCAPE:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
         
-    #simule un nombre de tick donné et affiche l'etat de la simulation.
-     def simul(self, ticks):
+        
+    def simul(self, ticks): 
+        """simule un nombre de tick donné et affiche l'etat de la simulation."""
         tick = 0
         day = 0
         for _ in range(ticks):
