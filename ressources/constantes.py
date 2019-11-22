@@ -24,7 +24,9 @@ ENERGY_SON = 50
 MUT_VELOCITY = 0.1
 #Taux de mutation de la masse
 MUT_MASSE = 0.1
-#taux de Mutation de la memoire
+#taux de mutation de la perception
+MUT_PERCEPT=1
+#taux de mutation de la memoire
 MUT_MEMORY = 1
 
 # Chargement des images

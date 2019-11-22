@@ -10,7 +10,7 @@ class Bob:
         self.energy = ENERGY_SPAWN
         self.velocity = 1.0
         self.masse = 1.0
-        self.perception = 0.0
+        self.perception = 0
         self.memory_points = 0
         self.energy_move = self.velocity**2*self.masse + self.perception/5 + self.memory_points/5
         self.speed_buffer = 0.0
@@ -56,9 +56,9 @@ class Bob:
             # Fonction max pour eviter qu'un bob est une vitesse < 1
             son.velocity = max(1.0, self.velocity + uniform(-MUT_VELOCITY, MUT_VELOCITY))
             son.masse = max(1.0, self.masse + uniform(-MUT_MASSE, MUT_MASSE))
-            son.perception = max(1.0, self.perception + uniform(0, 1))
-            son.energy_move = son.velocity**2*son.masse
+            son.perception = max(0,self.perception+ choice([-MUT_PERCEPT,0,MUT_PERCEPT]))
             son.memory_points=max(0,self.memory_points + choice([-MUT_MEMORY,0,MUT_MEMORY]))
+            son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
             #Ajout du fils dans la liste des Bobs et sur la grille
             listebob.insert(0,son)
             grille[self.x][self.y].place.append(son)
@@ -66,7 +66,7 @@ class Bob:
     def move_preference(self, grille):
         if self.perception < 1:
             return choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
-        radius = int(self.perception)  # on arrondi la perception à l'entier inférieur
+        radius = self.perception # on arrondi la perception à l'entier inférieur
         danger = False  # si il n'y a pas de danger on chasse, sinon on fuit
         max_food = 0
         largest_masse = 0
@@ -93,7 +93,6 @@ class Bob:
         if danger:
             return max([(-1, 0), (1, 0), (0, -1), (0, 1)], key=lambda x: abs(target[0] - x[0]) + abs(target[1] - x[1]))  # retourne le (dx, dy) pour maximiser la distance avec le danger
         return min([(-1, 0), (1, 0), (0, -1), (0, 1)], key=lambda x: abs(target[0] - x[0]) + abs(target[1] - x[1]))  # retourne le (dx, dy) pour minimiser la distance avec le gain
-
 
     def save(self, case, mode=0):
         """ le bob stocke une case dans sa memoire
