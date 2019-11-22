@@ -17,8 +17,6 @@ class Bob:
         if self.perception < 1:
             return choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
         radius = int(self.perception)
-        checked_cells = set()
-        current_cells = {(self.x, self.y)}
         danger = False  # si il n'y a pas de danger on chasse, sinon on fuit
         max_food = 0
         largest_masse = 0
