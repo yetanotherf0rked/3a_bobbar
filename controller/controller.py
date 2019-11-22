@@ -47,6 +47,7 @@ class Controller:
                 grille[x][y].food = 0
 
     def update(self, grille, listebob):
+        listebob.sort(key=lambda x: x.velocity, reverse=True)
         for bob in listebob:
             # Test si le Bob a bougé ou non
             is_moving = False
