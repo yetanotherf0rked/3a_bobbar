@@ -15,14 +15,18 @@ AFFICHAGE = False
 
 class Controller:
 
-    def __init__(self):
+    def __init__(self,simul=0):
         # Initialisation de la grille
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
         self.listebob = self.initbob(self.grille)
         if AFFICHAGE:
             self.view = View()
-        self.run()
+        if not simul :
+            self.run()
+        else :
+            self.simul(simul)
+
         
 
 
