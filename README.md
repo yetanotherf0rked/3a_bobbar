@@ -6,6 +6,3 @@ Rules :
 - _ pour sep
 - Construction MVC
 
-A faire dans la Branche Prog  : 
-
--mettre en lien memoire et move preference
