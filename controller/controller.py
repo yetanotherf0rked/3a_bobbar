@@ -1,7 +1,7 @@
 from model import *
 from random import randint
 from ressources.constantes import *
-from view import *
+from view import View
 import pygame
 from pygame.locals import *
 from threading import Thread
@@ -14,6 +14,11 @@ class Controller:
         self.initgame()
         self.view = View()
         self.run(0,0)
+
+    def paramDebug(self):
+        for name, value in parameters.actual.items():
+            print(value,"\t", end='')
+        print('')
 
 
     def initgame(self):
@@ -34,9 +39,9 @@ class Controller:
 
     #Spawn de food
     def spawnfood(self,grille):
-        for k in range(NB_FOOD):
+        for k in range(parameters.get("Food Number")):
             i,j = randint(0,TAILLE-1),randint(0,TAILLE-1)
-            grille[i][j].food += ENERGY_FOOD
+            grille[i][j].food += parameters.get("Food Energy")
 
     def removefood(self,grille):
         for i in range(TAILLE):
@@ -61,7 +66,7 @@ class Controller:
             bob.parthenogenesis(listebob,grille)
 
             # Retire de l'énergie
-            bob.energy -= bob.energy_move if is_moving else ENERGY_STAY
+            bob.energy -= bob.energy_move if is_moving else parameters.get("Energy Cost at Stay")
 
             #Si le bob est mort on le retire
             bob.is_dead(listebob,grille)
@@ -71,7 +76,7 @@ class Controller:
         while continuer:
             # Comptage des ticks/Days
             if tick % TICK_DAY == 0:
-                # Suppression de la nourritue restante
+                # Suppression de la nourriture restante
                 self.removefood(self.grille)
                 day += 1
                 # Spawn de la nouvelle food
@@ -93,3 +98,8 @@ class Controller:
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
                 if event.type == KEYDOWN and event.key == K_ESCAPE:  # Si un de ces événements est de type QUIT
                     continuer = False  # On arrête la boucle
+                # Réagit si l'on bouge les sliders
+                self.view.gui.menu.react(event)
+
+            # GUI : Débug des sliders
+            self.paramDebug()

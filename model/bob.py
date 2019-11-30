@@ -6,7 +6,7 @@ class Bob:
 
     def __init__(self, pos):
         self.i,self.j = pos      #Case où ce trouve le Bob
-        self.energy = ENERGY_SPAWN
+        self.energy = parameters.get("Spawn Energy")
         self.velocity = 1
         self.masse = 1
         self.energy_move = self.velocity**2*self.masse
@@ -51,17 +51,17 @@ class Bob:
             #bouffe disponible
             food = grille[self.i][self.j].food * rate
 
-            if food + self.energy <= ENERGY_MAX :
+            if food + self.energy <= parameters.get("Max Energy") :
                 self.energy += food
                 grille[self.i][self.j].food -= food
             else:
-                grille[self.i][self.j].food -= ENERGY_MAX-self.energy
+                grille[self.i][self.j].food -= parameters.get("Max Energy")-self.energy
                 self.energy = 200
 
     def parthenogenesis(self,listebob,grille):
         #Naissance d'un nouveau Bob
-        if self.energy == ENERGY_MAX:
-            self.energy = ENERGY_MOTHER
+        if self.energy == parameters.get("Max Energy"):
+            self.energy = parameters.get("Mother Energy")
 
             #Nouveau bob
             son = Bob([self.i,self.j])
