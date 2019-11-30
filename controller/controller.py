@@ -10,7 +10,7 @@ from time import sleep
 import os
 
 
-AFFICHAGE = True
+AFFICHAGE = False
 
 
 class Controller:
@@ -54,46 +54,16 @@ class Controller:
                 grille[x][y].food = 0
 
     def update(self, grille, listebob):
+        new_bobs=[]
         for bob in listebob:
-            # Test si le Bob a bougé ou non
-            is_moving = False
-            # Mange la nourriture restante si possible
-            if grille[bob.x][bob.y].food != 0:
-                grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
-            if len(grille[bob.x][bob.y].place) > 1:  # Fight
-                for other_bob in grille[bob.x][bob.y].place:
-                    # if other_bob != bob:  # inutile car bob.masse/bob.masse > 2/3
-                    if other_bob.masse/bob.masse < 2/3:
-                        bob.energy = min(ENERGY_MAX, bob.energy + 0.5*other_bob.energy*(1-(other_bob.masse/bob.masse)))
-                        other_bob.energy = 0
-                        other_bob.is_dead(listebob, grille)
-
-            # Déplacement du Bob
-            tmp = bob.speed_buffer + bob.velocity
-            while tmp >= 1:
-                tmp -= 1
-                dx, dy = bob.move_preference(grille)  # choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
-                is_moving = bob.move(grille, dx, dy) or is_moving
-                # Bob mange
-                if grille[bob.x][bob.y].food != 0:
-                    grille[bob.x][bob.y].food = bob.eat(grille[bob.x][bob.y].food)
-                if len(grille[bob.x][bob.y].place) > 1:  # Fight
-                    for other_bob in grille[bob.x][bob.y].place:
-                        # if other_bob != bob:  # inutile car bob.masse/bob.masse > 2/3
-                        if other_bob.masse/bob.masse < 2/3:
-                            bob.energy = min(ENERGY_MAX, bob.energy + 0.5*other_bob.energy*(1-(other_bob.masse/bob.masse)))
-                            other_bob.energy = 0
-                            other_bob.is_dead(listebob, grille)
-            bob.speed_buffer = tmp
-
-            # Naissance d'un enfant si possible
-            bob.parthenogenesis(listebob, grille)
-
-            # Retire de l'énergie
-            bob.energy -= bob.energy_move if is_moving else ENERGY_STAY
+            #update du bob
+            new_bobs+=bob.update(grille)
 
             #Si le bob est mort on le retire
             bob.is_dead(listebob, grille)
+
+        #on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
+        listebob += new_bobs
 
     def run(self):
         tick = 0
