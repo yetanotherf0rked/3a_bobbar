@@ -9,6 +9,9 @@ class View:
     def __init__(self):
         self.initView()
         self.run = False
+        # 2 Attributs permettant de ce déplacer dans la fenêtre.
+        self.depx = 0
+        self.depy = 0
 
     def initView(self):
         # Initialisation de pygame
@@ -43,15 +46,15 @@ class View:
         for y in range(TAILLE):
             for x in range(TAILLE):
                 # self.fenetre.blit(self.sol, (930 + x * 21 - 21 * y,20 + y * 12 + x * 12))
-                eval("self.fenetre.blit(self.terre" +str(self.grilleFond[x][y])+", (int(self.width/2)-30 + " +str(x)+" * 18 - 18 * "+str(y)+", 8 + "+str(y)+"* 13.7 + "+str(x)+" * 13.7))")
+                eval("self.fenetre.blit(self.terre" +str(self.grilleFond[x][y])+", (int(self.width/2)-30 + self.depx + " +str(x)+" * 18 - 18 * "+str(y)+",self.depy+ 8 + "+str(y)+"* 13.7 + "+str(x)+" * 13.7))")
                 if not(grille[x][y].food ==0):
-                    self.fenetre.blit(self.food, (int(self.width/2)-30 + x * 18 - 18 * y,-5 + y * 13.7 + x * 13.7))
+                    self.fenetre.blit(self.food, (int(self.width/2) + self.depx -30 + x * 18 - 18 * y,self.depy-5 + y * 13.7 + x * 13.7))
         # self.fenetre.blit(self.grass, (935 + 0 * 21 - 21 * 0, 500 + 8 + 0 * 12 + 0 * 12))
         # Affichage des Bobs
         for bob in listebob:
             x, y = bob.i, bob.j
             perso = pygame.transform.scale(self.perso , (32,int(8*bob.energy**(1/3))))
-            self.fenetre.blit(perso, (int(self.width/2)-26 + x * 18 - 18 * y,2 + y * 13.7 + x * 13.7))
+            self.fenetre.blit(perso, (int(self.width/2) + self.depx -26 + x * 18 - 18 * y,self.depy + 2 + y * 13.7 + x * 13.7))
         # Update
         pygame.display.flip()
         self.run = False

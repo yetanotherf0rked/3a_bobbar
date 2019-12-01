@@ -83,7 +83,7 @@ class Controller:
             # Update de la fenêtre
             while self.view.run:
                 # Limitation de vitesse de la boucle
-                sleep(0.5)
+                sleep(0.1)
             self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
             self._thread.start()
 
@@ -93,9 +93,25 @@ class Controller:
 
             # Test de fin
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
+
+                # Stop
                 if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:  # Si un de ces événements est de type QUIT
                     continuer = False  # On arrête la boucle
+
+                # Pause
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     wait = not wait
+
+                # Test si on a resize la fenêtre
                 if event.type == VIDEORESIZE:
                     self.view.width,self.view.height = event.size
+
+                # Permet le déplacement dans la fenêtre
+                if event.type == KEYDOWN and (event.key == K_UP or event.key == K_z):
+                    self.view.depy -= 5
+                if event.type == KEYDOWN and (event.key == K_DOWN or event.key == K_s):
+                    self.view.depy += 5
+                if event.type == KEYDOWN and (event.key == K_LEFT or event.key == K_q):
+                    self.view.depx -= 5
+                if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
+                    self.view.depx += 5
