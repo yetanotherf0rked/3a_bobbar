@@ -22,11 +22,11 @@ class View:
         pygame.init()
 
         # Ouverture de la fenêtre Pygame
-        self.fenetre = pygame.display.set_mode((960 * 2, 540 * 2))
+        self.fenetre = pygame.display.set_mode((2000, 540 * 2))
 
         # GUI-purpose : on distingue deux surfaces (1 : paramètres et 2 : simulation)
-        self.surf1 = pygame.Surface((500, 540 * 2))  # taille de ma surface
-        self.surf2 = pygame.Surface((1620, 540 * 2))
+        self.surf1 = pygame.Surface((300, 540 * 2))  # taille de ma surface
+        self.surf2 = pygame.Surface((1920, 540 * 2))
 
         # On remplit les deux surfaces avec un fond noir
         self.surf1.fill((0, 0, 0))
@@ -65,7 +65,7 @@ class View:
             self.surf2.blit(self.perso, (939 + x * 21 - 21 * y, 8 + y * 12 + x * 12))
 
         # Affichage des surfaces dans la fenêtre
-        self.fenetre.blit(self.surf2, (501, 0))
+        self.fenetre.blit(self.surf2, (201, 0))
         self.fenetre.blit(self.surf1, (0, 0))
 
         # Update

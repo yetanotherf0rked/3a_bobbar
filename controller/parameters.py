@@ -1,4 +1,3 @@
-
 #Nourriture sur la carte 200
 NB_FOOD = 200
 #Energy par food 100
@@ -42,8 +41,8 @@ class Parameters:
         self.default = {"Food Number":                  (2, NB_FOOD, 250, int),
                         "Food Energy":                  (50, ENERGY_FOOD, 150, int),
                         "Spawn Energy":                 (50, ENERGY_SPAWN, 150, int),
-                        "Energy Cost while Moving":     (0, ENERGY_MOVE, 5, int),
-                        "Energy Cost at Stay":          (0, ENERGY_STAY, 5, float),
+                        "Energy Cost while Moving":     (0.0, ENERGY_MOVE, 5.0, float),
+                        "Energy Cost at Stay":          (0.0, ENERGY_STAY, 5.0, float),
                         "Max Energy":                   (150, ENERGY_MAX, 300, int),
                         "Mother Energy":                (25, ENERGY_MOTHER, 75, int),
                         "Son Energy":                   (25, ENERGY_SON, 75, int)
@@ -51,7 +50,7 @@ class Parameters:
 
         # actual : nom_du_paramètre:valeur
         self.actual = {}
-        # on initialise les valeurs d'Actual aux valeurs par défault de Default
+        # on initialise les valeurs d'Actual aux valeurs initiales contenues dans Default
         for k,v in self.default.items():
             self.actual[k] = v[1]
 

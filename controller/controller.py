@@ -102,4 +102,4 @@ class Controller:
                 self.view.gui.menu.react(event)
 
             # GUI : Débug des sliders
-            self.paramDebug()
+            # self.paramDebug()
