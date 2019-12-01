@@ -93,9 +93,9 @@ class Controller:
 
             # Test de fin
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
-                if event.type == KEYDOWN and event.key == K_ESCAPE:  # Si un de ces événements est de type QUIT
+                if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:  # Si un de ces événements est de type QUIT
                     continuer = False  # On arrête la boucle
-                elif event.type == KEYDOWN and event.key == K_SPACE:
+                if event.type == KEYDOWN and event.key == K_SPACE:
                     wait = not wait
                 if event.type == VIDEORESIZE:
                     self.view.width,self.view.height = event.size
