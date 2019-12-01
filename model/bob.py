@@ -3,6 +3,11 @@ from model.case import *
 from ressources.constantes import *
 
 
+def coef_danger(pdanger,di):
+    d=abs(pdanger[0]-di[0]) + abs(pdanger[1]-di[1])
+    return 1/d
+
+
 class Bob:
 
     def __init__(self, pos):
@@ -14,7 +19,8 @@ class Bob:
         self.memory_points = 0
         self.energy_move = self.velocity**2*self.masse + self.perception/5 + self.memory_points/5
         self.speed_buffer = 0.0
-        self.memory = ([],[])# memory[0] -> cases deja visités  memory [1]-> food vu mais pas prio.
+        self.mem_food = Memory(self.memory_points)
+        self.place_historic = Memory(2*self.memory_points)
 
     def update(self,grille) :
         """update le bob : combats, manger, déplacement... 
@@ -29,17 +35,20 @@ class Bob:
         if current_case.food != 0:
              current_case.food = self.eat(current_case.food)
         
-        
-        
         #boucle tant que le bob peut  faire une action (speedbuffer > 1)
         self.speed_buffer += self.velocity
         while self.speed_buffer >= 1:
                 self.speed_buffer -= 1
+
                 #choix direction déplacement
-                dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])  #self.move_preference(grille)  # 
+                dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])  #self.move_preference(grille)   
+                
                 #déplacement
-                is_moving = self.move(grille, dx, dy) 
+                is_moving = self.move(grille, dx, dy)
+                self.place_historic.add(current_case)#ajoute la case qu'il vient de quitter a son historique des cases visités
                 current_case = grille[self.x][self.y]
+                self.mem_food.forgot(current_case)#si on arrive le bob arrive à une case dont il se souvenait il la supprime de sa memoire.
+
                 #perte d'energie due au deplacement
                 self.energy -= self.energy_move if is_moving else ENERGY_STAY
 
@@ -151,32 +160,68 @@ class Bob:
 
 
     def move_preference(self, grille):
-        mem = self.memory_points
-        pref = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
-        if self.perception < 1 :
+        dx,dy = 0,0
+        directions=[(-1, 0), (1, 0), (0, -1), (0, 1)]
+        # voit les cases qu'il perçoit 
+        danger, place_danger, food_places = see(grille)
+        
+        #si il y a un danger on fuit 
+        if danger :
+            #Stocker food_places en memeoire !! A faire.
             
-                
-            return pref
-        danger_target, food_seen =self.see(grille)
+        
+        #si il y a de la nourriture en vue on y va 
+        if food_places :
+            self.mem_food.add(f) for f in food_places
+            if len(food_places>1) : food_places.sort(key=lambda x: grille[x[0]][x[1]].food,reverse=True)
+            #choisir direction foeed_places[0],sotcker le reste de la liste
+            return dx,dy
 
+        if not self.mem_food.is_empty:
+            directions =self.mem_food.remember(self.memory_points)
+            direction = directions.max(key=lambda x: x.food)
+            
 
-    def save(self, case, mode=0):
-        """ le bob stocke une case dans sa memoire
-        mode = 0 pour stocker une case visitée 
-        mode = 1 pour stocker une case vue interressante (food).
-        """
-        copy = Case(case.x,case.y)
-        copy.food = case.food
-        copy.place = case.place.copy()
-        self.memory[mode].insert(0,copy)
-        if len(self.memory[mode]) > 2*self.memory_points : # on vide les vieux souvenirs 
-            self.memory[mode].pop(2*self.memory_points-1)
+        
 
+            
+
+        
+
+   
 
 
                     
 
         
+class Memory:
+
+    def __init__(self,taillemax):
+        self.taillemax = taillemax
+        self.memory =[]
+
+    def add(self,case) :
+        self.memory.insert(0,case)
+        if len(self.memory)>self.taillemax :
+            self.memory.pop(taillemax)
+
+    def remember(nmbr=1):
+        if nmbr>len(self.memory) : nmbr = len(self.memory)
+        return [self.memory[i] for i in range(nmbr)]
+    
+    def forgot(case) :
+        for i in len(self.memory) :
+            if self.memory[i].x == case.x and self.memory.y == case.y :
+                self.memory.pop(i)
+
+    def is_empty(self):
+        return len(self.memory)==0 
+    
+
+
+    
+
+
 
     
 
