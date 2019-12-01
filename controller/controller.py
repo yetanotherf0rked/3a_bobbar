@@ -68,6 +68,7 @@ class Controller:
 
     def run(self,tick,day):
         continuer = True
+        wait = False
         while continuer:
             # Comptage des ticks/Days
             if tick % TICK_DAY == 0:
@@ -82,14 +83,17 @@ class Controller:
             # Update de la fenêtre
             while self.view.run:
                 # Limitation de vitesse de la boucle
-                sleep( 1)
+                sleep(0.5)
             self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
             self._thread.start()
 
             # Update des Bobs
-            self.update(self.grille, self.listebob)
+            if not wait:
+                self.update(self.grille, self.listebob)
 
             # Test de fin
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
                 if event.type == KEYDOWN and event.key == K_ESCAPE:  # Si un de ces événements est de type QUIT
                     continuer = False  # On arrête la boucle
+                elif event.type == KEYDOWN and event.key == K_SPACE:
+                    wait = not wait
