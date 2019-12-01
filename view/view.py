@@ -16,9 +16,12 @@ class View:
     def initView(self):
         # Initialisation de pygame
         pygame.init()
+        #Calcul de la taille de l'écran
+        info = pygame.display.Info()
+        self.width,self.height = info.current_w,info.current_h
 
         # Ouverture de la fenêtre Pygame
-        self.fenetre = pygame.display.set_mode((960 * 2, 540 * 2))
+        self.fenetre = pygame.display.set_mode((self.width, self.height),RESIZABLE)
         fond = pygame.image.load(image_FOND).convert_alpha()
         self.fond = pygame.transform.scale(fond,(self.width,self.height))
 
