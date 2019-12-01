@@ -97,3 +97,5 @@ class Controller:
                     continuer = False  # On arrête la boucle
                 elif event.type == KEYDOWN and event.key == K_SPACE:
                     wait = not wait
+                if event.type == VIDEORESIZE:
+                    self.view.width,self.view.height = event.size

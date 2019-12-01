@@ -1,5 +1,6 @@
 import pygame
 from random import randint
+from pygame.locals import *
 from ressources.constantes import *
 
 
@@ -42,7 +43,7 @@ class View:
         for y in range(TAILLE):
             for x in range(TAILLE):
                 # self.fenetre.blit(self.sol, (930 + x * 21 - 21 * y,20 + y * 12 + x * 12))
-                eval("self.fenetre.blit(self.terre" +str(self.grilleFond[x][y])+", (930 + " +str(x)+" * 18 - 18 * "+str(y)+", 8 + "+str(y)+"* 13.7 + "+str(x)+" * 13.7))")
+                eval("self.fenetre.blit(self.terre" +str(self.grilleFond[x][y])+", (int(self.width/2)-30 + " +str(x)+" * 18 - 18 * "+str(y)+", 8 + "+str(y)+"* 13.7 + "+str(x)+" * 13.7))")
                 if not(grille[x][y].food ==0):
                     self.fenetre.blit(self.food, (int(self.width/2)-30 + x * 18 - 18 * y,-5 + y * 13.7 + x * 13.7))
         # self.fenetre.blit(self.grass, (935 + 0 * 21 - 21 * 0, 500 + 8 + 0 * 12 + 0 * 12))
