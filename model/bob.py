@@ -161,8 +161,9 @@ class Bob:
         
         #si il y a un danger on fuit 
         if danger :
-            food_places.add(f) for f in food_places
-            
+            for f in food_places :
+                food_places.add(f)
+
             for e in directions: #detection d'obstacle 
                 if is_obstacle(e[0],e[1]) :
                     directions.remove(e)
@@ -189,7 +190,9 @@ class Bob:
         
         #si il y a de la nourriture en vue on y va 
         if food_places :
-            self.mem_food.add(f) for f in food_places
+            for f in food_places :
+                self.mem_food.add(f) 
+                
             if len(food_places>1) : food_places.sort(key=lambda x: grille[x[0]][x[1]].food,reverse=True)
             #choisir direction foeed_places[0],sotcker le reste de la liste
     

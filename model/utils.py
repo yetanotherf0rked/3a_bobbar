@@ -9,15 +9,15 @@ class Memory:
     def add(self,case) :
         self.memory.insert(0,case)
         if len(self.memory)>self.taillemax :
-            self.memory.pop(taillemax)
+            self.memory.pop(self.taillemax)
 
-    def remember(nmbr=1):
+    def remember(self,nmbr=1):
         if nmbr>len(self.memory) : nmbr = len(self.memory)
         return [self.memory[i] for i in range(nmbr)]
     
-    def forgot(case) :
-        for i in len(self.memory) :
-            if self.memory[i].x == case.x and self.memory.y == case.y :
+    def forgot(self,case) :
+        for i in range(len(self.memory)) :
+            if self.memory[i].x == case.x and self.memory[i].y == case.y :
                 self.memory.pop(i)
 
     def is_empty(self):
@@ -32,9 +32,9 @@ def Danger_coeff(dangers,pos) :
     directions =(pos,(pos[0],pos[1]+1),(pos[0]+1,pos[1]),(pos[0],pos[1]-1),(pos[0]-1,pos[1])) #(pos,N,E,S,O)
     coef =[0,0,0,0,0]
     for d in dangers :
-        for i in range(5)
-        dd = distance((d.x,d.y),directions[i])
-        coef[i]+= 1 if dd==0 else 1/d
+        for i in range(5) :
+            dd = distance((d.x,d.y),directions[i])
+            coef[i]+= 1 if dd==0 else 1/d
 
 
 def is_obstacle(x,y):
