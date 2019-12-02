@@ -5,48 +5,78 @@ class Gui:
     """ Gui : déclare une interface graphique"""
 
     def __init__(self):
-        """ init : crée le menu"""
-        # Déclaration d'une liste d'éléments
+        thorpy.set_theme("human")
+        self.generateMenu()
+        self.setStyle()
+
+    def generateMenu(self):
+        """initialise les éléments du menu"""
         self.elements = []
-        # Déclaration d'un Boutton Quitter
-        self.quitButton = thorpy.make_button("Quit", func=thorpy.functions.quit_func())
-        # Déclaration d'un Dictionnaire de Sliders
-        self.sliders = {}
+
+        # Génère pour chaque paramètre une box contenant le nom du paramètre et son slider associé et les ajoute à la liste éléments
         self.generateSliders()
-        # Pour les paramètres flottants, on arrondit le pas à 1 décimale
+
+        # Pour les paramètres flottants, on arrondit le pas du slider à 1 décimale
         for slider in self.sliders.values():
             slider._round_decimals = 1
-        # On met les éléments (sliders puis boutton) dans la liste elements
-        self.elements = [slider for slider in self.sliders.values()]
-        self.elements.append(self.quitButton)
-        # Regroupement des éléments dans une box
-        self.box = thorpy.Box(elements=self.elements, size=(300, 540 * 2))
-        # Regroupement des box dans un menu
-        self.menu = thorpy.Menu(self.box)
 
-        # STYLE TESTS
-        # #self.box.set_main_color((0,0,0))
-        # for slider in self.sliders.values():
-        #     #slider.set_main_color((0,0,0))
-        #     slider.set_font_color((255,255,255))
-        #     slider.set_font_size(10)
-        #     print(slider.get_elements())
-        #     dragger = slider.get_dragger()
-        #     dragger.set_main_color((0,0,0))
-        #     slider.get_slider().set_main_color((0,0,0))
-        #     slider._round_decimals = 1
-        #     # slider.get_value().set_font_color((255,255,255))
-        #     # thorpy.SliderX.get_slider().get
+        # Boutton Quitter
+        self.quitButton = thorpy.make_button("Quit", func=thorpy.functions.quit_func())
+        self.elements.append(self.quitButton)
+
+        # Regroupement de tous les éléments dans une box
+        thorpy.style.DEF_COLOR = BLACK
+        self.box = thorpy.Box(elements=self.elements, size=(220, 540 * 2))
+
+        # Regroupement de la box dans un menu (même s'il n'y en a qu'un)
+        self.menu = thorpy.Menu(self.box)
 
     def generateSliders(self):
         """generateSliders : génère des sliders à partir des paramètres déclarés dans parameters.default{}"""
+        self.sliders = {}
+        self.titles = []
         for name,k in parameters.default.items():
+            # On génère les titres des paramètres avec la méthode OneLineText de Thorpy
+            self.titles.append(thorpy.OneLineText(name))
+            # On génère les sliders avec la méthode SliderX de Thorpy
             min = k[0]
             init = k[1]
             max = k[2]
             type = k[3]
-            self.sliders[name] = thorpy.SliderX(length=100, limvals=(min, max), text=name, initial_value=init, type_=type)
+            self.sliders[name] = thorpy.SliderX(length=150, limvals=(min, max), text="", initial_value=init, type_=type)
+            # On crée une box composée du titre du paramètre et du slider associé et on stocke le tout dans la liste éléments
+            self.elements.append(thorpy.Box(elements=[self.titles[-1], self.sliders[name]], size=(200,50)))
 
+    def setStyle(self):
+        # Box principale
+        self.box.set_main_color(BLACK)
+
+        # Boxs
+        for box in self.elements:
+            box.set_main_color(BLACK)
+
+        # Titres
+        for title in self.titles:
+            self.setFontStyle(title, WHITE, 10, "verdana")
+
+        # Sliders
+        for slider in self.sliders.values():
+            # slider.get_slider()._height = 1
+            slider.get_dragger().set_main_color(WHITE)
+            slider.get_dragger().set_size((5,20))
+            slider.get_slider().set_main_color(WHITE)
+            slider.get_slider().set_size((slider.get_slider().get_size()[0],7))
+            self.setFontStyle(slider._value_element, WHITE, 10, "verdana")
+
+        # Boutton Quitter
+        # self.quitButton.set_main_color(BLACK)
+        self.setFontStyle(self.quitButton, WHITE, 10, "verdana")
+        self.quitButton.set_font_color_hover(WHITE)
+
+    def setFontStyle(self, element, font_color, font_size, font):
+        element.set_font_color(font_color)
+        element.set_font_size(font_size)
+        element.set_font(font)
 
     def update(self):
         """update : met à jour les paramètres et les visuels à chaque tick"""

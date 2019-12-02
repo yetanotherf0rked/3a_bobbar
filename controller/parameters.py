@@ -43,7 +43,7 @@ class Parameters:
                         "Spawn Energy":                 (50, ENERGY_SPAWN, 150, int),
                         "Energy Cost while Moving":     (0.0, ENERGY_MOVE, 5.0, float),
                         "Energy Cost at Stay":          (0.0, ENERGY_STAY, 5.0, float),
-                        "Max Energy":                   (150, ENERGY_MAX, 300, int),
+                        "Max Energy":                   (50, ENERGY_MAX, 300, int),
                         "Mother Energy":                (25, ENERGY_MOTHER, 75, int),
                         "Son Energy":                   (25, ENERGY_SON, 75, int)
                         }
