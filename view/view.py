@@ -60,7 +60,7 @@ class View:
                     self.fenetre.blit(self.food, (int(self.width/2) + self.depx -30 + x * 18 - 18 * y,self.depy-5 + y * 13.7 + x * 13.7))
         # Affichage des Bobs
         for bob in listebob:
-            x, y = bob.i, bob.j
+            x, y = bob.x, bob.y
             perso = pygame.transform.scale(self.perso, (32, 32))
             self.fenetre.blit(perso, (int(self.width/2) + self.depx -26 + x * 18 - 18 * y,self.depy + 2 + y * 13.7 + x * 13.7))
         # Update
