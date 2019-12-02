@@ -108,10 +108,10 @@ class Controller:
 
                 # Permet le déplacement dans la fenêtre
                 if event.type == KEYDOWN and (event.key == K_UP or event.key == K_z):
-                    self.view.depy -= 5
+                    self.view.depy -= DEP_STEP
                 if event.type == KEYDOWN and (event.key == K_DOWN or event.key == K_s):
-                    self.view.depy += 5
+                    self.view.depy += DEP_STEP
                 if event.type == KEYDOWN and (event.key == K_LEFT or event.key == K_q):
-                    self.view.depx -= 5
+                    self.view.depx -= DEP_STEP
                 if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
-                    self.view.depx += 5
+                    self.view.depx += DEP_STEP

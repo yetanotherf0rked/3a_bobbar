@@ -20,6 +20,8 @@ ENERGY_MAX = 200
 ENERGY_MOTHER = 50
 #Energy enfant 50
 ENERGY_SON = 50
+#Deplacement step
+DEP_STEP = 20
 
 # Chargement des images
 image_FOND = "ressources/images/wall.jpg"
