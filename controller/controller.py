@@ -15,7 +15,7 @@ AFFICHAGE = True
 
 class Controller:
 
-    def __init__(self,simul=0):
+    def __init__(self, simul=0):
         # Initialisation de la grille
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
@@ -26,10 +26,6 @@ class Controller:
             self.run()
         else :
             self.simul(simul)
-
-
-
-
 
     #Initialisation des Bobs
     def initbob(self, grille):
@@ -53,17 +49,17 @@ class Controller:
             for y in range(TAILLE):
                 grille[x][y].food = 0
 
-    def update(self, grille, listebob):
+    def update(self):
         new_bobs=[]
-        for bob in listebob:
+        for bob in self.listebob:
             #update du bob
-            new_bobs+=bob.update(grille,listebob)
+            new_bobs+=bob.update(self.grille, self.listebob)
 
             #Si le bob est mort on le retire
-            bob.is_dead(listebob,grille[bob.x][bob.y])
+            bob.is_dead(self.listebob, self.grille[bob.x][bob.y])
 
         #on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
-        listebob += new_bobs
+        self.listebob += new_bobs
 
     def run(self):
         tick = 0
@@ -82,7 +78,7 @@ class Controller:
                     print(day, len(self.listebob))
                 tick += 1
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
-                self.update(self.grille, self.listebob)
+                self.update()
                 drawStats(self.grille, self.listebob, tick)
                 sleep(0.01)
                 os.system('cls' if os.name == 'nt' else 'clear')
@@ -131,5 +127,6 @@ class Controller:
                 day += 1
                 self.spawnfood(self.grille)
             tick += 1
-            self.update(self.grille, self.listebob)
+            self.update()
         drawStats(self.grille, self.listebob, tick)
+        
