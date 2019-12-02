@@ -12,25 +12,34 @@ class View:
         """initGui : affecte l'interface gui à la surface surf1"""
         # On définit surf1 comme la surface de l'interface GUI
         for element in self.gui.menu.get_population():
-            element.surface = self.surf1
+            element.surface = self.menuSurface
         self.gui.update()
         # On utilise les éléments normalement
-        self.gui.box.set_topleft((0, 0))
+        # On affiche le logo
+        self.logo = pygame.image.load(image_LOGO).convert_alpha()
+        self.menuSurface.blit(self.logo, (0, 0))
+        self.gui.box.set_topleft((0, 221))
 
     def initView(self):
         # Initialisation de pygame
         pygame.init()
 
         # Ouverture de la fenêtre Pygame
-        self.fenetre = pygame.display.set_mode((2000, 540 * 2))
+        self.fenetre = pygame.display.set_mode(DIM_WINDOW)
 
-        # GUI-purpose : on distingue deux surfaces (1 : paramètres et 2 : simulation)
-        self.surf1 = pygame.Surface((300, 540 * 2))  # taille de ma surface
-        self.surf2 = pygame.Surface((1920, 540 * 2))
+        # GUI-purpose : on distingue trois surfaces (logo, menu, simulation)
+        # self.logoSurface = pygame.Surface(DIM_LOGO)
+        self.menuSurface = pygame.Surface((220, 540*2))
+        self.simuSurface = pygame.Surface(DIM_SIMU)
 
-        # On remplit les deux surfaces avec un fond noir
-        self.surf1.fill((0, 0, 0))
-        self.surf2.fill((0, 0, 0))
+        # On remplit les trois surfaces avec un fond noir
+        self.menuSurface.fill(BLACK)
+        self.simuSurface.fill(BLACK)
+
+        # On affiche le logo
+        # self.logo = pygame.image.load(image_LOGO).convert_alpha()
+        # self.menuSurface.blit(self.logo, (0, 0))
+
 
         # Initialisation de la GUI
         self.gui = Gui()
@@ -49,24 +58,25 @@ class View:
         self.run = True
 
         # GUI update
-        self.surf2.fill((0, 0, 0)) #fond noir
+        self.simuSurface.fill(BLACK) #fond noir
         self.gui.update()
 
         # Affichage du sol
         for y in range(TAILLE):
             for x in range(TAILLE):
-                self.surf2.blit(self.sol, (930 + x * 21 - 21 * y, 20 + y * 12 + x * 12))
+                self.simuSurface.blit(self.sol, (930 + x * 21 - 21 * y, 20 + y * 12 + x * 12))
                 if not (grille[x][y].food == 0):
-                    self.surf2.blit(self.food, (935 + x * 21 - 21 * y,3 + y * 12 + x * 12))
+                    self.simuSurface.blit(self.food, (935 + x * 21 - 21 * y,3 + y * 12 + x * 12))
 
         # Affichage des Bobs
         for bob in listebob:
             x, y = bob.i, bob.j
-            self.surf2.blit(self.perso, (939 + x * 21 - 21 * y, 8 + y * 12 + x * 12))
+            self.simuSurface.blit(self.perso, (939 + x * 21 - 21 * y, 8 + y * 12 + x * 12))
 
         # Affichage des surfaces dans la fenêtre
-        self.fenetre.blit(self.surf2, (201, 0))
-        self.fenetre.blit(self.surf1, (0, 0))
+        # self.fenetre.blit(self.logoSurface, POS_SURFACE_LOGO)
+        self.fenetre.blit(self.simuSurface, POS_SURFACE_SIMU)
+        self.fenetre.blit(self.menuSurface, (0, 0))
 
         # Update
         pygame.display.flip()
