@@ -66,7 +66,7 @@ class Controller:
         day = 0
         continuer = True
         wait = False
-        while continuer:
+        while continuer and self.listebob:
             if not wait:
                 # Comptage des ticks/Days
                 if tick % TICK_DAY == 0:
@@ -77,9 +77,9 @@ class Controller:
                     self.spawnfood(self.grille)
                     print(day, len(self.listebob))
                 tick += 1
+                drawStats(self.grille, self.listebob, tick)
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
-                drawStats(self.grille, self.listebob, tick)
                 sleep(0.01)
                 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -129,4 +129,3 @@ class Controller:
             tick += 1
             self.update()
         drawStats(self.grille, self.listebob, tick)
-        

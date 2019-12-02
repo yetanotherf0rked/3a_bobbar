@@ -18,7 +18,7 @@ class Bob:
         self.mem_food = Memory(self.memory_points)
         self.place_historic = Memory(2*self.memory_points)
 
-    def update(self, grille, listebob) :
+    def update(self, grille, listebob):
         """update le bob : combats, manger, déplacement... 
         Si le bob se reproduit update retourne une liste contenant le nouveau fils sinon une liste vide"""
         is_moving = False
@@ -100,8 +100,8 @@ class Bob:
             # Fonction max pour eviter qu'un bob est une vitesse < 1
             son.velocity = max(0, self.velocity + uniform(-MUT_VELOCITY, MUT_VELOCITY))
             son.masse = max(1.0, self.masse + uniform(-MUT_MASSE, MUT_MASSE))
-            son.perception = max(0,self.perception+ choice([-MUT_PERCEPT,0,MUT_PERCEPT]))
-            son.memory_points=max(0,self.memory_points + choice([-MUT_MEMORY,0,MUT_MEMORY]))
+            son.perception = max(0, self.perception+ choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
+            son.memory_points=max(0, self.memory_points + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
             son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
             #Ajout du fils dans la case
             case.place.append(son)
@@ -151,39 +151,39 @@ class Bob:
     def move_preference(self, grille):
         """récupere les informations sur les casses vues par le bob et choisit une dirrection en fonction """
 
-        directions=[(-1, 0), (1, 0), (0, -1), (0, 1)]
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         # voit les cases qu'il perçoit 
-        dangers,foods,prey = self.see(grille)
+        dangers, foods, prey = self.see(grille)
         
         #si il y a un danger on fuit 
-        if dangers :
-            for f in foods :
-                self.mem_food.add(f)
+        if dangers:
+            for food in foods:
+                self.mem_food.add(food)
 
             for e in directions: #detection d'obstacle 
-                if is_obstacle(e[0],e[1]) :
+                if is_obstacle(e[0],e[1]):
                     directions.remove(e)
 
-            dangers.sort(key=lambda b: distance((b.x,b.y),(self.x,self.y)), reverse =True) #
+            dangers.sort(key=lambda b: distance((b.x, b.y),(self.x, self.y)), reverse =True)
             dax=dangers[0].x, day=dangers[0].y
 
 
-            for dx,dy in directions :
-                dmax = distance((dax,day),(self.x,self.y)) 
-                if distance((dax,day),(self.x+dx,self.y+dy)) > dmax :
-                    directions.remove((dx,dy))
+            for dx,dy in directions:
+                dmax = distance((dax, day),(self.x, self.y)) 
+                if distance((dax, day),(self.x+dx, self.y+dy)) > dmax:
+                    directions.remove((dx, dy))
                 
             
             if not directions :
-                directions.append((0,0))
+                directions.append((0, 0))
 
             return choice(directions)
              
         
         #si il y a de la nourriture en vue on y va 
-        if foods :
-            for f in foods :
-                self.mem_food.add(f) 
+        if foods:
+            for food in foods:
+                self.mem_food.add(food) 
 
             if len(foods>1) : foods.sort(key=lambda x: grille[x[0]][x[1]].food,reverse=True)
             #choisir direction foeed_places[0],sotcker le reste de la liste
