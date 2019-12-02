@@ -8,17 +8,7 @@ class View:
         self.initView()
         self.run = False
 
-    def initGui(self):
-        """initGui : affecte l'interface gui à la surface surf1"""
-        # On définit surf1 comme la surface de l'interface GUI
-        for element in self.gui.menu.get_population():
-            element.surface = self.menuSurface
-        self.gui.update()
-        # On utilise les éléments normalement
-        # On affiche le logo
-        self.logo = pygame.image.load(image_LOGO).convert_alpha()
-        self.menuSurface.blit(self.logo, (0, 0))
-        self.gui.box.set_topleft((0, 221))
+
 
     def initView(self):
         # Initialisation de pygame
@@ -27,23 +17,12 @@ class View:
         # Ouverture de la fenêtre Pygame
         self.fenetre = pygame.display.set_mode(DIM_WINDOW)
 
-        # GUI-purpose : on distingue trois surfaces (logo, menu, simulation)
-        # self.logoSurface = pygame.Surface(DIM_LOGO)
-        self.menuSurface = pygame.Surface((220, 540*2))
+        # On distingue deux surfaces
+        self.menuSurface = pygame.Surface(DIM_MENU)
         self.simuSurface = pygame.Surface(DIM_SIMU)
 
-        # On remplit les trois surfaces avec un fond noir
-        self.menuSurface.fill(BLACK)
-        self.simuSurface.fill(BLACK)
-
-        # On affiche le logo
-        # self.logo = pygame.image.load(image_LOGO).convert_alpha()
-        # self.menuSurface.blit(self.logo, (0, 0))
-
-
         # Initialisation de la GUI
-        self.gui = Gui()
-        self.initGui()
+        self.gui = Gui(self.menuSurface)
 
         # Chargement et collage du fond
         self.sol = pygame.image.load(image_SOL).convert_alpha()
@@ -58,8 +37,10 @@ class View:
         self.run = True
 
         # GUI update
-        self.simuSurface.fill(BLACK) #fond noir
         self.gui.update()
+
+        # Simu Update
+        self.simuSurface.fill(BLACK)  # fond noir
 
         # Affichage du sol
         for y in range(TAILLE):
@@ -74,9 +55,8 @@ class View:
             self.simuSurface.blit(self.perso, (939 + x * 21 - 21 * y, 8 + y * 12 + x * 12))
 
         # Affichage des surfaces dans la fenêtre
-        # self.fenetre.blit(self.logoSurface, POS_SURFACE_LOGO)
         self.fenetre.blit(self.simuSurface, POS_SURFACE_SIMU)
-        self.fenetre.blit(self.menuSurface, (0, 0))
+        self.fenetre.blit(self.menuSurface, POS_SURFACE_MENU)
 
         # Update
         pygame.display.flip()

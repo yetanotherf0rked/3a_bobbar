@@ -51,16 +51,16 @@ class Bob:
             #bouffe disponible
             food = grille[self.i][self.j].food * rate
 
-            if food + self.energy <= parameters.get("Max Energy") :
+            if food + self.energy <= ENERGY_MAX :
                 self.energy += food
                 grille[self.i][self.j].food -= food
             else:
-                grille[self.i][self.j].food -= parameters.get("Max Energy")-self.energy
+                grille[self.i][self.j].food -= ENERGY_MAX-self.energy
                 self.energy = 200
 
     def parthenogenesis(self,listebob,grille):
         #Naissance d'un nouveau Bob
-        if self.energy == parameters.get("Max Energy"):
+        if self.energy == ENERGY_MAX:
             self.energy = parameters.get("Mother Energy")
 
             #Nouveau bob

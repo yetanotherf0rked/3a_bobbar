@@ -1,25 +1,33 @@
 import thorpy
+import pygame
 from ressources.constantes import *
 
 class Gui:
     """ Gui : déclare une interface graphique"""
 
-    def __init__(self):
+    def __init__(self, ma_surface):
         thorpy.set_theme("human")
         # Liste contenant tous les éléments du Menu
         self.elements = []
+        # Génère les éléments du Menu
         self.generateMenu()
+        # Permet de modifier le style des éléments
         self.setStyle()
+        # On définit menuSurface comme la surface de l'interface GUI
+        self.assignSurface(ma_surface)
+        self.update()
+        # On charge et affiche le logo
+        self.logo = pygame.image.load(image_LOGO).convert_alpha()
+        ma_surface.blit(self.logo, POS_LOGO)
+        # Puis on affiche le menu
+        self.box.set_topleft(POS_PARAMETRES)
+
 
     def generateMenu(self):
         """initialise les éléments du menu"""
-
-        # Génère pour chaque paramètre une box contenant le nom du paramètre et son slider associé et les ajoute à la liste elements
+        # Génère pour chaque paramètre une box contenant le nom du paramètre et son slider associé et les ajoute à
+        # la liste elements
         self.generateSliders()
-
-        # Pour les paramètres flottants, on arrondit le pas du slider à 1 décimale
-        for slider in self.sliders.values():
-            slider._round_decimals = 1
 
         # Boutton Quitter
         self.quitButton = thorpy.make_button("Quit", func=thorpy.functions.quit_func())
@@ -37,14 +45,18 @@ class Gui:
         self.sliders = {}
         self.titles = []
         for name,k in parameters.default.items():
-            # On génère les titres des paramètres avec la méthode OneLineText de Thorpy
+            # On génère les titres des paramètres avec la méthode OneLineText de Thorpy (on n'utilisera pas le champ
+            # texte de SliderX car il est difficilement personnalisable)
             self.titles.append(thorpy.OneLineText(name))
             # On génère les sliders avec la méthode SliderX de Thorpy
             min = k[0]
             init = k[1]
             max = k[2]
             type = k[3]
-            self.sliders[name] = thorpy.SliderX(length=DIM_SLIDER_X, limvals=(min, max), text="", initial_value=init, type_=type)
+            self.sliders[name] = thorpy.SliderX(length=DIM_SLIDER_X, limvals=(min, max), text="",
+                                                initial_value=init, type_=type)
+            # Pour les paramètres flottants, on arrondit le pas du slider à 1 décimale
+            self.sliders[name]._round_decimals = 1
             # On crée une box composée du titre du paramètre et du slider associé et on stocke le tout dans la liste éléments
             self.elements.append(thorpy.Box(elements=[self.titles[-1], self.sliders[name]], size=DIM_SLIDER_BOX))
 
@@ -60,17 +72,17 @@ class Gui:
         for title in self.titles:
             self.setFontStyle(title, FONT_COLOR, FONT_SIZE, FONT)
 
-        # Sliders
+        # Sliders : Un objet thorpy.SliderX est composé d'un élément textuel pour le titre (mis à "" car difficilement
+        # personnalisable), d'un Slider(thorpy.SliderX.get_slider()), d'un dragger (thorpy.SliderX.get_dragger())
+        # et d'un élément textuel pour la valeur (thorpy.SliderX._value_element)
         for slider in self.sliders.values():
-            # slider.get_slider()._height = 1
             slider.get_dragger().set_main_color(WHITE)
-            slider.get_dragger().set_size(DIM_SLIDER_DRAGGER)
+            slider.get_dragger().set_size(DIM_DRAGGER)
             slider.get_slider().set_main_color(WHITE)
-            slider.get_slider().set_size((slider.get_slider().get_size()[0],DIM_SLIDER_Y))
+            slider.get_slider().set_size(DIM_SLIDER)
             self.setFontStyle(slider._value_element, FONT_COLOR, FONT_SIZE, FONT)
 
         # Boutton Quitter
-        # self.quitButton.set_main_color(BLACK)
         self.setFontStyle(self.quitButton, FONT_COLOR, FONT_SIZE, FONT)
         self.quitButton.set_font_color_hover(WHITE)
 
@@ -78,6 +90,11 @@ class Gui:
         element.set_font_color(font_color)
         element.set_font_size(font_size)
         element.set_font(font)
+
+    def assignSurface(self, ma_surface):
+        # On définit menuSurface comme la surface de l'interface GUI
+        for element in self.menu.get_population():
+            element.surface = ma_surface
 
     def update(self):
         """update : met à jour les paramètres et les visuels à chaque tick"""
