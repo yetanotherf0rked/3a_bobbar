@@ -1,11 +1,12 @@
 from controller.parameters import *
+
 parameters = Parameters()
 
-#Tick par jour 100
+# Tick par jour 100
 TICK_DAY = 100
-#Population initiale 200
+# Population initiale 200
 NB_POP = 50
-#Taille de la carte 100
+# Taille de la carte 100
 TAILLE = 40
 
 # Chargement des images
@@ -15,8 +16,8 @@ image_FOOD = "ressources/images/biere.png"
 image_LOGO = "ressources/images/logov2.png"
 
 # Couleurs
-BLACK = (0,0,0)
-WHITE = (255,255,255)
-RED = (255,0,0)
-GREEN = (0,255,0)
-BLUE = (0,0,255)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
