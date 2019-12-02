@@ -142,7 +142,8 @@ class Bob:
                         dangers.append(other)
                     
                     if (not danger) and other.masse/self.masse < 2/3:  # si on est pas en danger, on cherche les proies possibles
-                          
+                          preys.append(other)
+
                     if grille[self.x+dx][self.y+dy].food > 0:  #si il y a de la nourriture on la voie
                         food_seen.append(grille(self.x + dx, self.y + dy))
                        
