@@ -6,3 +6,6 @@ Rules :
 - _ pour sep
 - Construction MVC
 
+Pistes d'amelioration : 
+
+    -Fuite du danger: changer les priorités

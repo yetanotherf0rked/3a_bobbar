@@ -1,12 +1,7 @@
 from random import uniform, choice
 from model.case import *
 from ressources.constantes import *
-
-
-def coef_danger(pdanger,di):
-    d=abs(pdanger[0]-di[0]) + abs(pdanger[1]-di[1])
-    return 1/d
-
+from model.utils import *
 
 class Bob:
 
@@ -131,43 +126,64 @@ class Bob:
     # apres ce commentaire : methode en cours d'implementation :
 
     def see(self,grille):
-        """parcours les cases que voit le bob et retourne les eventuels dangers et eventuels cases de nouriture interresante"""
+        """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies"""
         radius = self.perception 
         danger = False
-        danger_target = ()
-        max_food = 0
-        largest_masse = 0
-        food_seen = []
+        dangers = []
+        preys = []
+        foods = []
+
         for dx, dy in [(i, j) for i in range(-radius, radius+1) for j in range(abs(i)-radius, radius+1-abs(i))]:  # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
             if 0 <= self.x + dx < TAILLE and 0 <= self.y+dy < TAILLE:  # si la position qu'on regarde est bien dans la grille
+                
                 for other in grille[self.x+dx][self.y+dy].place:  # si il y a des bobs sur cette case
-                    if self.masse/other.masse < 2/3:  # si il y a un bob menaçant, on est en danger + update de la valeur de largest_masse
+                    if self.masse/other.masse < 2/3:  # si il y a un bob menaçant, on est en danger 
                         danger = True
-                        if other.masse > largest_masse:
-                            danger_target = (self.x + dx, self.y + dy)
-                            largest_masse = other.masse
-                    if (not danger) and other.masse/self.masse < 2/3:  # si on est en danger, on ne s'interesse plus à la chasse
-                        potential_energy = 0.5*other.energy*(1-(other.masse/self.masse))
-                        if potential_energy > max_food:
-                            food_seen.append((self.x + dx, self.y + dy),False)
-                            max_food = potential_energy
-                if not danger and grille[self.x+dx][self.y+dy].food > max_food:  # si on est en danger, on ne s'interesse plus à la food
-                    food_seen.append((self.x + dx, self.y + dy),True)
-                    max_food = grille[self.x+dx][self.y+dy].food
-        return danger, danger_target , food_seen
+                        dangers.append(other)
+                    
+                    if (not danger) and other.masse/self.masse < 2/3:  # si on est pas en danger, on cherche les proies possibles
+                          
+                    if grille[self.x+dx][self.y+dy].food > 0:  #si il y a de la nourriture on la voie
+                        food_seen.append(grille(self.x + dx, self.y + dy))
+                       
+        return dangers,foods,preys
 
        
 
 
     def move_preference(self, grille):
-        dx,dy = 0,0
+        """récupere les informations sur les casses vues par le bob et choisit une dirrection en fonction """
+
         directions=[(-1, 0), (1, 0), (0, -1), (0, 1)]
         # voit les cases qu'il perçoit 
-        danger, place_danger, food_places = see(grille)
+        dangers,foods,prey = see(grille)
         
         #si il y a un danger on fuit 
         if danger :
-            #Stocker food_places en memeoire !! A faire.
+            food_places.add(f) for f in food_places
+            
+            for e in directions: #detection d'obstacle 
+                if is_obstacle(e[0],e[1]) :
+                    directions.remove(e)
+
+            dangers.sort(key=lambda b: distance((b.x,b.y)(self.x,self.y)), reverse =True) #
+            dax=dangers[0].x, day=danger[0].y
+
+
+            for dx,dy in directions :
+                dmax = distance((dax,day),(self.x,self.y)) 
+                if distance((dax,day),(self.x+dx,self.y+dy)) > dmax :
+                    directions.remove((dx,dy))
+                
+            
+            if not directions :
+                directions.append((0,0))
+
+            return choice(directions)
+            
+            
+
+
             
         
         #si il y a de la nourriture en vue on y va 
@@ -175,7 +191,7 @@ class Bob:
             self.mem_food.add(f) for f in food_places
             if len(food_places>1) : food_places.sort(key=lambda x: grille[x[0]][x[1]].food,reverse=True)
             #choisir direction foeed_places[0],sotcker le reste de la liste
-            return dx,dy
+    
 
         if not self.mem_food.is_empty:
             directions =self.mem_food.remember(self.memory_points)
@@ -194,29 +210,7 @@ class Bob:
                     
 
         
-class Memory:
 
-    def __init__(self,taillemax):
-        self.taillemax = taillemax
-        self.memory =[]
-
-    def add(self,case) :
-        self.memory.insert(0,case)
-        if len(self.memory)>self.taillemax :
-            self.memory.pop(taillemax)
-
-    def remember(nmbr=1):
-        if nmbr>len(self.memory) : nmbr = len(self.memory)
-        return [self.memory[i] for i in range(nmbr)]
-    
-    def forgot(case) :
-        for i in len(self.memory) :
-            if self.memory[i].x == case.x and self.memory.y == case.y :
-                self.memory.pop(i)
-
-    def is_empty(self):
-        return len(self.memory)==0 
-    
 
 
     
