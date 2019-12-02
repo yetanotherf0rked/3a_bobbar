@@ -1,6 +1,6 @@
 import pygame
 from random import randint
-from pygame.locals import *
+from pygame.locals import RESIZABLE
 from ressources.constantes import *
 
 
@@ -33,7 +33,14 @@ class View:
         food = pygame.image.load(image_FOOD).convert_alpha()
         self.food = pygame.transform.scale(food , (40,40))
 
-        self.grilleFond = [[randint(1,6) for i in range(TAILLE)] for j in range(TAILLE)]
+        #Initialisation grilleFond avec le fond random
+        self.grilleFond = []
+        for y in range(TAILLE):
+            liste = []
+            for x in range(TAILLE):
+                i = randint(1,6)
+                eval("liste.append(self.terre" + str(i) + ")")
+            self.grilleFond.append(liste)
 
         # Chargement et collage des Bob
         self.perso = pygame.image.load(image_BOB).convert_alpha()
@@ -48,15 +55,13 @@ class View:
         # Affichage du sol
         for y in range(TAILLE):
             for x in range(TAILLE):
-                # self.fenetre.blit(self.sol, (930 + x * 21 - 21 * y,20 + y * 12 + x * 12))
-                eval("self.fenetre.blit(self.terre" +str(self.grilleFond[x][y])+", (int(self.width/2)-30 + self.depx + " +str(x)+" * 18 - 18 * "+str(y)+",self.depy+ 8 + "+str(y)+"* 13.7 + "+str(x)+" * 13.7))")
+                self.fenetre.blit(self.grilleFond[x][y], (int(self.width/2)-30 + self.depx + x * 18 - 18 * y,self.depy+ 8 + y* 13.7 + x * 13.7))
                 if not(grille[x][y].food ==0):
                     self.fenetre.blit(self.food, (int(self.width/2) + self.depx -30 + x * 18 - 18 * y,self.depy-5 + y * 13.7 + x * 13.7))
-        # self.fenetre.blit(self.grass, (935 + 0 * 21 - 21 * 0, 500 + 8 + 0 * 12 + 0 * 12))
         # Affichage des Bobs
         for bob in listebob:
             x, y = bob.i, bob.j
-            perso = pygame.transform.scale(self.perso , (32,int(8*bob.energy**(1/3))))
+            perso = pygame.transform.scale(self.perso, (32, 32))
             self.fenetre.blit(perso, (int(self.width/2) + self.depx -26 + x * 18 - 18 * y,self.depy + 2 + y * 13.7 + x * 13.7))
         # Update
         pygame.display.flip()
