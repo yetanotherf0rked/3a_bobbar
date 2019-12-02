@@ -3,7 +3,7 @@ import pygame
 from ressources.constantes import *
 
 class Gui:
-    """ Gui : déclare une interface graphique"""
+    """ Gui : initialise l'interface utilisateur"""
 
     def __init__(self, ma_surface):
         thorpy.set_theme("human")
@@ -30,7 +30,8 @@ class Gui:
         self.generateSliders()
 
         # Boutton Quitter
-        self.quitButton = thorpy.make_button("Quit", func=thorpy.functions.quit_func())
+        self.guiQuit = False
+        self.quitButton = thorpy.make_button("Quit", func=self.quit)
         self.elements.append(self.quitButton)
 
         # Regroupement de tous les éléments dans une box
@@ -106,3 +107,7 @@ class Gui:
         """updateValues : met à jour les valeurs des paramètres dans parametres.actual avec la méthode parametres.set()"""
         for name, slider in self.sliders.items():
             parameters.set(name, slider.get_value())
+
+    def quit(self):
+        """quit : appelée quand on clique sur le Boutton Quit"""
+        self.guiQuit = True
