@@ -1,5 +1,4 @@
 from controller.parameters import *
-
 parameters = Parameters()
 
 # Tick par jour 100

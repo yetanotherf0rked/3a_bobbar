@@ -96,7 +96,7 @@ class Controller:
 
             # Test de fin
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
-                if event.type == KEYDOWN and event.key == K_ESCAPE:  # Si un de ces événements est de type QUIT
+                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.guiQuit:  # Si un de ces événements est de type QUIT
                     continuer = False  # On arrête la boucle
                 # Réagit si l'on bouge les sliders
                 self.view.gui.menu.react(event)

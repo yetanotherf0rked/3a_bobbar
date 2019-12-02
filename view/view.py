@@ -8,8 +8,6 @@ class View:
         self.initView()
         self.run = False
 
-
-
     def initView(self):
         # Initialisation de pygame
         pygame.init()
