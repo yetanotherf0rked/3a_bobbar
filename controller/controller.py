@@ -81,6 +81,8 @@ class Controller:
                     print(day, len(self.listebob))
                 tick += 1
 
+                # Update des Bobs
+                self.update(self.grille, self.listebob)
 
             # Update de la fenêtre
             while self.view.run:
@@ -88,9 +90,6 @@ class Controller:
                 sleep(0.001)
             self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
             self._thread.start()
-
-            # Update des Bobs
-            self.update(self.grille, self.listebob)
 
             # Test de fin
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
