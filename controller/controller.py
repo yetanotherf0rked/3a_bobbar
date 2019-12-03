@@ -15,10 +15,11 @@ class Controller:
         self.view = View()
         self.run(0,0)
 
-    def paramDebug(self):
-        for name, value in parameters.actual.items():
-            print(value,"\t", end='')
-        print('')
+    # Fonction de débug des Sliders
+    # def paramDebug(self):
+    #     for name, value in parameters.actual.items():
+    #         print(value,"\t", end='')
+    #     print('')
 
 
     def initgame(self):
@@ -88,11 +89,10 @@ class Controller:
             while self.view.run:
                 # Limitation de vitesse de la boucle
                 sleep(0.001)
+                # Affichage du tick, du day et de la population
+                self.view.gui.update_state_box(day, tick, len(self.listebob))
             self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
             self._thread.start()
-
-            # Affichage du tick, du day et de la population
-            self.view.gui.updateStateBox(day, tick, len(self.listebob))
 
             # Update des Bobs
             self.update(self.grille, self.listebob)
@@ -100,20 +100,20 @@ class Controller:
             # Test de fin
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
                 # Si un de ces événements est de type QUIT
-                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.guiQuit:
+                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.gui_quit:
                     self.continuer = False  # On arrête la boucle
-                self.pauseMode()
+                self.pause_mode()
                 # Réagit si l'on bouge les sliders
                 self.view.gui.menu.react(event)
 
             # GUI : Débug des sliders
             # self.paramDebug()
 
-    def pauseMode(self):
+    def pause_mode(self):
         """Fonction pause à faire"""
-        while(self.view.gui.guiPause):
+        while(self.view.gui.gui_pause):
             for event in pygame.event.get():
-                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.guiQuit:
+                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.gui_quit:
                     self.continuer = False
-                    self.view.gui.guiPause = False
+                    self.view.gui.gui_pause = False
                 self.view.gui.menu.react(event)
