@@ -90,5 +90,41 @@ p, li { white-space: pre-wrap; }
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>183</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>304</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>normal()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>219</x>
+     <y>293</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>391</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>normal()</slot>
+ </slots>
 </ui>

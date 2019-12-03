@@ -25,9 +25,6 @@ class Controller:
         self.run()
 
 
-
-
-
     #Initialisation des Bobs
     def initbob(self, grille):
         listebob = []
