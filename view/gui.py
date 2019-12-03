@@ -5,7 +5,7 @@ from ressources.constantes import *
 class Gui:
     """ Gui : initialise l'interface utilisateur"""
 
-    def __init__(self, ma_surface):
+    def __init__(self, menuSurface):
         thorpy.set_theme("human")
         # Liste contenant tous les éléments du Menu
         self.elements = []
@@ -14,14 +14,13 @@ class Gui:
         # Permet de modifier le style des éléments
         self.setStyle()
         # On définit menuSurface comme la surface de l'interface GUI
-        self.assignSurface(ma_surface)
+        self.assignSurface(self.menu, menuSurface)
         self.update()
         # On charge et affiche le logo
         self.logo = pygame.image.load(image_LOGO).convert_alpha()
-        ma_surface.blit(self.logo, POS_LOGO)
+        menuSurface.blit(self.logo, POS_LOGO)
         # Puis on affiche le menu
         self.box.set_topleft(POS_PARAMETRES)
-
 
     def generateMenu(self):
         """initialise les éléments du menu"""
@@ -102,9 +101,8 @@ class Gui:
         element.set_font_size(font_size)
         element.set_font(font)
 
-    def assignSurface(self, ma_surface):
-        # On définit menuSurface comme la surface de l'interface GUI
-        for element in self.menu.get_population():
+    def assignSurface(self, mon_menu, ma_surface):
+        for element in mon_menu.get_population():
             element.surface = ma_surface
 
     def update(self):
@@ -112,6 +110,21 @@ class Gui:
         self.updateValues()
         self.box.blit()
         self.box.update()
+
+    # def updateDayAndTick(self, menuSurface):
+    #     self.i = 0
+    #     # met à jour le day et le tick
+    #     thorpy.set_theme("human")
+    #     # Element textuel pour afficher le tick et le day
+    #     self.dayAndTick = thorpy.make_text("Day: " + str(self.i) + "\nTick: " + str(self.i), FONT_SIZE, WHITE)
+    #     self.i += 1
+    #     self.boxDayAndTick = thorpy.Box(elements=[self.dayAndTick])
+    #     self.menuDayAndTick = thorpy.Menu(self.boxDayAndTick)
+    #     self.assignSurface(self.menuDayAndTick, menuSurface)
+    #     self.box.set_topleft((0, 0))
+    #     self.boxDayAndTick.blit()
+    #     self.boxDayAndTick.update()
+
 
     def updateValues(self):
         """updateValues : met à jour les valeurs des paramètres dans parametres.actual avec la méthode parametres.set()"""

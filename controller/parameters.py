@@ -54,15 +54,17 @@ class Parameters:
         self.make("Spawn Energy", 50, ENERGY_SPAWN, 150)
         self.make("Energy Cost while Moving", 0.0, ENERGY_MOVE, 5.0, float)
         self.make("Energy Cost at Stay", 0.0, ENERGY_STAY, 5.0, float)
-        self.make("Max Energy", 50, ENERGY_MAX, 300, show=False)
-        self.make("Mother Energy", 25, ENERGY_MOTHER, 75, show=False)
-        self.make("Son Energy",25, ENERGY_SON, 75, show=False)
+        self.make("Max Energy", 50, ENERGY_MAX, 300)
+        self.make("Mother Energy", 25, ENERGY_MOTHER, 75)
+        self.make("Son Energy",25, ENERGY_SON, 75)
+        # self.make("Tick")
+        # self.make("Day")
 
         # on initialise les valeurs d'Actual aux valeurs initiales contenues dans Default
         for k,v in self.default.items():
             self.actual[k] = v[1]
 
-    def make(self, name, min, init, max, type=int, show=True):
+    def make(self, name, min=0, init=0, max=0, type=int, show=True):
         self.default[name] = (min, init, max, type, show)
 
     def get(self, param):

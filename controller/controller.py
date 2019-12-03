@@ -72,8 +72,8 @@ class Controller:
             bob.is_dead(listebob,grille)
 
     def run(self,tick,day):
-        continuer = True
-        while continuer:
+        self.continuer = True
+        while self.continuer:
             # Comptage des ticks/Days
             if tick % TICK_DAY == 0:
                 # Suppression de la nourriture restante
@@ -91,6 +91,9 @@ class Controller:
             self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
             self._thread.start()
 
+            # Affichage du tick et du day
+            # self.view.gui.updateDayAndTick(day, tick, self.view.simuSurface)
+
             # Update des Bobs
             self.update(self.grille, self.listebob)
 
@@ -98,7 +101,7 @@ class Controller:
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
                 # Si un de ces événements est de type QUIT
                 if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.guiQuit:
-                    continuer = False  # On arrête la boucle
+                    self.continuer = False  # On arrête la boucle
                 self.pauseMode()
                 # Réagit si l'on bouge les sliders
                 self.view.gui.menu.react(event)
@@ -111,5 +114,5 @@ class Controller:
         while(self.view.gui.guiPause):
             for event in pygame.event.get():
                 if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.guiQuit:
-                    continuer = False
+                    self.continuer = False
                 self.view.gui.menu.react(event)
