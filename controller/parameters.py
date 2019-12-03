@@ -20,12 +20,18 @@ class Parameters:
     def __init__(self):
         """default :        Dictionnaire initialisateur des paramètres
                             Sert à automatiser l'initialisation des sliders
-                            Rajoutez vos paramètres au fur et à mesure ici
-                            nom_du_paramètre:(valeur_min, valeur_initiale, valeur_max, type=int ou float)
+                            Les paramètres sont à initialiser avec la méthode make
+                            nom_du_paramètre:(valeur_min, valeur_initiale, valeur_max, type=int ou float,
+                            show=False si l'on veut cacher le paramètre)
 
             actual :        Dictionnaire contenant les paramètres en temps réel
                             C'est lui qui contiendra les valeurs en temps réel
                             nom_du_paramètre:valeur
+
+            make(name, min, init, max, type=int, show=True) :
+                            Méthode pour initialiser vos paramètres
+                            type = int par défaut
+                            show = True génère un slider pour le paramètre
 
             get(param) :    Retourne la valeur du paramètre dans Actual
                             Exemple d'appel :
@@ -37,22 +43,27 @@ class Parameters:
             set(param) :    Permet de mettre à jour le dictionnaire Actual
         """
 
-        # default : nom_du_paramètre:(valeur_min, valeur_initiale, valeur_max, type=int ou float)
-        self.default = {"Food Number":                  (2, NB_FOOD, 250, int),
-                        "Food Energy":                  (50, ENERGY_FOOD, 150, int),
-                        "Spawn Energy":                 (50, ENERGY_SPAWN, 150, int),
-                        "Energy Cost while Moving":     (0.0, ENERGY_MOVE, 5.0, float),
-                        "Energy Cost at Stay":          (0.0, ENERGY_STAY, 5.0, float),
-                        "Max Energy":                   (50, ENERGY_MAX, 300, int),
-                        "Mother Energy":                (25, ENERGY_MOTHER, 75, int),
-                        "Son Energy":                   (25, ENERGY_SON, 75, int)
-                        }
-
+        # default : nom_du_paramètre:(valeur_min, valeur_initiale, valeur_max, type=int ou float, True : afficher le paramètre dans le menu)
+        self.default = {}
         # actual : nom_du_paramètre:valeur
         self.actual = {}
+
+        # On initialise les paramètres avec la méthode make
+        self.make("Food Number", 2, NB_FOOD, 250)
+        self.make("Food Energy", 50, ENERGY_FOOD, 150)
+        self.make("Spawn Energy", 50, ENERGY_SPAWN, 150)
+        self.make("Energy Cost while Moving", 0.0, ENERGY_MOVE, 5.0, float)
+        self.make("Energy Cost at Stay", 0.0, ENERGY_STAY, 5.0, float)
+        self.make("Max Energy", 50, ENERGY_MAX, 300, show=False)
+        self.make("Mother Energy", 25, ENERGY_MOTHER, 75, show=False)
+        self.make("Son Energy",25, ENERGY_SON, 75, show=False)
+
         # on initialise les valeurs d'Actual aux valeurs initiales contenues dans Default
         for k,v in self.default.items():
             self.actual[k] = v[1]
+
+    def make(self, name, min, init, max, type=int, show=True):
+        self.default[name] = (min, init, max, type, show)
 
     def get(self, param):
         return self.actual[param]

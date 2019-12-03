@@ -31,8 +31,13 @@ class Gui:
 
         # Boutton Quitter
         self.guiQuit = False
-        self.quitButton = thorpy.make_button("Quit", func=self.quit)
+        self.quitButton = thorpy.make_button("Quit", func=self.quitButtonPressed)
         self.elements.append(self.quitButton)
+
+        # Boutton Pause
+        self.guiPause = False
+        self.pauseButton = thorpy.make_button("Play/Pause", func=self.pauseButtonPressed)
+        self.elements.append(self.pauseButton)
 
         # Regroupement de tous les éléments dans une box
         thorpy.style.DEF_COLOR = BLACK
@@ -46,20 +51,21 @@ class Gui:
         self.sliders = {}
         self.titles = []
         for name,k in parameters.default.items():
-            # On génère les titres des paramètres avec la méthode OneLineText de Thorpy (on n'utilisera pas le champ
-            # texte de SliderX car il est difficilement personnalisable)
-            self.titles.append(thorpy.OneLineText(name))
-            # On génère les sliders avec la méthode SliderX de Thorpy
-            min = k[0]
-            init = k[1]
-            max = k[2]
-            type = k[3]
-            self.sliders[name] = thorpy.SliderX(length=DIM_SLIDER_X, limvals=(min, max), text="",
-                                                initial_value=init, type_=type)
-            # Pour les paramètres flottants, on arrondit le pas du slider à 1 décimale
-            self.sliders[name]._round_decimals = 1
-            # On crée une box composée du titre du paramètre et du slider associé et on stocke le tout dans la liste éléments
-            self.elements.append(thorpy.Box(elements=[self.titles[-1], self.sliders[name]], size=DIM_SLIDER_BOX))
+            if k[4]: # Si le paramètre SHOW est à TRUE
+                # On génère les titres des paramètres avec la méthode OneLineText de Thorpy (on n'utilisera pas le champ
+                # texte de SliderX car il est difficilement personnalisable)
+                self.titles.append(thorpy.OneLineText(name))
+                # On génère les sliders avec la méthode SliderX de Thorpy
+                min = k[0]
+                init = k[1]
+                max = k[2]
+                type = k[3]
+                self.sliders[name] = thorpy.SliderX(length=DIM_SLIDER_X, limvals=(min, max), text="",
+                                                    initial_value=init, type_=type)
+                # Pour les paramètres flottants, on arrondit le pas du slider à 1 décimale
+                self.sliders[name]._round_decimals = 1
+                # On crée une box composée du titre du paramètre et du slider associé et on stocke le tout dans la liste éléments
+                self.elements.append(thorpy.Box(elements=[self.titles[-1], self.sliders[name]], size=DIM_SLIDER_BOX))
 
     def setStyle(self):
         # Box principale
@@ -87,6 +93,10 @@ class Gui:
         self.setFontStyle(self.quitButton, FONT_COLOR, FONT_SIZE, FONT)
         self.quitButton.set_font_color_hover(WHITE)
 
+        # Boutton Pause
+        self.setFontStyle(self.pauseButton, FONT_COLOR, FONT_SIZE, FONT)
+        self.pauseButton.set_font_color_hover(WHITE)
+
     def setFontStyle(self, element, font_color, font_size, font):
         element.set_font_color(font_color)
         element.set_font_size(font_size)
@@ -108,6 +118,9 @@ class Gui:
         for name, slider in self.sliders.items():
             parameters.set(name, slider.get_value())
 
-    def quit(self):
-        """quit : appelée quand on clique sur le Boutton Quit"""
+    def quitButtonPressed(self):
+        """quitButtonPressed : appelée quand on clique sur le Boutton Quit"""
         self.guiQuit = True
+
+    def pauseButtonPressed(self):
+        self.guiPause = not self.guiPause

@@ -96,10 +96,20 @@ class Controller:
 
             # Test de fin
             for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
-                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.guiQuit:  # Si un de ces événements est de type QUIT
+                # Si un de ces événements est de type QUIT
+                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.guiQuit:
                     continuer = False  # On arrête la boucle
+                self.pauseMode()
                 # Réagit si l'on bouge les sliders
                 self.view.gui.menu.react(event)
 
             # GUI : Débug des sliders
             # self.paramDebug()
+
+    def pauseMode(self):
+        """Fonction pause à faire"""
+        while(self.view.gui.guiPause):
+            for event in pygame.event.get():
+                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.guiQuit:
+                    continuer = False
+                self.view.gui.menu.react(event)

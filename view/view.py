@@ -1,5 +1,3 @@
-import pygame
-from ressources.constantes import *
 from .gui import *
 
 class View:
