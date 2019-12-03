@@ -91,8 +91,8 @@ class Controller:
             self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
             self._thread.start()
 
-            # Affichage du tick et du day
-            self.view.gui.updateDayAndTick(day, tick, len(self.listebob))
+            # Affichage du tick, du day et de la population
+            self.view.gui.updateStateBox(day, tick, len(self.listebob))
 
             # Update des Bobs
             self.update(self.grille, self.listebob)
@@ -115,4 +115,5 @@ class Controller:
             for event in pygame.event.get():
                 if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.guiQuit:
                     self.continuer = False
+                    self.view.gui.guiPause = False
                 self.view.gui.menu.react(event)
