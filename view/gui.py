@@ -2,6 +2,10 @@ import thorpy
 import pygame
 from ressources.constantes import *
 
+import random
+
+random.randint(100, 500)
+
 class Gui:
     """ Gui : initialise l'interface utilisateur"""
 
@@ -15,15 +19,25 @@ class Gui:
         self.setStyle()
         # On définit menuSurface comme la surface de l'interface GUI
         self.assignSurface(self.menu, menuSurface)
-        self.update()
+
         # On charge et affiche le logo
         self.logo = pygame.image.load(image_LOGO).convert_alpha()
-        menuSurface.blit(self.logo, POS_LOGO)
+        menuSurface.blit(self.logo, (0, 0))
+
         # Puis on affiche le menu
         self.box.set_topleft(POS_PARAMETRES)
+        self.update()
 
     def generateMenu(self):
         """initialise les éléments du menu"""
+
+        # DAY AND TICK
+        dayText = thorpy.make_text("Day:", FONT_SIZE, WHITE)
+        tickText = thorpy.make_text("Text:", FONT_SIZE, WHITE)
+        popText = thorpy.make_text("Population:", FONT_SIZE, WHITE)
+        self.boxDayAndTick = thorpy.Box(elements=[dayText, tickText, popText], size=DIM_TICKDAYBOX)
+        self.elements.append(self.boxDayAndTick)
+
         # Génère pour chaque paramètre une box contenant le nom du paramètre et son slider associé et les ajoute à
         # la liste elements
         self.generateSliders()
@@ -44,6 +58,28 @@ class Gui:
 
         # Regroupement de la box dans un menu (même s'il n'y en a qu'un)
         self.menu = thorpy.Menu(self.box)
+
+    def update(self):
+        """update : met à jour les paramètres et les visuels à chaque tick"""
+        self.box.update()
+        self.updateValues()
+        self.box.blit()
+        self.box.update()
+
+    def updateDayAndTick(self, day, tick, pop):
+        self.boxDayAndTick.unblit()
+        self.boxDayAndTick.update()
+        oldDayElement = self.boxDayAndTick.get_elements()[0]
+        oldTickElement = self.boxDayAndTick.get_elements()[1]
+        oldPopElement = self.boxDayAndTick.get_elements()[2]
+        newPopElement = thorpy.make_text("Population: " + str(pop), FONT_SIZE, WHITE)
+        newTickElement = thorpy.make_text("Tick: " + str(tick % TICK_DAY), FONT_SIZE, WHITE)
+        newDayElement = thorpy.make_text("Day: " + str(day), FONT_SIZE, WHITE)
+        self.boxDayAndTick.replace_element(oldDayElement, newDayElement)
+        self.boxDayAndTick.replace_element(oldTickElement, newTickElement)
+        self.boxDayAndTick.replace_element(oldPopElement, newPopElement)
+        self.boxDayAndTick.update()
+        # thorpy.functions.refresh_current_menu()
 
     def generateSliders(self):
         """generateSliders : génère des sliders à partir des paramètres déclarés dans parameters.default{}"""
@@ -104,26 +140,6 @@ class Gui:
     def assignSurface(self, mon_menu, ma_surface):
         for element in mon_menu.get_population():
             element.surface = ma_surface
-
-    def update(self):
-        """update : met à jour les paramètres et les visuels à chaque tick"""
-        self.updateValues()
-        self.box.blit()
-        self.box.update()
-
-    # def updateDayAndTick(self, menuSurface):
-    #     self.i = 0
-    #     # met à jour le day et le tick
-    #     thorpy.set_theme("human")
-    #     # Element textuel pour afficher le tick et le day
-    #     self.dayAndTick = thorpy.make_text("Day: " + str(self.i) + "\nTick: " + str(self.i), FONT_SIZE, WHITE)
-    #     self.i += 1
-    #     self.boxDayAndTick = thorpy.Box(elements=[self.dayAndTick])
-    #     self.menuDayAndTick = thorpy.Menu(self.boxDayAndTick)
-    #     self.assignSurface(self.menuDayAndTick, menuSurface)
-    #     self.box.set_topleft((0, 0))
-    #     self.boxDayAndTick.blit()
-    #     self.boxDayAndTick.update()
 
 
     def updateValues(self):

@@ -92,7 +92,7 @@ class Controller:
             self._thread.start()
 
             # Affichage du tick et du day
-            # self.view.gui.updateDayAndTick(day, tick, self.view.simuSurface)
+            self.view.gui.updateDayAndTick(day, tick, len(self.listebob))
 
             # Update des Bobs
             self.update(self.grille, self.listebob)
