@@ -15,17 +15,14 @@ AFFICHAGE = True
 
 class Controller:
 
-    def __init__(self,simul=0):
+    def __init__(self):
         # Initialisation de la grille
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
         self.listebob = self.initbob(self.grille)
         if AFFICHAGE:
             self.view = View()
-        if not simul :
-            self.run()
-        else :
-            self.simul(simul)
+        self.run()
 
 
 
@@ -81,12 +78,11 @@ class Controller:
                     self.spawnfood(self.grille)
                     print(day, len(self.listebob))
                 tick += 1
+
+
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update(self.grille, self.listebob)
-                drawStats(self.grille, self.listebob, tick)
-                sleep(0.01)
-                os.system('cls' if os.name == 'nt' else 'clear')
-
+                # drawStats(self.grille, self.listebob, tick)
 
             if AFFICHAGE:
                 # Update de la fenêtre
@@ -120,16 +116,3 @@ class Controller:
                         self.view.depx -= DEP_STEP
                     if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
                         self.view.depx += DEP_STEP
-
-    def simul(self, ticks):
-        """simule un nombre de tick donné et affiche l'etat de la simulation."""
-        tick = 0
-        day = 0
-        for _ in range(ticks):
-            if tick % TICK_DAY == 0:
-                self.removefood(self.grille)
-                day += 1
-                self.spawnfood(self.grille)
-            tick += 1
-            self.update(self.grille, self.listebob)
-        drawStats(self.grille, self.listebob, tick)
