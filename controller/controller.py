@@ -22,12 +22,6 @@ class Controller:
             self.view = View()
         self.run(affichage,stats)
 
-    # Fonction de débug des Sliders
-    # def paramDebug(self):
-    #     for name, value in parameters.actual.items():
-    #         print(value,"\t", end='')
-    #     print('')
-
     #Initialisation des Bobs
     def initbob(self, grille):
         listebob = []
@@ -66,23 +60,31 @@ class Controller:
         tick = 0
         day = 0
         continuer = True
-        wait = False
+        # wait = False
+
         while continuer:
-            if not wait:
+            if not self.view.gui.gui_pause:
+
                 # Comptage des ticks/Days
                 if tick % TICK_DAY == 0:
-                    # Suppression de la nourritue restante
+
+                    # Suppression de la nourriture restante
                     self.removefood(self.grille)
                     day += 1
+
                     # Spawn de la nouvelle food
                     self.spawnfood(self.grille)
+
                 tick += 1
+
                 # Affichage du tick, du day et de la population
                 self.view.gui.update_state_box(day, tick, len(self.listebob))
 
-
+                # Update
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update(self.grille, self.listebob)
+
+                # Gestion des stats
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
 
@@ -101,11 +103,10 @@ class Controller:
                     if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
 
-                    # Pause
+                    # Pause (solution temporaire)
                     if event.type == KEYDOWN and event.key == K_SPACE:
-                        wait = not wait
+                        self.view.gui.pause_button_pressed()
 
-                    # Test si on a resize la fenêtre
                     if event.type == VIDEORESIZE:
                         self.view.width,self.view.height = event.size
 
@@ -118,13 +119,13 @@ class Controller:
                         self.view.depx -= DEP_STEP
                     if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
                         self.view.depx += DEP_STEP
-                    # Réagit si l'on bouge les sliders
+
+                    # Réagit si l'on bouge les sliders ou si l'on appuie sur les boutons
                     self.view.gui.menu.react(event)
 
-"""def pause_mode(self):
-        while(self.view.gui.gui_pause):
-            for event in pygame.event.get():
-                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.gui_quit:
-                    self.continuer = False
-                    self.view.gui.gui_pause = False
-                self.view.gui.menu.react(event)"""
+
+    # Fonction de débug des Sliders
+    # def paramDebug(self):
+    #     for name, value in parameters.actual.items():
+    #         print(value,"\t", end='')
+    #     print('')
