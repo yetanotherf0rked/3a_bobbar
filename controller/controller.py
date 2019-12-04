@@ -10,19 +10,17 @@ from time import sleep
 import os
 
 
-AFFICHAGE = True
-
 
 class Controller:
 
-    def __init__(self):
+    def __init__(self,affichage=True, stats=False):
         # Initialisation de la grille
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
         self.listebob = self.initbob(self.grille)
-        if AFFICHAGE:
+        if affichage:
             self.view = View()
-        self.run()
+        self.run(affichage,stats)
 
 
     #Initialisation des Bobs
@@ -59,7 +57,7 @@ class Controller:
         #on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
         listebob += new_bobs
 
-    def run(self):
+    def run(self,affichage,stats):
         tick = 0
         day = 0
         continuer = True
@@ -73,15 +71,15 @@ class Controller:
                     day += 1
                     # Spawn de la nouvelle food
                     self.spawnfood(self.grille)
-                    print(day, len(self.listebob))
                 tick += 1
 
 
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update(self.grille, self.listebob)
-                # drawStats(self.grille, self.listebob, tick)
+                if stats:
+                    drawStats(self.grille, self.listebob, tick)
 
-            if AFFICHAGE:
+            if affichage:
                 # Update de la fenêtre
                 while self.view.run:
                     # Limitation de vitesse de la boucle

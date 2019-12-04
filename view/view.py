@@ -61,7 +61,7 @@ class View:
         # Affichage des Bobs
         for bob in listebob:
             x, y = bob.x, bob.y
-            perso = pygame.transform.scale(self.perso, (32, 32))
+            perso = pygame.transform.scale(self.perso, (32,int(32*bob.masse**2 -16*bob.masse+16)))
             self.fenetre.blit(perso, (int(self.width/2) + self.depx -26 + x * 18 - 18 * y,self.depy + 2 + y * 13.7 + x * 13.7))
         # Update
         pygame.display.flip()
