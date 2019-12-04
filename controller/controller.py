@@ -9,8 +9,6 @@ from threading import Thread
 from time import sleep
 import os
 
-
-
 class Controller:
 
     def __init__(self, affichage=True, stats=True):
@@ -85,7 +83,7 @@ class Controller:
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
 
-                # Affichage du tick, du day et de la population
+                # Affichage des stats
                 self.view.gui.update_state_box(day,
                                                tick,
                                                len(self.listebob),
@@ -103,8 +101,6 @@ class Controller:
                     sleep(0.001)
                 self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
                 self._thread.start()
-                
-
 
                 # Test de fin
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
