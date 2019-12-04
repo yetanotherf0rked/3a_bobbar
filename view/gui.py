@@ -77,7 +77,7 @@ class Gui:
 
         # Regroupement de tous les éléments dans une box
         thorpy.style.DEF_COLOR = BLACK
-        self.main_box = thorpy.Box(elements=self.elements, size=DIM_MENU)
+        self.main_box = thorpy.Box(elements=self.elements)
 
         # Affectation de la box à un menu (même s'il n'y en a qu'une box) : important pour la gestion d'events
         self.menu = thorpy.Menu(self.main_box)

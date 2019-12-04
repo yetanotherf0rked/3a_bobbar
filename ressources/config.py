@@ -53,15 +53,7 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 # Dimensions et Positions des Elements Graphiques
-DIM_WINDOW_X = 960 * 2
-DIM_WINDOW_Y = 540 * 2
-DIM_WINDOW = (DIM_WINDOW_X, DIM_WINDOW_Y)
-
 DIM_MENU_X = 220
-DIM_MENU_Y = DIM_WINDOW_Y
-DIM_MENU = (DIM_MENU_X, DIM_WINDOW_Y)
-
-DIM_SIMU = (DIM_WINDOW_X - DIM_MENU_X, DIM_WINDOW_Y)
 
 DIM_SLIDER_X = 150
 DIM_SLIDER_Y = 7 # valeur par défaut : 20

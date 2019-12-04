@@ -20,16 +20,21 @@ class View:
 
         #Calcul de la taille de l'écran
         info = pygame.display.Info()
-        self.width,self.height = info.current_w,info.current_h
+        self.width, self.height = info.current_w, info.current_h
+
+        # Déclaration des couples de dimensions en fonction de la taille de l'écran
+        DIM_FENETRE = (self.width, self.height)
+        DIM_MENU_SURFACE = (DIM_MENU_X, self.height)
+        DIM_SIMU_SURFACE = (self.width - DIM_MENU_X, self.height)
 
         # Ouverture de la fenêtre Pygame
-        self.fenetre = pygame.display.set_mode((self.width, self.height),RESIZABLE)
+        self.fenetre = pygame.display.set_mode(DIM_FENETRE, RESIZABLE)
         fond = pygame.image.load(image_FOND).convert_alpha()
-        self.fond = pygame.transform.scale(fond,(self.width,self.height))
+        self.fond = pygame.transform.scale(fond, DIM_FENETRE)
 
         # On distingue deux surfaces
-        self.menu_surface = pygame.Surface(DIM_MENU)
-        self.simu_surface = pygame.Surface(DIM_SIMU)
+        self.menu_surface = pygame.Surface(DIM_MENU_SURFACE)
+        self.simu_surface = pygame.Surface(DIM_SIMU_SURFACE)
 
         # Initialisation de la GUI
         self.gui = Gui(self.menu_surface)
@@ -63,7 +68,8 @@ class View:
         self.gui.update()
 
         # Simu Update
-        self.simu_surface.blit(self.fond , (0 , 0))
+        self.simu_surface.blit(self.fond, (0, 0))
+
 
         # Affichage du sol
         for y in range(TAILLE):
