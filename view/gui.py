@@ -36,9 +36,6 @@ class Gui:
         # Thème par défaut
         thorpy.set_theme("human")
 
-        # Liste contenant tous les éléments du Menu
-        self.elements = []
-
         # Génère les éléments du Menu
         self.generate_menu()
 
@@ -58,6 +55,9 @@ class Gui:
 
     def generate_menu(self):
         """initialise les éléments du menu"""
+
+        # Liste contenant tous les éléments du Menu
+        self.elements = []
 
         # On génère la box affichant l'état de Day, Tick & Population
         self.set_state_box()
