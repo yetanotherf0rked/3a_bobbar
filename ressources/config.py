@@ -5,7 +5,7 @@ NB_POP = 50
 # Taille de la carte 100
 TAILLE = 40
 #Nourriture sur la carte 200
-NB_FOOD = 200
+NB_FOOD = 100
 #Energy par food 100
 ENERGY_FOOD = 100
 #Energy par spawn de Bob 100
@@ -107,7 +107,7 @@ class Parameters:
         self.actual = {}
 
         # Créez vos paramètres ici
-        self.make("Food Number", 2, NB_FOOD, 250)
+        self.make("Food Number", 0, NB_FOOD, 250)
         self.make("Food Energy", 50, ENERGY_FOOD, 150)
         self.make("Spawn Energy", 50, ENERGY_SPAWN, 150)
         self.make("Energy Cost while Moving", 0.0, ENERGY_MOVE, 5.0, float, show=False)

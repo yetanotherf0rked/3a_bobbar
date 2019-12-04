@@ -13,7 +13,7 @@ import os
 
 class Controller:
 
-    def __init__(self, affichage=True, stats=False):
+    def __init__(self, affichage=True, stats=True):
         # Initialisation de la grille
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
@@ -86,7 +86,15 @@ class Controller:
                     drawStats(self.grille, self.listebob, tick)
 
                 # Affichage du tick, du day et de la population
-                self.view.gui.update_state_box(day, tick, len(self.listebob))
+                self.view.gui.update_state_box(day,
+                                               tick,
+                                               len(self.listebob),
+                                               int(total_food(self.grille)/ENERGY_FOOD),
+                                               mass_stat(self.listebob),
+                                               velocity_stat(self.listebob),
+                                               perception_stat(self.listebob),
+                                               memory_stat(self.listebob),
+                                               )
 
             if affichage:
                 # Update de la fenêtre

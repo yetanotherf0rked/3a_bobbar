@@ -105,11 +105,28 @@ class Gui:
         tick_text = thorpy.make_text("Tick", FONT_SIZE, WHITE)
         pop_text = thorpy.make_text("Population", FONT_SIZE, WHITE)
         day_number = thorpy.make_text("  ", FONT_SIZE, WHITE)
-        tick_number = thorpy.make_text("   ", FONT_SIZE, WHITE)
+        tick_number = thorpy.make_text("         ", FONT_SIZE, WHITE)
         pop_number = thorpy.make_text("   ", FONT_SIZE, WHITE)
         self.box_day_display = thorpy.Box(elements=[day_text, day_number])
         self.box_tick_display = thorpy.Box(elements=[tick_text, tick_number])
         self.box_pop_display = thorpy.Box(elements=[pop_text, pop_number])
+
+        # HARD-CODED STATS : ONGOING
+        food_text = thorpy.make_text("Total Food", FONT_SIZE, WHITE)
+        mass_text = thorpy.make_text("Mass (moy, min, max)", FONT_SIZE, WHITE)
+        velocity_text = thorpy.make_text("Velocity (moy, min, max)", FONT_SIZE, WHITE)
+        perception_text = thorpy.make_text("Perception (moy, min, max)", FONT_SIZE, WHITE)
+        memory_text = thorpy.make_text("Memory (moy, min, max)", FONT_SIZE, WHITE)
+        food_number = thorpy.make_text("   ", FONT_SIZE, WHITE)
+        mass_number = thorpy.make_text("               ", FONT_SIZE, WHITE)
+        velocity_number = thorpy.make_text("               ", FONT_SIZE, WHITE)
+        perception_number = thorpy.make_text("               ", FONT_SIZE, WHITE)
+        memory_number = thorpy.make_text("               ", FONT_SIZE, WHITE)
+        self.box_food_display = thorpy.Box(elements=[food_text, food_number])
+        self.box_mass_display = thorpy.Box(elements=[mass_text, mass_number])
+        self.box_velocity_display = thorpy.Box(elements=[velocity_text, velocity_number])
+        self.box_perception_display = thorpy.Box(elements=[perception_text, perception_number])
+        self.box_memory_display = thorpy.Box(elements=[memory_text, memory_number])
 
         # Boutons + et - pour contrôler les ticks dans le mode Pause
         button_day_plus = thorpy.make_button("+", func=self.button_day_plus_pressed)
@@ -137,24 +154,37 @@ class Gui:
                                             self.box_tick_display, button_tick_plus], mode="h")
 
         # On rassemble boxH et box_pop_display dans une box finale : state_box
-        self.state_box = thorpy.Box(elements=[boxH,self.box_pop_display], size=DIM_STATEBOX)
+        # self.state_box = thorpy.Box(elements=[boxH,self.box_pop_display])
+        self.state_box = thorpy.Box(elements=[boxH,self.box_pop_display,self.box_food_display,
+                                              self.box_mass_display, self.box_velocity_display,
+                                              self.box_perception_display, self.box_memory_display])
 
         # On rajoute la box finale dans la liste éléments
         self.elements.append(self.state_box)
 
-    def update_state_box(self, day, tick, pop):
+    def update_state_box(self, day, tick, pop, food, massT, veloT, percT, memT):    # HARD-CODED STATS
         """"Met à jour l'affichage du day, du tick et de la population"""
 
         # On génère de nouveaux éléments textuels avec les nouvelles valeurs
-        new_pop_element = thorpy.make_text(str(pop), FONT_SIZE, WHITE)
-        new_tick_element = thorpy.make_text(str(tick % TICK_DAY), FONT_SIZE, WHITE)
-        new_day_element = thorpy.make_text(str(day), FONT_SIZE, WHITE)
+        new_pop_number = thorpy.make_text(str(pop), FONT_SIZE, WHITE)
+        new_tick_number = thorpy.make_text(str(tick % TICK_DAY)+"/"+str(TICK_DAY), FONT_SIZE, WHITE)
+        new_day_number = thorpy.make_text(str(day), FONT_SIZE, WHITE)
+        new_food_number = thorpy.make_text(str(food)+"/"+str(parameters.get("Food Number")), FONT_SIZE, WHITE)
+        new_mass_number = thorpy.make_text(str(int(massT[0]*100)) + " | " + str(int(massT[1]*100)) + " | "+ str(int(massT[2]*100)), FONT_SIZE, WHITE)
+        new_velocity_number = thorpy.make_text(str(int(veloT[0]*100)) + " | " + str(int(veloT[1]*100)) + " | "+ str(int(veloT[2]*100)), FONT_SIZE, WHITE)
+        new_perception_number = thorpy.make_text(str(int(percT[0]*100)) + " | " + str(int(percT[1]*100)) + " | "+ str(int(percT[2]*100)), FONT_SIZE, WHITE)
+        new_memory_number = thorpy.make_text(str(int(memT[0]*100)) + " | " + str(int(memT[1]*100)) + " | "+ str(int(memT[2]*100)), FONT_SIZE, WHITE)
 
         # On remplace l'ancienne valeur avec la nouvelle avec la méthode thorpy.Box.replace_element(old, new)
         # ici old correspond au 2ème champ textuel de chaque box, on le get avec get_elements()[1]
-        self.box_day_display.replace_element(self.box_day_display.get_elements()[1], new_day_element)
-        self.box_tick_display.replace_element(self.box_tick_display.get_elements()[1], new_tick_element)
-        self.box_pop_display.replace_element(self.box_pop_display.get_elements()[1], new_pop_element)
+        self.box_day_display.replace_element(self.box_day_display.get_elements()[1], new_day_number)
+        self.box_tick_display.replace_element(self.box_tick_display.get_elements()[1], new_tick_number)
+        self.box_pop_display.replace_element(self.box_pop_display.get_elements()[1], new_pop_number)
+        self.box_food_display.replace_element(self.box_food_display.get_elements()[1], new_food_number)
+        self.box_mass_display.replace_element(self.box_mass_display.get_elements()[1], new_mass_number)
+        self.box_velocity_display.replace_element(self.box_velocity_display.get_elements()[1], new_velocity_number)
+        self.box_perception_display.replace_element(self.box_perception_display.get_elements()[1], new_perception_number)
+        self.box_memory_display.replace_element(self.box_memory_display.get_elements()[1], new_memory_number)
 
         # On met à jour l'affichage de la box (nécessaire ???)
         thorpy.functions.refresh_current_menu() # nécessaire d'après la doc, mais ne résoud pas le bug d'affichage
