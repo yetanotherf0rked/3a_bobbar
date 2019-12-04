@@ -1,4 +1,4 @@
-from ressources.constantes import TAILLE
+from ressources.config import TAILLE
 
 class Memory:
 

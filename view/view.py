@@ -1,7 +1,7 @@
 import pygame
 from random import randint
 from pygame.locals import RESIZABLE
-from ressources.constantes import *
+from ressources.config import *
 from .gui import *
 
 class View:

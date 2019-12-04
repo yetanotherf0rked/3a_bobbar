@@ -1,4 +1,4 @@
-from ressources.constantes import TICK_DAY,TAILLE,NB_FOOD,ENERGY_FOOD
+from ressources.config import TICK_DAY,TAILLE,NB_FOOD,ENERGY_FOOD
 
 def velocity_stat(pop):
 	return (sum(b.velocity for b in pop)/len(pop),max(b.velocity for b in pop),min(b.velocity for b in pop))

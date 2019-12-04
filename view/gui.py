@@ -1,6 +1,6 @@
 import thorpy
 import pygame
-from ressources.constantes import *
+from ressources.config import *
 
 class Gui:
 

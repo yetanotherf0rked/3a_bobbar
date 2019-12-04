@@ -1,6 +1,6 @@
 from model import *
 from random import randint,choice
-from ressources.constantes import *
+from ressources.config import *
 from view.debug import *
 from view import View
 import pygame
