@@ -1,19 +1,26 @@
 from model import *
-from random import randint
+from random import randint,choice
 from ressources.constantes import *
+from view.debug import *
 from view import View
 import pygame
 from pygame.locals import *
 from threading import Thread
 from time import sleep
+import os
+
+
 
 class Controller:
 
-    def __init__(self):
-        #Initialisaion de la grille et des bobs
-        self.initgame()
-        self.view = View()
-        self.run(0,0)
+    def __init__(self, affichage=True, stats=False):
+        # Initialisation de la grille
+        self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
+        #Initialisation des Bobs
+        self.listebob = self.initbob(self.grille)
+        if affichage:
+            self.view = View()
+        self.run(affichage,stats)
 
     # Fonction de débug des Sliders
     # def paramDebug(self):
@@ -21,99 +28,103 @@ class Controller:
     #         print(value,"\t", end='')
     #     print('')
 
-
-    def initgame(self):
-        # Initialisation de la grille
-        self.grille = [[Case(i, j) for j in range(TAILLE)] for i in range(TAILLE)]
-        self.listebob = self.initbob(self.grille)
-
     #Initialisation des Bobs
-    def initbob(self,grille):
+    def initbob(self, grille):
         listebob = []
         for bob in range(NB_POP):
             #Position du Bob
-            i,j = randint(0, TAILLE-1), randint(0, TAILLE-1)
-            bob = Bob([i,j])
-            grille[i][j].place.append(bob)
+            x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
+            bob = Bob([x, y])
+            grille[x][y].place.append(bob)
             listebob.append(bob)
         return listebob
 
     #Spawn de food
-    def spawnfood(self,grille):
+    def spawnfood(self, grille):
         for k in range(parameters.get("Food Number")):
-            i,j = randint(0,TAILLE-1),randint(0,TAILLE-1)
-            grille[i][j].food += parameters.get("Food Energy")
+            x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
+            grille[x][y].food += parameters.get("Food Energy")
 
-    def removefood(self,grille):
-        for i in range(TAILLE):
-            for j in range(TAILLE):
-                grille[i][j].food = 0
+    def removefood(self, grille):
+        for x in range(TAILLE):
+            for y in range(TAILLE):
+                grille[x][y].food = 0
 
-    def update(self,grille,listebob):
+    def update(self, grille, listebob):
+        new_bobs=[]
         for bob in listebob:
-            # Test si le Bob à bouger ou non
-            is_moving = False
-
-            # Mange la nourriture restante si possible
-            bob.eat(grille)
-
-            # Déplacement du Bob
-            is_moving = bob.move(is_moving,grille)
-
-            # Bob mange
-            bob.eat(grille)
-
-            # Naissance d'un enfant si possible
-            bob.parthenogenesis(listebob,grille)
-
-            # Retire de l'énergie
-            bob.energy -= bob.energy_move if is_moving else parameters.get("Energy Cost at Stay")
+            #update du bob
+            new_bobs+=bob.update(grille,listebob)
 
             #Si le bob est mort on le retire
-            bob.is_dead(listebob,grille)
+            bob.is_dead(listebob,grille[bob.x][bob.y])
 
-    def run(self,tick,day):
-        self.continuer = True
-        while self.continuer:
-            # Comptage des ticks/Days
-            if tick % TICK_DAY == 0:
-                # Suppression de la nourriture restante
-                self.removefood(self.grille)
-                day += 1
-                # Spawn de la nouvelle food
-                self.spawnfood(self.grille)
-                print(day, len(self.listebob))
-            tick += 1
+        #on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
+        listebob += new_bobs
 
-            # Update de la fenêtre
-            while self.view.run:
-                # Limitation de vitesse de la boucle
-                sleep(0.001)
+    def run(self,affichage,stats):
+        tick = 0
+        day = 0
+        continuer = True
+        wait = False
+        while continuer:
+            if not wait:
+                # Comptage des ticks/Days
+                if tick % TICK_DAY == 0:
+                    # Suppression de la nourritue restante
+                    self.removefood(self.grille)
+                    day += 1
+                    # Spawn de la nouvelle food
+                    self.spawnfood(self.grille)
+                tick += 1
                 # Affichage du tick, du day et de la population
                 self.view.gui.update_state_box(day, tick, len(self.listebob))
-            self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
-            self._thread.start()
 
-            # Update des Bobs
-            self.update(self.grille, self.listebob)
 
-            # Test de fin
-            for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
-                # Si un de ces événements est de type QUIT
-                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.gui_quit:
-                    self.continuer = False  # On arrête la boucle
-                self.pause_mode()
-                # Réagit si l'on bouge les sliders
-                self.view.gui.menu.react(event)
+                self.listebob.sort(key=lambda x: x.velocity, reverse=True)
+                self.update(self.grille, self.listebob)
+                if stats:
+                    drawStats(self.grille, self.listebob, tick)
 
-            # GUI : Débug des sliders
-            # self.paramDebug()
+            if affichage:
+                # Update de la fenêtre
+                while self.view.run:
+                    # Limitation de vitesse de la boucle
+                    sleep(0.001)
+                self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
+                self._thread.start()
 
-    def pause_mode(self):
-        """Fonction pause à faire"""
+                # Test de fin
+                for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
+
+                    # Stop
+                    if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
+                        continuer = False  # On arrête la boucle
+
+                    # Pause
+                    if event.type == KEYDOWN and event.key == K_SPACE:
+                        wait = not wait
+
+                    # Test si on a resize la fenêtre
+                    if event.type == VIDEORESIZE:
+                        self.view.width,self.view.height = event.size
+
+                    # Permet le déplacement dans la fenêtre
+                    if event.type == KEYDOWN and (event.key == K_UP or event.key == K_z):
+                        self.view.depy -= DEP_STEP
+                    if event.type == KEYDOWN and (event.key == K_DOWN or event.key == K_s):
+                        self.view.depy += DEP_STEP
+                    if event.type == KEYDOWN and (event.key == K_LEFT or event.key == K_q):
+                        self.view.depx -= DEP_STEP
+                    if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
+                        self.view.depx += DEP_STEP
+                    # Réagit si l'on bouge les sliders
+                    self.view.gui.menu.react(event)
+
+"""def pause_mode(self):
         while(self.view.gui.gui_pause):
             for event in pygame.event.get():
                 if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.gui_quit:
                     self.continuer = False
                     self.view.gui.gui_pause = False
-                self.view.gui.menu.react(event)
+                self.view.gui.menu.react(event)"""
