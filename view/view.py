@@ -70,7 +70,6 @@ class View:
         # Simu Update
         self.simu_surface.blit(self.fond, (0, 0))
 
-
         # Affichage du sol
         for y in range(TAILLE):
             for x in range(TAILLE):

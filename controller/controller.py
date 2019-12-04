@@ -85,6 +85,9 @@ class Controller:
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
 
+                # Affichage du tick, du day et de la population
+                self.view.gui.update_state_box(day, tick, len(self.listebob))
+
             if affichage:
                 # Update de la fenêtre
                 while self.view.run:
@@ -93,8 +96,7 @@ class Controller:
                 self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
                 self._thread.start()
                 
-                # Affichage du tick, du day et de la population
-                self.view.gui.update_state_box(day, tick, len(self.listebob))
+
 
                 # Test de fin
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus

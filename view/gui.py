@@ -1,7 +1,7 @@
 import thorpy
 import pygame
 from ressources.config import *
-
+from random import randint # for testing purposes
 class Gui:
 
     """ Gui : initialise l'interface utilisateur
@@ -84,7 +84,9 @@ class Gui:
 
     def update(self):
         """update : met à jour les paramètres et les visuels à chaque tick"""
-        self.main_box.update()
+        # self.main_box.unblit()                 # nécessaire ???
+        # self.main_box.update()                 # nécessaire ???
+
         self.update_values() # pour les paramètres
         self.main_box.blit()
         self.main_box.update()
@@ -102,9 +104,9 @@ class Gui:
         day_text = thorpy.make_text("Day", FONT_SIZE, WHITE)
         tick_text = thorpy.make_text("Tick", FONT_SIZE, WHITE)
         pop_text = thorpy.make_text("Population", FONT_SIZE, WHITE)
-        day_number = thorpy.make_text("__", FONT_SIZE, WHITE)
-        tick_number = thorpy.make_text("__", FONT_SIZE, WHITE)
-        pop_number = thorpy.make_text("___", FONT_SIZE, WHITE)
+        day_number = thorpy.make_text("  ", FONT_SIZE, WHITE)
+        tick_number = thorpy.make_text("   ", FONT_SIZE, WHITE)
+        pop_number = thorpy.make_text("   ", FONT_SIZE, WHITE)
         self.box_day_display = thorpy.Box(elements=[day_text, day_number])
         self.box_tick_display = thorpy.Box(elements=[tick_text, tick_number])
         self.box_pop_display = thorpy.Box(elements=[pop_text, pop_number])
@@ -154,10 +156,11 @@ class Gui:
         self.box_tick_display.replace_element(self.box_tick_display.get_elements()[1], new_tick_element)
         self.box_pop_display.replace_element(self.box_pop_display.get_elements()[1], new_pop_element)
 
-        # On met à jour l'affichage de la box
-        self.state_box.update()
-        self.state_box.blit()
-        self.state_box.update()
+        # On met à jour l'affichage de la box (nécessaire ???)
+        thorpy.functions.refresh_current_menu() # nécessaire d'après la doc, mais ne résoud pas le bug d'affichage
+        # self.state_box.update()
+        # self.state_box.blit()
+        # self.state_box.update()
 
     def generate_sliders(self):
         """ Génère des sliders à partir des paramètres déclarés dans parameters.default{}
