@@ -36,7 +36,7 @@ image_FOND = "ressources/images/wall.jpg"
 image_SOL = "ressources/images/isometric_pixel_0046.png"
 image_BOB = "ressources/images/polar_bear_white2.png"
 image_FOOD = "ressources/images/biere.png"
-image_LOGO = "ressources/images/logov2.png"
+image_LOGO = "ressources/images/logo_round_210.png"
 image_EARTH1 = "ressources/images/terre1 clair.png"
 image_EARTH2 = "ressources/images/terre2 clair.png"
 image_EARTH3 = "ressources/images/terre3 clair.png"
@@ -53,9 +53,12 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 # Dimensions et Positions des Elements Graphiques
-DIM_MENU_X = 220
+DIM_LOGO_X = 210
+DIM_LOGO_Y = 210
 
-DIM_SLIDER_X = 150
+DIM_MENU_X = 220 # min recommandé : 210
+
+DIM_SLIDER_X = DIM_MENU_X - 60
 DIM_SLIDER_Y = 7 # valeur par défaut : 20
 DIM_SLIDER = (DIM_SLIDER_X, DIM_SLIDER_Y)
 
@@ -64,8 +67,10 @@ DIM_SLIDER_BOX = (DIM_MENU_X-10, 50)
 DIM_STATEBOX = (DIM_MENU_X-10, 100)
 DIM_PLUSMINUSBUTTON = (20, 30)
 
-POS_LOGO = (0, 0)
-POS_PARAMETRES = (0, DIM_MENU_X + 1)
+POS_LOGO_X = int((DIM_MENU_X - DIM_LOGO_X)/2) # logo centré p/r à menu_surface
+POS_LOGO_Y = 20 # marges
+POS_LOGO = (POS_LOGO_X, POS_LOGO_Y)
+POS_PARAMETRES = (0, DIM_LOGO_Y + 2 * POS_LOGO_Y)
 POS_SURFACE_SIMU = (DIM_MENU_X + 1, 0)
 POS_SURFACE_MENU = (0, 0)
 

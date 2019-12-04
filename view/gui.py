@@ -47,7 +47,7 @@ class Gui:
 
         # On charge et affiche le logo
         self.logo = pygame.image.load(image_LOGO).convert_alpha()
-        menu_surface.blit(self.logo, (0, 0))
+        menu_surface.blit(self.logo, POS_LOGO)
 
         # Puis on affiche le menu
         self.main_box.set_topleft(POS_PARAMETRES)
