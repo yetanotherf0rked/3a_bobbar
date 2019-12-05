@@ -142,8 +142,8 @@ class Bob:
                     
                     son.velocity = max(0, (self.velocity + other_bob.velocity)/2 + uniform(-MUT_VELOCITY, MUT_VELOCITY))
                     son.masse = max(1.0, (self.masse + other_bob.masse)/2 + uniform(-MUT_MASSE, MUT_MASSE))
-                    son.perception = max(0, (self.perception + other_bob.perception )/2 + choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
-                    son.memory_points=max(0, (self.memory_points + other_bob.memory_points)/2 + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
+                    son.perception = max(0, round((self.perception + other_bob.perception )/2) + choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
+                    son.memory_points=max(0, round((self.memory_points + other_bob.memory_points)/2) + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
                     son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
 
                     case.place.append(son)
