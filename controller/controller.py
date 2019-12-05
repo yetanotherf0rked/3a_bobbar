@@ -11,7 +11,7 @@ import os
 
 class Controller:
 
-    def __init__(self, affichage=True, stats=True):
+    def __init__(self, affichage=True, stats=False):
         # Initialisation de la grille
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
@@ -83,23 +83,12 @@ class Controller:
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
 
-                # Affichage des stats
-                self.view.gui.update_state_box(day,
-                                               tick,
-                                               len(self.listebob),
-                                               int(total_food(self.grille)/ENERGY_FOOD),
-                                               mass_stat(self.listebob),
-                                               velocity_stat(self.listebob),
-                                               perception_stat(self.listebob),
-                                               memory_stat(self.listebob),
-                                               )
-
             if affichage:
                 # Update de la fenêtre
                 while self.view.run:
                     # Limitation de vitesse de la boucle
                     sleep(0.001)
-                self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
+                self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob, tick))
                 self._thread.start()
 
                 # Test de fin

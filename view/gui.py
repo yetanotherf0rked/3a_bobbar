@@ -2,6 +2,8 @@ import thorpy
 import pygame
 from ressources.config import *
 from random import randint # for testing purposes
+from view.debug import *
+
 class Gui:
 
     """ Gui : initialise l'interface utilisateur
@@ -9,32 +11,26 @@ class Gui:
 
         Hiérarchie des boxs :
 
-        --- self.main_box : the father of all the boxes (affecté au menu self.main_menu, lui-même affecté à la surface menu_surface)
-        ------ self.state_box : box verticale affichant l'état de la simulation (day, tick, pop) et les boutons + et -
-        --------- boxH : box horizontale contenant les boutons +/1 et les états de day et tick
-        ------------ button_day_minus
-        ------------ button_day_plus
-        ------------ button_tick_minus
-        ------------ button_tick_plus
-        ------------ self.box_day_display : contient deux éléments textuels : "Day" et sa valeur que l'on met à jour
-        --------------- day_text
-        --------------- day_number
-        ------------ self.box_tick_display
-        --------------- tick_text
-        --------------- tick_number
-        --------- self.box_pop_display
-        ------------ pop_text
-        ------------ pop_number
-        ------ Box pour chaque paramètre
-        --------- Titre du paramètre
-        --------- Slider
-        ------ Boutton Quitter
+        --- Box: box principale self.main_box (the father of all the boxes)
+        ------ Box: box des stats self.stats_box. Pour tous les deux stats :
+        --------- Box: box horizontale (regroupe deux box stats)
+        ------------ Box: box stat (correspond à 1 stat)
+        --------------- Texte: Nom du stat
+        --------------- Texte: valeur du stat
+        ...
+        ------ Box: box des sliders. Pour chaque paramètre :
+        --------- Texte: Titre du paramètre
+        --------- Slider.
+        ...
+        ------ Boutton  Quitter
         ------ Boutton Pause
     """
 
     def __init__(self, menu_surface):
         # Thème par défaut
         thorpy.set_theme("human")
+        thorpy.style.FONT_COLOR = FONT_COLOR
+        thorpy.style.FONT_SIZE = FONT_SIZE
 
         # Génère les éléments du Menu
         self.generate_menu()
@@ -51,16 +47,18 @@ class Gui:
 
         # Puis on affiche le menu
         self.main_box.set_topleft(POS_PARAMETRES)
-        self.update()
+
+        # On met à jour
+        self.main_box.blit()
+        self.main_box.update()
 
     def generate_menu(self):
         """initialise les éléments du menu"""
-
         # Liste contenant tous les éléments du Menu
         self.elements = []
 
-        # On génère la box affichant l'état de Day, Tick & Population
-        self.set_state_box()
+        # On génère la box des stats
+        self.init_stats_box()
 
         # On génère pour chaque paramètre son slider associé
         self.generate_sliders()
@@ -68,146 +66,132 @@ class Gui:
         # Boutton Quitter
         self.gui_quit = False
         self.quit_button = thorpy.make_button("Quit", func=self.quit_button_pressed)
+        self.quit_button.set_main_color(BLACK)
         self.elements.append(self.quit_button)
 
         # Boutton Pause
         self.gui_pause = True
         self.pause_button = thorpy.make_button("Play/Pause", func=self.pause_button_pressed)
+        self.pause_button.set_main_color(BLACK)
         self.elements.append(self.pause_button)
 
         # Regroupement de tous les éléments dans une box
         thorpy.style.DEF_COLOR = BLACK
         self.main_box = thorpy.Box(elements=self.elements)
+        self.main_box.refresh_lift()
 
         # Affectation de la box à un menu (même s'il n'y en a qu'une box) : important pour la gestion d'events
         self.menu = thorpy.Menu(self.main_box)
 
-    def update(self):
+    def update(self, stats):
         """update : met à jour les paramètres et les visuels à chaque tick"""
         # self.main_box.unblit()                 # nécessaire ???
         # self.main_box.update()                 # nécessaire ???
 
         self.update_values() # pour les paramètres
+        self.update_stats_box(stats)
         self.main_box.blit()
         self.main_box.update()
 
-    def set_state_box(self):
-        """Affiche l'état de la simulation (days, ticks, population) et les outils graphiques pour se déplacer
-        de tick en tick et de day en day"""
+    def init_stats_box(self):
+        """Initialise la box d'affichage des stats
+        Dépend du debug.py"""
 
-        # Style
-        # thorpy.set_theme("human")
-        thorpy.style.FONT_COLOR = WHITE
+        # Titre du Menu Statistics
+        thorpy.set_theme("classic")
+        menu_title = thorpy.make_text("Statistics", font_color=BLACK)
+        thorpy.style.DEF_COLOR = (WHITE)
+        menu_title_box = thorpy.Box(elements=[menu_title], size=[DIM_MENU_X - 25, 25])
+        menu_title_box.set_main_color(WHITE)
+        thorpy.set_theme("human")
+        self.elements.append(menu_title_box)
+
+        # Liste elements_stats, sert à accéder aux éléments et à les mettre à jour dans update_stats_box
+        self.elements_stats = []
+
+        # Elements Textuels des stats (champ pour le texte, champ pour la valeur), on les regroupe dans des boxs
+        for stat in init_stats():
+            text = thorpy.make_text(stat)
+            value = thorpy.make_text("")
+            stat_box = thorpy.Box(elements=[text, value],size=DIM_STAT_BOX)
+            stat_box.set_main_color(BLACK)
+            self.elements_stats.append(stat_box)
+            # text.set_topleft(POS_STAT_TITLE)
+            # value.set_topleft(POS_STAT_VALUE)
+
+        # On les regroupe horizontalement deux par deux en faisant attention au cas impair
+        boxesH = []
+        for i in range(0, len(self.elements_stats), 2):
+            if i+1 != len(self.elements_stats):
+                boxesH.append(thorpy.make_group(elements=[self.elements_stats[i],
+                                                          self.elements_stats[i+1]], mode="h"))
+            else:
+                boxesH.append(self.elements_stats[i])
+
+        # Style : bordures blanches
         thorpy.style.DEF_COLOR = BLACK
 
-        # Elements Textuels (champ pour le texte, champ pour la valeur), on les regroupe dans des boxs
-        day_text = thorpy.make_text("Day", FONT_SIZE, WHITE)
-        tick_text = thorpy.make_text("Tick", FONT_SIZE, WHITE)
-        pop_text = thorpy.make_text("Population", FONT_SIZE, WHITE)
-        day_number = thorpy.make_text("  ", FONT_SIZE, WHITE)
-        tick_number = thorpy.make_text("         ", FONT_SIZE, WHITE)
-        pop_number = thorpy.make_text("   ", FONT_SIZE, WHITE)
-        self.box_day_display = thorpy.Box(elements=[day_text, day_number])
-        self.box_tick_display = thorpy.Box(elements=[tick_text, tick_number])
-        self.box_pop_display = thorpy.Box(elements=[pop_text, pop_number])
+        # On rassemble les boxs horizontales dans une box stats_boxs
+        self.stats_box = thorpy.Box(elements=boxesH)
 
-        # HARD-CODED STATS : ONGOING
-        food_text = thorpy.make_text("Total Food", FONT_SIZE, WHITE)
-        mass_text = thorpy.make_text("Mass (moy, min, max)", FONT_SIZE, WHITE)
-        velocity_text = thorpy.make_text("Velocity (moy, min, max)", FONT_SIZE, WHITE)
-        perception_text = thorpy.make_text("Perception (moy, min, max)", FONT_SIZE, WHITE)
-        memory_text = thorpy.make_text("Memory (moy, min, max)", FONT_SIZE, WHITE)
-        food_number = thorpy.make_text("   ", FONT_SIZE, WHITE)
-        mass_number = thorpy.make_text("               ", FONT_SIZE, WHITE)
-        velocity_number = thorpy.make_text("               ", FONT_SIZE, WHITE)
-        perception_number = thorpy.make_text("               ", FONT_SIZE, WHITE)
-        memory_number = thorpy.make_text("               ", FONT_SIZE, WHITE)
-        self.box_food_display = thorpy.Box(elements=[food_text, food_number])
-        self.box_mass_display = thorpy.Box(elements=[mass_text, mass_number])
-        self.box_velocity_display = thorpy.Box(elements=[velocity_text, velocity_number])
-        self.box_perception_display = thorpy.Box(elements=[perception_text, perception_number])
-        self.box_memory_display = thorpy.Box(elements=[memory_text, memory_number])
+        # On rajoute cette box dans la liste éléments
+        self.elements.append(self.stats_box)
 
-        # Boutons + et - pour contrôler les ticks dans le mode Pause
-        button_day_plus = thorpy.make_button("+", func=self.button_day_plus_pressed)
-        button_day_minus = thorpy.make_button("-", func=self.button_day_minus_pressed)
-        button_tick_plus = thorpy.make_button("+", func=self.button_tick_plus_pressed)
-        button_tick_minus = thorpy.make_button("-", func=self.button_tick_minus_pressed)
+    def update_stats_box(self, stats):
+        """"Met à jour l'affichage des stats
+        Dépend de debug.py"""
 
-        # On les désactive pour l'instant
-        button_day_plus.set_active(False)
-        button_day_minus.set_active(False)
-        button_tick_plus.set_active(False)
-        button_tick_minus.set_active(False)
+        # On génère les éléments textuels avec les nouvelles valeurs
+        for k in range(len(stats)):
+            value = stats[k]
+            new_value_text = ""
+            # Si value est un tuple de type (moy, max, min)
+            if type(value) == tuple:
+                for i in range(len(value)):
+                    new_value_text += '%.2f' % value[i] + "  "
+            # Si c'est un float
+            elif type(value) == float:
+                new_value_text += '%.2f' % value[i]
+            # Si c'est un int
+            else:
+                new_value_text += str(value)
+            # rajouter exception si ce n'est ni un tuple, ni un float, ni un int ???
 
-        # On resize les boutons
-        button_day_plus.set_size(size=DIM_PLUSMINUSBUTTON)
-        button_day_minus.set_size(size=DIM_PLUSMINUSBUTTON)
-        button_tick_plus.set_size(size=DIM_PLUSMINUSBUTTON)
-        button_tick_minus.set_size(size=DIM_PLUSMINUSBUTTON)
+            # Remplace l'ancien élément textuel par le nouveau
+            new_value_element = thorpy.make_text(new_value_text)
+            old_value_element = self.elements_stats[k].get_elements()[1]
+            self.elements_stats[k].replace_element(old_value_element, new_value_element)
+            self.elements_stats[k].get_elements()[1].stick_to(self.elements_stats[k].get_elements()[0], target_side="bottom", self_side="top")
 
-        # Style
-        thorpy.set_theme("human")
-
-        # On rassemble DAY et TICK horizontalement dans BoxH
-        boxH = thorpy.make_group(elements=[button_day_minus, self.box_day_display, button_day_plus,button_tick_minus,
-                                            self.box_tick_display, button_tick_plus], mode="h")
-
-        # On rassemble boxH et box_pop_display dans une box finale : state_box
-        # self.state_box = thorpy.Box(elements=[boxH,self.box_pop_display])
-        self.state_box = thorpy.Box(elements=[boxH,self.box_pop_display,self.box_food_display,
-                                              self.box_mass_display, self.box_velocity_display,
-                                              self.box_perception_display, self.box_memory_display])
-
-        # On rajoute la box finale dans la liste éléments
-        self.elements.append(self.state_box)
-
-    def update_state_box(self, day, tick, pop, food, massT, veloT, percT, memT):    # HARD-CODED STATS
-        """"Met à jour l'affichage du day, du tick et de la population"""
-
-        # On génère de nouveaux éléments textuels avec les nouvelles valeurs
-        new_pop_number = thorpy.make_text(str(pop), FONT_SIZE, WHITE)
-        new_tick_number = thorpy.make_text(str(tick % TICK_DAY)+"/"+str(TICK_DAY), FONT_SIZE, WHITE)
-        new_day_number = thorpy.make_text(str(day), FONT_SIZE, WHITE)
-        new_food_number = thorpy.make_text(str(food)+"/"+str(parameters.get("Food Number")), FONT_SIZE, WHITE)
-        new_mass_number = thorpy.make_text(str(int(massT[0]*100)) + " | " + str(int(massT[1]*100)) + " | "+ str(int(massT[2]*100)), FONT_SIZE, WHITE)
-        new_velocity_number = thorpy.make_text(str(int(veloT[0]*100)) + " | " + str(int(veloT[1]*100)) + " | "+ str(int(veloT[2]*100)), FONT_SIZE, WHITE)
-        new_perception_number = thorpy.make_text(str(int(percT[0]*100)) + " | " + str(int(percT[1]*100)) + " | "+ str(int(percT[2]*100)), FONT_SIZE, WHITE)
-        new_memory_number = thorpy.make_text(str(int(memT[0]*100)) + " | " + str(int(memT[1]*100)) + " | "+ str(int(memT[2]*100)), FONT_SIZE, WHITE)
-
-        # On remplace l'ancienne valeur avec la nouvelle avec la méthode thorpy.Box.replace_element(old, new)
-        # ici old correspond au 2ème champ textuel de chaque box, on le get avec get_elements()[1]
-        self.box_day_display.replace_element(self.box_day_display.get_elements()[1], new_day_number)
-        self.box_tick_display.replace_element(self.box_tick_display.get_elements()[1], new_tick_number)
-        self.box_pop_display.replace_element(self.box_pop_display.get_elements()[1], new_pop_number)
-        self.box_food_display.replace_element(self.box_food_display.get_elements()[1], new_food_number)
-        self.box_mass_display.replace_element(self.box_mass_display.get_elements()[1], new_mass_number)
-        self.box_velocity_display.replace_element(self.box_velocity_display.get_elements()[1], new_velocity_number)
-        self.box_perception_display.replace_element(self.box_perception_display.get_elements()[1], new_perception_number)
-        self.box_memory_display.replace_element(self.box_memory_display.get_elements()[1], new_memory_number)
-
-        # On met à jour l'affichage de la box (nécessaire ???)
-        thorpy.functions.refresh_current_menu() # nécessaire d'après la doc, mais ne résoud pas le bug d'affichage
-        # self.state_box.update()
-        # self.state_box.blit()
-        # self.state_box.update()
+        # On met à jour l'affichage du menu (nécessaire ???)
+        # thorpy.functions.refresh_current_menu() # nécessaire d'après la doc, mais ne résoud pas le bug d'affichage
 
     def generate_sliders(self):
         """ Génère des sliders à partir des paramètres déclarés dans parameters.default{}
             Vérifie si l'argument SHOW est bien égal à True avant de créer le slider"""
+        # Titre du Menu Paramètres
+        thorpy.set_theme("classic")
+        menu_title = thorpy.make_text("Parameters", font_color=BLACK)
+        thorpy.style.DEF_COLOR = (WHITE)
+        menu_title_box = thorpy.Box(elements=[menu_title], size=[DIM_MENU_X-25, 25])
+        menu_title_box.set_main_color(WHITE)
+        self.elements.append(menu_title_box)
+
+        # Thème
+        thorpy.set_theme("human")
 
         # Dictionnaire de sliders
         self.sliders = {}
 
-        # Tableau d'éléments textuels (générés avec la méthode thorpy.OneLineText)
-        self.titles = []
+        # Tableau de la box de sliders (générés avec la méthode thorpy.OneLineText)
+        box_sliders = []
 
         # On parcourt tous les paramètres contenus dans parameters.default ayant l'argument SHOW=True (k[4])
         for name,k in parameters.default.items():
             if k[4]: # Si l'argument SHOW est à TRUE
 
-                # On génère les titres des paramètres avec la méthode OneLineText de Thorpy
-                self.titles.append(thorpy.OneLineText(name))
+                # On génère les titres des paramètres
+                box_sliders.append(thorpy.make_text(name))
 
                 # On génère les sliders avec la méthode SliderX de Thorpy
                 min = k[0]
@@ -221,7 +205,10 @@ class Gui:
                 self.sliders[name]._round_decimals = 1
 
                 # On regroupe le titre et le slider dans une box que l'on rajoute à notre liste self.elements
-                self.elements.append(thorpy.Box(elements=[self.titles[-1], self.sliders[name]], size=DIM_SLIDER_BOX))
+                box_sliders.append(self.sliders[name])
+        box_sliders = thorpy.Box(box_sliders)
+        box_sliders.set_main_color(BLACK)
+        self.elements.append(box_sliders)
 
     def set_style(self):
         """Modifie le style des éléments déjà déclarés"""
@@ -230,12 +217,12 @@ class Gui:
         self.main_box.set_main_color(BLACK)
 
         # Boxs
-        for box in self.elements:
-            box.set_main_color(BLACK)
+        # for box in self.elements:
+        #     box.set_main_color(BLACK)
 
         # Titres
-        for title in self.titles:
-            self.set_font_style(title, FONT_COLOR, FONT_SIZE, FONT)
+        # for title in self.titles:
+        #     self.set_font_style(title, FONT_COLOR, FONT_SIZE, FONT)
 
         # De la personnalisation des Sliders : Un objet thorpy.SliderX est composé
         # - d'un élément textuel pour le titre (que l'on n'utilisera pas car difficilement personnalisable)

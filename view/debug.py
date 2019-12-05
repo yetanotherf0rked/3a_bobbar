@@ -1,4 +1,4 @@
-from ressources.config import TICK_DAY,TAILLE,NB_FOOD,ENERGY_FOOD
+from ressources.config import TICK_DAY,TAILLE,NB_FOOD,ENERGY_FOOD,parameters
 
 def velocity_stat(pop):
 	return (sum(b.velocity for b in pop)/len(pop),max(b.velocity for b in pop),min(b.velocity for b in pop))
@@ -42,30 +42,31 @@ def drawStats(grille, liste_bobs, tick):
     print('food :')
     print_bar(NB_FOOD*ENERGY_FOOD,total_food(grille))
 
+def init_stats():
+    """initialise les noms des statistiques à afficher sur l'interface GUI
+    Les deux premières valeurs sont obligatoirement Day et Tick
+    Retourne un tableau de strings."""
+    return ["Day",
+            "Tick",
+            "Population",
+            "Food",
+            "Mass",
+            "Velocity",
+            "Perception",
+            "Memory"]
 
+def update_stats(grille, liste_bobs, tick):
+    """met à jour les statistiques pour la GUI
+    Les deux premières valeurs sont obligatoirement Day et Tick
+    Retourne un tableau des valeurs des statistiques
+    Les valeurs peuvent des nombres (int, float) ou des tuples"""
 
-# Affichage du tick, du day et de la population
-#            day,
-#            tick,
-#            len(self.listebob),
-#            total_food(self.grille),
-#            mass_stat(self.listebob),
-#            velocity_stat(self.listebob),
-#            perception_stat(self.listebob),
-#            memory_stat(self.listebob),
-
-# food_text = thorpy.make_text("Total Food", FONT_SIZE, WHITE)
-# mass_text = thorpy.make_text("Mass (moy, min, max)", FONT_SIZE, WHITE)
-# velocity_text = thorpy.make_text("Velocity (moy, min, max)", FONT_SIZE, WHITE)
-# perception_text = thorpy.make_text("Perception (moy, min, max)", FONT_SIZE, WHITE)
-# memory_text = thorpy.make_text("Memory (moy, min, max)", FONT_SIZE, WHITE)
-# food_number = thorpy.make_text("  ", FONT_SIZE, WHITE)
-# mass_number = thorpy.make_text("  ", FONT_SIZE, WHITE)
-# velocity_number = thorpy.make_text("  ", FONT_SIZE, WHITE)
-# perception_number = thorpy.make_text("  ", FONT_SIZE, WHITE)
-# memory_number = thorpy.make_text("  ", FONT_SIZE, WHITE)
-# self.box_food_display = thorpy.Box(elements=[food_text, food_number])
-# self.box_mass_display = thorpy.Box(elements=[mass_text, mass_number])
-# self.box_velocity_display = thorpy.Box(elements=[velocity_text, velocity_number])
-# self.box_perception_display = thorpy.Box(elements=[perception_text, perception_number])
-# self.box_memory_display = thorpy.Box(elements=[memory_text, memory_number])
+    return [tick//TICK_DAY + 1,
+            tick%TICK_DAY,
+            len(liste_bobs),
+            int(total_food(grille)/ENERGY_FOOD),
+            mass_stat(liste_bobs),
+            velocity_stat(liste_bobs),
+            perception_stat(liste_bobs),
+            memory_stat(liste_bobs)
+            ]

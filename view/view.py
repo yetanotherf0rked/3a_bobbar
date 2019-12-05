@@ -61,11 +61,11 @@ class View:
         # self.perso = pygame.transform.scale(perso , (25,25))
 
     # Fonction d'affichage
-    def affichage(self,grille,listebob):
+    def affichage(self, grille, listebob, tick):
         self.run = True
 
         # GUI update
-        self.gui.update()
+        self.gui.update(update_stats(grille, listebob, tick))
 
         # Simu Update
         self.simu_surface.blit(self.fond, (0, 0))
