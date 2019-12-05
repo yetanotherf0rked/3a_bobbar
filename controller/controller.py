@@ -10,7 +10,7 @@ from time import sleep
 import os
 
 
-AFFICHAGE = True
+AFFICHAGE = False
 
 
 class Controller:
@@ -53,10 +53,12 @@ class Controller:
         new_bobs=[]
         for bob in self.listebob:
             #update du bob
-            new_bobs+=bob.update(self.grille, self.listebob)
+            if not bob.is_dead() :
+                new_bobs+=bob.update(self.grille)
 
             #Si le bob est mort on le retire
-            bob.is_dead(self.listebob, self.grille[bob.x][bob.y])
+            if bob.is_dead() :
+                self.listebob.remove(bob)
 
         #on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
         self.listebob += new_bobs

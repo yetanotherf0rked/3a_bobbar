@@ -18,14 +18,14 @@ class Bob:
         self.mem_food = Memory(self.memory_points)
         self.place_historic = Memory(2*self.memory_points)
 
-    def update(self, grille, listebob):
+    def update(self, grille):
         """update le bob : combats, manger, déplacement... 
         Si le bob se reproduit update retourne une liste contenant le nouveau fils sinon une liste vide"""
         is_moving = False
         current_case = grille[self.x][self.y]
 
         # Fight ?
-        self.fight(current_case, listebob)
+        self.fight(current_case)
 
         # Mange la nourriture restante si possible
         if current_case.food != 0:
@@ -49,7 +49,7 @@ class Bob:
                 self.energy -= self.energy_move if is_moving else ENERGY_STAY
 
                 #fight ?
-                self.fight(current_case, listebob)
+                self.fight(current_case)
 
                 # Bob mange si nouriture sur la  nouvelle case
                 if current_case.food != 0:
@@ -70,11 +70,9 @@ class Bob:
             return True
         return False
 
-    def is_dead(self, listebob, case):
+    def is_dead(self,):
         #Test si le bob est mort et le supprime si c'est le cas
         if self.energy <= 0:
-            listebob.remove(self)
-            case.place.remove(self)
             return True
         return False
 
@@ -110,7 +108,7 @@ class Bob:
         return []
             
 
-    def fight(self, case, list_bob):
+    def fight(self, case):
         """test si un combat est possible sur la case actuelle, dévore l'autre Bob dans ce cas """
         if len(case.place) > 1:  # Fight
             for other_bob in case.place:
@@ -118,7 +116,6 @@ class Bob:
                 if other_bob.masse/self.masse < 2/3:
                     self.energy = min(ENERGY_MAX, self.energy + 0.5*other_bob.energy*(1-(other_bob.masse/self.masse)))
                     other_bob.energy = 0
-                    other_bob.is_dead(list_bob, case)
 
 
     # apres ce commentaire : methode en cours d'implementation :
