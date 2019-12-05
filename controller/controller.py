@@ -16,7 +16,7 @@ class Controller:
     def __init__(self, affichage=True, stats=False):
         # Initialisation de la grille
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
-        #Initialisation des Bobs
+        # Initialisation des Bobs
         self.listebob = self.initbob(self.grille)
         if affichage:
             self.view = View()
@@ -76,9 +76,13 @@ class Controller:
                     day += 1
                     # Spawn de la nouvelle food
                     self.spawnfood(self.grille)
+                    for s in self.view.gui.sliders:
+                        print(s,str(parameters.actual.get(s)).rjust(20-len(s)))
+                    print()
                 tick += 1
                 # Affichage du tick, du day et de la population
                 self.view.gui.update_state_box(day, tick, len(self.listebob))
+
 
 
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)

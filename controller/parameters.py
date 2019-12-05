@@ -51,6 +51,8 @@ class Parameters:
         # self.make("Max Energy", 50, ENERGY_MAX, 300)
         self.make("Mother Energy", 25, ENERGY_MOTHER, 75, show=False)
         self.make("Son Energy",25, ENERGY_SON, 75, show=False)
+
+
         # self.make("Tick", show=False)
         # self.make("Day", show=False)
         # self.make("Population", show=False)

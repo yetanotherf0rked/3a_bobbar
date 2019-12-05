@@ -72,7 +72,7 @@ class Gui:
 
         # Boutton Pause
         self.gui_pause = False
-        self.pause_button = thorpy.make_button("Play/Pause", func=self.pause_button_pressed)
+        self.pause_button = thorpy.make_button("Play / Pause", func=self.pause_button_pressed)
         self.elements.append(self.pause_button)
 
         # Regroupement de tous les éléments dans une box
