@@ -28,6 +28,13 @@ MUT_MASSE = 0.1
 MUT_PERCEPT=1
 #taux de mutation de la memoire
 MUT_MEMORY = 1
+#Energie min nescessaire pour la reproduction sexuée
+ENERGY_MIN_REPRO = 150
+#energie enfant de la reproduction sexuée 
+ENERGY_SON_REPRO = 100
+#Energie dépensée lors de la reproduction sexuée
+ENERGY_REPRO = 150
+
 #Deplacement step
 DEP_STEP = 20
 

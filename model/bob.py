@@ -24,20 +24,24 @@ class Bob:
         is_moving = False
         current_case = grille[self.x][self.y]
 
+        sons = [] #liste contenant les envantuels enfant du bob à ce tour 
+
         # Fight ?
         self.fight(current_case)
 
-        # Mange la nourriture restante si possible
-        if current_case.food != 0:
-             current_case.food = self.eat(current_case.food)
+      
         
         # boucle tant que le bob peut  faire une action (speedbuffer > 1)
         self.speed_buffer += self.velocity
         while self.speed_buffer >= 1:
                 self.speed_buffer -= 1
 
-                # choix direction déplacement
-                dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])  # self.move_preference(grille)
+                # Mange la nourriture restante si possible
+                if current_case.food != 0:
+                    current_case.food = self.eat(current_case.food)
+
+                #choix direction déplacement
+                dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])  #self.move_preference(grille)   
                 
                 # déplacement
                 is_moving = self.move(grille, dx, dy)
@@ -55,8 +59,13 @@ class Bob:
                 if current_case.food != 0:
                     current_case.food = self.eat(current_case.food)
                 
-        # reproduction si possible :
-        return self.parthenogenesis(current_case)
+                #Reproduction ou parthenogenese si possible 
+                sons+= self.reproduction(current_case)
+                sons+= self.parthenogenesis(current_case)
+                
+        #reproduction si possible : 
+        return sons
+                   
 
     def move(self, grille, dx, dy):
         nx=self.x+dx
@@ -117,7 +126,35 @@ class Bob:
                     other_bob.energy = 0
 
 
-    # apres ce commentaire : methode en cours d'implementation :
+
+    # apres ce commentaire : methodes en cours d'implementation :
+
+    def reproduction(self, case):
+        """ """
+        sons=[]
+        if self.energy > ENERGY_MIN_REPRO and len(case.place) > 1:
+            for other_bob in case.place :
+                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO :
+                    other_bob.energy -= ENERGY_REPRO
+                    self.energy -= ENERGY_REPRO
+                    son = Bob([self.x, self.y])
+                    son.energy = ENERGY_SON_REPRO
+                    
+                    son.velocity = max(0, (self.velocity + other_bob.velocity)/2 + uniform(-MUT_VELOCITY, MUT_VELOCITY))
+                    son.masse = max(1.0, (self.masse + other_bob.masse)/2 + uniform(-MUT_MASSE, MUT_MASSE))
+                    son.perception = max(0, (self.perception + other_bob.perception )/2 + choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
+                    son.memory_points=max(0, (self.memory_points + other_bob.memory_points)/2 + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
+                    son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
+
+                    case.place.append(son)
+                    sons.append(son)
+        return sons
+
+
+                    
+                    
+
+
 
     def see(self, grille):
         """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies"""
