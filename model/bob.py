@@ -24,17 +24,21 @@ class Bob:
         is_moving = False
         current_case = grille[self.x][self.y]
 
+        sons = [] #liste contenant les envantuels enfant du bob à ce tour 
+
         # Fight ?
         self.fight(current_case)
 
-        # Mange la nourriture restante si possible
-        if current_case.food != 0:
-             current_case.food = self.eat(current_case.food)
+      
         
         #boucle tant que le bob peut  faire une action (speedbuffer > 1)
         self.speed_buffer += self.velocity
         while self.speed_buffer >= 1:
                 self.speed_buffer -= 1
+
+                # Mange la nourriture restante si possible
+                if current_case.food != 0:
+                    current_case.food = self.eat(current_case.food)
 
                 #choix direction déplacement
                 dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])  #self.move_preference(grille)   
@@ -55,8 +59,12 @@ class Bob:
                 if current_case.food != 0:
                     current_case.food = self.eat(current_case.food)
                 
+                #Reproduction ou parthenogenese si possible 
+                sons+= self.reproduction(current_case)
+                sons+= self.parthenogenesis(current_case)
+                
         #reproduction si possible : 
-        return self.parthenogenesis(current_case)
+        return sons
                    
 
     def move(self, grille, dx, dy):
