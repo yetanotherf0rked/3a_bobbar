@@ -10,60 +10,50 @@ from time import sleep
 import os
 
 
-#AFFICHAGE = False
+# AFFICHAGE = False
 
 
 class Controller:
 
-    def __init__(self, mode='a',simul=1000):
+    def __init__(self, mode='a', simul=1000):
         # Initialisation de la grille
-        self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
-        #Initialisation des Bobs
-        self.listebob = self.initbob(self.grille)
+        self.world = World()
+        self.grille = self.world.grid
+        # Initialisation des Bobs
+        self.listebob = self.initbob()
         if mode == 'a':
             self.view = View()
             self.run()
-        if mode == 'd' :
+        elif mode == 'd':
             self.run_debug()
-        if mode == 's' :
+        elif mode == 's':
             self.simul(simul)
 
-    #Initialisation des Bobs
-    def initbob(self, grille):
+    # Initialisation des Bobs
+    def initbob(self):
         listebob = []
         for bob in range(NB_POP):
-            #Position du Bob
+            # Position du Bob
             x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
             bob = Bob([x, y])
-            grille[x][y].place.append(bob)
+            self.grille[x][y].place.append(bob)
             listebob.append(bob)
         return listebob
-
-    #Spawn de food
-    def spawnfood(self, grille):
-        for _ in range(NB_FOOD):
-            x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
-            grille[x][y].food += ENERGY_FOOD
-
-    def removefood(self, grille):
-        for x in range(TAILLE):
-            for y in range(TAILLE):
-                grille[x][y].food = 0
 
     def update(self):
         new_bobs=[]
         for bob in self.listebob:
-            #update du bob
+            # update du bob
             if not bob.is_dead() :
                 new_bobs+=bob.update(self.grille)
 
-            #Si le bob est mort on le retire
+            # Si le bob est mort on le retire
             if bob.is_dead() :
                 self.grille[bob.x][bob.y].place.remove(bob)
                 self.listebob.remove(bob)
                 
 
-        #on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
+        # on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
         self.listebob += new_bobs
 
     def run(self):
@@ -76,10 +66,10 @@ class Controller:
                 # Comptage des ticks/Days
                 if tick % TICK_DAY == 0:
                     # Suppression de la nourritue restante
-                    self.removefood(self.grille)
+                    self.world.removefood()
                     day += 1
                     # Spawn de la nouvelle food
-                    self.spawnfood(self.grille)
+                    self.world.spawnfood()
                     print(day, len(self.listebob))
                 tick += 1
                 #drawStats(self.grille, self.listebob, tick)
@@ -128,12 +118,12 @@ class Controller:
         while continuer and self.listebob:
             
             # Comptage des ticks/Days
-            if tick % TICK_DAY == 0 :
+            if tick % TICK_DAY == 0:
             # Suppression de la nourritue restante
-                self.removefood(self.grille)
+                self.world.removefood()
                 day += 1
                 # Spawn de la nouvelle food
-                self.spawnfood(self.grille)
+                self.world.spawnfood()
                 print(day, len(self.listebob))
             tick += 1
             drawStats(self.grille, self.listebob, tick)
@@ -142,16 +132,15 @@ class Controller:
             sleep(0.01)
             os.system('cls' if os.name == 'nt' else 'clear')
 
-
     def simul(self, ticks):
         """simule un nombre de tick donné et affiche l'etat de la simulation."""
         tick = 0
         day = 0
         for _ in range(ticks):
             if tick % TICK_DAY == 0:
-                self.removefood(self.grille)
+                self.world.removefood()
                 day += 1
-                self.spawnfood(self.grille)
+                self.world.spawnfood()
             tick += 1
             self.update()
         drawStats(self.grille, self.listebob, tick)

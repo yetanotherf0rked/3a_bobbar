@@ -7,7 +7,7 @@ from model.utils import *
 class Bob:
 
     def __init__(self, pos):
-        self.x, self.y = pos      #Case où ce trouve le Bob
+        self.x, self.y = pos      # Case où ce trouve le Bob
         self.energy = ENERGY_SPAWN 
         self.velocity = 1.0
         self.masse = 1.0
@@ -31,38 +31,37 @@ class Bob:
         if current_case.food != 0:
              current_case.food = self.eat(current_case.food)
         
-        #boucle tant que le bob peut  faire une action (speedbuffer > 1)
+        # boucle tant que le bob peut  faire une action (speedbuffer > 1)
         self.speed_buffer += self.velocity
         while self.speed_buffer >= 1:
                 self.speed_buffer -= 1
 
-                #choix direction déplacement
-                dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])  #self.move_preference(grille)   
+                # choix direction déplacement
+                dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])  # self.move_preference(grille)
                 
-                #déplacement
+                # déplacement
                 is_moving = self.move(grille, dx, dy)
-                self.place_historic.add(current_case)#ajoute la case qu'il vient de quitter a son historique des cases visités
+                self.place_historic.add(current_case)  # ajoute la case qu'il vient de quitter a son historique des cases visités
                 current_case = grille[self.x][self.y]
-                self.mem_food.forgot(current_case)#si on arrive le bob arrive à une case dont il se souvenait il la supprime de sa memoire.
+                self.mem_food.forgot(current_case)  # si on arrive le bob arrive à une case dont il se souvenait il la supprime de sa memoire.
 
-                #perte d'energie due au deplacement
+                # perte d'energie due au deplacement
                 self.energy -= self.energy_move if is_moving else ENERGY_STAY
 
-                #fight ?
+                # fight ?
                 self.fight(current_case)
 
                 # Bob mange si nouriture sur la  nouvelle case
                 if current_case.food != 0:
                     current_case.food = self.eat(current_case.food)
                 
-        #reproduction si possible : 
+        # reproduction si possible :
         return self.parthenogenesis(current_case)
-                   
 
     def move(self, grille, dx, dy):
         nx=self.x+dx
         ny=self.y+dy
-        if(0<=nx<TAILLE and 0<=ny<TAILLE): #test limites du monde
+        if(0<=nx<TAILLE and 0<=ny<TAILLE): # test limites du monde
             grille[self.x][self.y].place.remove(self)
             self.x=nx
             self.y=ny
@@ -71,7 +70,7 @@ class Bob:
         return False
 
     def is_dead(self,):
-        #Test si le bob est mort et le supprime si c'est le cas
+        # Test si le bob est mort et le supprime si c'est le cas
         if self.energy <= 0:
             return True
         return False
@@ -92,7 +91,7 @@ class Bob:
         if self.energy == ENERGY_MAX:
             self.energy = ENERGY_MOTHER
 
-            #Nouveau bob
+            # Nouveau bob
             son = Bob([self.x, self.y])
             son.energy = ENERGY_SON
             # Fonction max pour eviter qu'un bob est une vitesse < 1
@@ -101,10 +100,10 @@ class Bob:
             son.perception = max(0, self.perception+ choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
             son.memory_points=max(0, self.memory_points + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
             son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
-            #Ajout du fils dans la case
+            # Ajout du fils dans la case
             case.place.append(son)
             return [son]
-         #si le bob n'enfante pas on retourne une liste vide
+         # si le bob n'enfante pas on retourne une liste vide
         return []
             
 
@@ -139,7 +138,7 @@ class Bob:
                     if (not danger) and other.masse/self.masse < 2/3:  # si on est pas en danger, on cherche les proies possibles
                           preys.append(other)
 
-                    if grille[self.x+dx][self.y+dy].food > 0:  #si il y a de la nourriture on la voie
+                    if grille[self.x+dx][self.y+dy].food > 0:  # si il y a de la nourriture on la voie
                         foods.append(grille(self.x + dx, self.y + dy))
                        
         return dangers, foods, preys
@@ -152,42 +151,38 @@ class Bob:
         # voit les cases qu'il perçoit 
         dangers, foods, prey = self.see(grille)
         
-        #si il y a un danger on fuit 
+        # si il y a un danger on fuit
         if dangers:
             for food in foods:
                 self.mem_food.add(food)
 
-            for e in directions: #detection d'obstacle 
+            for e in directions:  # detection d'obstacle
                 if is_obstacle(e[0],e[1]):
                     directions.remove(e)
 
             dangers.sort(key=lambda b: distance((b.x, b.y),(self.x, self.y)), reverse =True)
-            dax=dangers[0].x, day=dangers[0].y
+            dax = dangers[0].x, day=dangers[0].y
 
-
-            for dx,dy in directions:
+            for dx, dy in directions:
                 dmax = distance((dax, day),(self.x, self.y)) 
                 if distance((dax, day),(self.x+dx, self.y+dy)) > dmax:
                     directions.remove((dx, dy))
-                
-            
-            if not directions :
+
+            if not directions:
                 directions.append((0, 0))
 
             return choice(directions)
-             
-        
-        #si il y a de la nourriture en vue on y va 
+
+        # si il y a de la nourriture en vue on y va
         if foods:
             for food in foods:
                 self.mem_food.add(food) 
 
-            if len(foods>1) : foods.sort(key=lambda x: grille[x[0]][x[1]].food,reverse=True)
-            #choisir direction foeed_places[0],sotcker le reste de la liste
-    
+            if len(foods) > 1: foods.sort(key=lambda x: grille[x[0]][x[1]].food, reverse=True)
+            # choisir direction foeed_places[0],sotcker le reste de la liste
 
         if not self.mem_food.is_empty:
-            directions =self.mem_food.remember(self.memory_points)
+            directions = self.mem_food.remember(self.memory_points)
             directions = directions.max(key=lambda x: x.food)
             
 

@@ -39,4 +39,3 @@ def Danger_coeff(dangers,pos) :
 
 def is_obstacle(x,y):
     return x<0 or y<0 or x>=TAILLE or y>=TAILLE 
-        
