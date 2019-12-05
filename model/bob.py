@@ -118,7 +118,35 @@ class Bob:
                     other_bob.energy = 0
 
 
-    # apres ce commentaire : methode en cours d'implementation :
+
+    # apres ce commentaire : methodes en cours d'implementation :
+
+    def reproduction(self, case):
+        """ """
+        sons=[]
+        if self.energy > ENERGY_MIN_REPRO and len(case.place) > 1:
+            for other_bob in case.place :
+                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO :
+                    other_bob.energy -= ENERGY_REPRO
+                    self.energy -= ENERGY_REPRO
+                    son = Bob([self.x, self.y])
+                    son.energy = ENERGY_SON_REPRO
+                    
+                    son.velocity = max(0, (self.velocity + other_bob.velocity)/2 + uniform(-MUT_VELOCITY, MUT_VELOCITY))
+                    son.masse = max(1.0, (self.masse + other_bob.masse)/2 + uniform(-MUT_MASSE, MUT_MASSE))
+                    son.perception = max(0, (self.perception + other_bob.perception )/2 + choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
+                    son.memory_points=max(0, (self.memory_points + other_bob.memory_points)/2 + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
+                    son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
+
+                    case.place.append(son)
+                    sons.append(son)
+        return sons
+
+
+                    
+                    
+
+
 
     def see(self, grille):
         """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies"""
