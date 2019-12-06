@@ -78,6 +78,7 @@ class Controller:
                 # Update
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update(self.grille, self.listebob)
+                # self.paramDebug()
 
                 # Gestion des stats
                 if stats:
@@ -120,7 +121,7 @@ class Controller:
 
 
     # Fonction de débug des Sliders
-    # def paramDebug(self):
-    #     for name, value in parameters.actual.items():
-    #         print(value,"\t", end='')
-    #     print('')
+    def paramDebug(self):
+        for name, value in parameters.actual.items():
+            print(value,"\t", end='')
+        print('')

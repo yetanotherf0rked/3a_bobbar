@@ -7,7 +7,7 @@ from view.debug import *
 class Gui:
 
     """ Gui : initialise l'interface utilisateur
-        Les différents éléments (excepté le logo) sont stockés dans des objets thorpy.Box
+        Les différents éléments sont stockés dans des objets thorpy.Box
 
         Hiérarchie des boxs :
 
@@ -41,12 +41,8 @@ class Gui:
         # On définit menu_surface comme la surface de l'interface GUI
         self.assign_surface(self.menu, menu_surface)
 
-        # On charge et affiche le logo
-        self.logo = pygame.image.load(image_LOGO).convert_alpha()
-        menu_surface.blit(self.logo, POS_LOGO)
-
         # Puis on affiche le menu
-        self.main_box.set_topleft(POS_PARAMETRES)
+        self.main_box.set_topleft(POS_SURFACE_MENU)
 
         # On met à jour
         self.main_box.blit()
@@ -54,8 +50,12 @@ class Gui:
 
     def generate_menu(self):
         """initialise les éléments du menu"""
+
         # Liste contenant tous les éléments du Menu
         self.elements = []
+
+        # Logo
+        self.elements.append(thorpy.Image(path=image_LOGO))
 
         # On génère la box des stats
         self.init_stats_box()
@@ -77,7 +77,9 @@ class Gui:
 
         # Regroupement de tous les éléments dans une box
         thorpy.style.DEF_COLOR = BLACK
-        self.main_box = thorpy.Box(elements=self.elements)
+        self.main_box = thorpy.Background(color=RED,elements=self.elements)
+        thorpy.store(self.main_box,x=DIM_MENU_X/2,y=0,mode="v",align="center")
+        self.main_box.add_lift(axis="vertical")
         self.main_box.refresh_lift()
 
         # Affectation de la box à un menu (même s'il n'y en a qu'une box) : important pour la gestion d'events
@@ -85,9 +87,6 @@ class Gui:
 
     def update(self, stats):
         """update : met à jour les paramètres et les visuels à chaque tick"""
-        # self.main_box.unblit()                 # nécessaire ???
-        # self.main_box.update()                 # nécessaire ???
-
         self.update_values() # pour les paramètres
         self.update_stats_box(stats)
         self.main_box.blit()
@@ -164,7 +163,7 @@ class Gui:
             self.elements_stats[k].get_elements()[1].stick_to(self.elements_stats[k].get_elements()[0], target_side="bottom", self_side="top")
 
         # On met à jour l'affichage du menu (nécessaire ???)
-        # thorpy.functions.refresh_current_menu() # nécessaire d'après la doc, mais ne résoud pas le bug d'affichage
+        thorpy.functions.refresh_current_menu() # nécessaire d'après la doc, mais ne résoud pas le bug d'affichage
 
     def generate_sliders(self):
         """ Génère des sliders à partir des paramètres déclarés dans parameters.default{}

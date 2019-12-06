@@ -71,7 +71,6 @@ DIM_STAT_BOX = ((DIM_MENU_X-25)/2, 40)
 POS_LOGO_X = int((DIM_MENU_X - DIM_LOGO_X)/2) # logo centré p/r à menu_surface
 POS_LOGO_Y = 20 # marges
 POS_LOGO = (POS_LOGO_X, POS_LOGO_Y)
-POS_PARAMETRES = (0, DIM_LOGO_Y + 2 * POS_LOGO_Y)
 POS_SURFACE_SIMU = (DIM_MENU_X + 1, 0)
 POS_SURFACE_MENU = (0, 0)
 POS_STAT_TITLE = (7, 5)
@@ -81,6 +80,9 @@ POS_STAT_VALUE = (7, 20)
 FONT_COLOR = WHITE
 FONT_SIZE = 11
 FONT = "verdana"
+
+# FULLSCREEN
+FULLSCREEN = False
 
 class Parameters:
 
@@ -113,20 +115,17 @@ class Parameters:
         self.make("Food Number", 0, NB_FOOD, 250)
         self.make("Food Energy", 50, ENERGY_FOOD, 150)
         self.make("Spawn Energy", 50, ENERGY_SPAWN, 150)
-        self.make("Energy Cost while Moving", 0.0, ENERGY_MOVE, 5.0, float, show=False)
-        self.make("Energy Cost at Stay", 0.0, ENERGY_STAY, 5.0, float, show=False)
+        self.make("Energy Cost while Moving", 0.0, ENERGY_MOVE, 5.0, float)
+        self.make("Energy Cost at Stay", 0.0, ENERGY_STAY, 5.0, float)
         # self.make("Max Energy", 50, ENERGY_MAX, 300)
-        self.make("Mother Energy", 25, ENERGY_MOTHER, 75, show=False)
-        self.make("Son Energy",25, ENERGY_SON, 75, show=False)
-        # self.make("Tick", show=False)
-        # self.make("Day", show=False)
-        # self.make("Population", show=False)
+        self.make("Mother Energy", 25, ENERGY_MOTHER, 75)
+        self.make("Son Energy",25, ENERGY_SON, 75)
 
         # on initialise les valeurs d'Actual avec les valeurs initiales déclarées ci-dessus
         for k,v in self.default.items():
             self.actual[k] = v[1]
 
-    def make(self, name, min=0, init=0, max=0, type=int, show=True):
+    def make(self, name, min, init, max, type=int, show=True):
         """Initialise un paramètre
              type = int ou float
              show = True génère un slider pour le paramètre

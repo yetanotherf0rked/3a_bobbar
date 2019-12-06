@@ -28,7 +28,11 @@ class View:
         DIM_SIMU_SURFACE = (self.width - DIM_MENU_X, self.height)
 
         # Ouverture de la fenêtre Pygame
-        self.fenetre = pygame.display.set_mode(DIM_FENETRE, RESIZABLE)
+        if FULLSCREEN:
+            self.fenetre = pygame.display.set_mode(DIM_FENETRE, pygame.FULLSCREEN)
+        else:
+            self.fenetre = pygame.display.set_mode(DIM_FENETRE, RESIZABLE)
+
         fond = pygame.image.load(image_FOND).convert_alpha()
         self.fond = pygame.transform.scale(fond, DIM_FENETRE)
 
@@ -87,6 +91,10 @@ class View:
         self.fenetre.blit(self.simu_surface, POS_SURFACE_SIMU)
         self.fenetre.blit(self.menu_surface, POS_SURFACE_MENU)
 
+        # GUI update
+        self.gui.update(update_stats(grille, listebob, tick))
+
+        print(tick)
         # Update
         pygame.display.flip()
         self.run = False
