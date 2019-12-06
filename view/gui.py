@@ -156,14 +156,11 @@ class Gui:
                 new_value_text += str(value)
             # rajouter exception si ce n'est ni un tuple, ni un float, ni un int ???
 
-            # Remplace l'ancien élément textuel par le nouveau
-            new_value_element = thorpy.make_text(new_value_text)
-            old_value_element = self.elements_stats[k].get_elements()[1]
-            self.elements_stats[k].replace_element(old_value_element, new_value_element)
-            self.elements_stats[k].get_elements()[1].stick_to(self.elements_stats[k].get_elements()[0], target_side="bottom", self_side="top")
+            # On remplace par le nouveau text
+            self.elements_stats[k].get_elements()[1].set_text(new_value_text)
 
-        # On met à jour l'affichage du menu (nécessaire ???)
-        thorpy.functions.refresh_current_menu() # nécessaire d'après la doc, mais ne résoud pas le bug d'affichage
+            # On le reset au-dessous du titre du stat
+            self.elements_stats[k].get_elements()[1].stick_to(self.elements_stats[k].get_elements()[0], target_side="bottom", self_side="top")
 
     def generate_sliders(self):
         """ Génère des sliders à partir des paramètres déclarés dans parameters.default{}

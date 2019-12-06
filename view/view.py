@@ -94,7 +94,6 @@ class View:
         # GUI update
         self.gui.update(update_stats(grille, listebob, tick))
 
-        print(tick)
         # Update
         pygame.display.flip()
         self.run = False
