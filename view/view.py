@@ -91,9 +91,6 @@ class View:
         self.fenetre.blit(self.simu_surface, POS_SURFACE_SIMU)
         self.fenetre.blit(self.menu_surface, POS_SURFACE_MENU)
 
-        # GUI update
-        self.gui.update(update_stats(grille, listebob, tick))
-
         # Update
         pygame.display.flip()
         self.run = False

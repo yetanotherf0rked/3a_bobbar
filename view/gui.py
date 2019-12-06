@@ -41,6 +41,9 @@ class Gui:
         # On définit menu_surface comme la surface de l'interface GUI
         self.assign_surface(self.menu, menu_surface)
 
+        # for element in self.main_box.get_elements():
+        #     element.set_main_color((0,255,0,100))
+
         # Puis on affiche le menu
         self.main_box.set_topleft(POS_SURFACE_MENU)
 
@@ -55,7 +58,8 @@ class Gui:
         self.elements = []
 
         # Logo
-        self.elements.append(thorpy.Image(path=image_LOGO))
+        img = thorpy.Image(path=image_LOGO)
+        self.elements.append(img)
 
         # On génère la box des stats
         self.init_stats_box()
@@ -77,7 +81,7 @@ class Gui:
 
         # Regroupement de tous les éléments dans une box
         thorpy.style.DEF_COLOR = BLACK
-        self.main_box = thorpy.Background(color=RED,elements=self.elements)
+        self.main_box = thorpy.Background(color=((0,0,0,100)),elements=self.elements)
         thorpy.store(self.main_box,x=DIM_MENU_X/2,y=0,mode="v",align="center")
         self.main_box.add_lift(axis="vertical")
         self.main_box.refresh_lift()
