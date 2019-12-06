@@ -66,6 +66,7 @@ class View:
 
     # Fonction d'affichage
     def affichage(self, grille, listebob, tick):
+
         self.run = True
 
         # GUI update

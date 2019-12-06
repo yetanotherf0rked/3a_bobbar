@@ -61,6 +61,8 @@ class Controller:
         # wait = False
 
         while continuer:
+            # if not self.listebob:
+            #     self.view.gui.gui_pause
             if not self.view.gui.gui_pause:
 
                 # Comptage des ticks/Days

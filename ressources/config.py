@@ -51,6 +51,7 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+COLOR_ELECTRON_BLUE = (9, 132, 227)
 
 # Dimensions et Positions des Elements Graphiques
 DIM_LOGO_X = 210

@@ -29,8 +29,6 @@ class Gui:
     def __init__(self, menu_surface):
         # Thème par défaut
         thorpy.set_theme("human")
-        thorpy.style.FONT_COLOR = FONT_COLOR
-        thorpy.style.FONT_SIZE = FONT_SIZE
 
         # Génère les éléments du Menu
         self.generate_menu()
@@ -43,7 +41,11 @@ class Gui:
 
         # for element in self.main_box.get_elements():
         #     element.set_main_color((0,255,0,100))
-
+        for element in self.main_box.get_descendants():
+            if element.get_text() != "":
+                self.set_font_style(element, FONT_COLOR, FONT_SIZE, FONT)
+        for element in self.main_box.get_elements():
+            element.set_main_color((9, 132, 227, 100))
         # Puis on affiche le menu
         self.main_box.set_topleft(POS_SURFACE_MENU)
 
@@ -58,6 +60,7 @@ class Gui:
         self.elements = []
 
         # Logo
+        thorpy.style.MARGINS = (6,6)
         img = thorpy.Image(path=image_LOGO)
         self.elements.append(img)
 
@@ -103,9 +106,9 @@ class Gui:
         # Titre du Menu Statistics
         thorpy.set_theme("classic")
         menu_title = thorpy.make_text("Statistics", font_color=BLACK)
-        thorpy.style.DEF_COLOR = (WHITE)
+        thorpy.style.DEF_COLOR = (COLOR_ELECTRON_BLUE)
         menu_title_box = thorpy.Box(elements=[menu_title], size=[DIM_MENU_X - 25, 25])
-        menu_title_box.set_main_color(WHITE)
+        menu_title_box.set_main_color(COLOR_ELECTRON_BLUE)
         thorpy.set_theme("human")
         self.elements.append(menu_title_box)
 
@@ -172,9 +175,9 @@ class Gui:
         # Titre du Menu Paramètres
         thorpy.set_theme("classic")
         menu_title = thorpy.make_text("Parameters", font_color=BLACK)
-        thorpy.style.DEF_COLOR = (WHITE)
+        thorpy.style.DEF_COLOR = (COLOR_ELECTRON_BLUE)
         menu_title_box = thorpy.Box(elements=[menu_title], size=[DIM_MENU_X-25, 25])
-        menu_title_box.set_main_color(WHITE)
+        menu_title_box.set_main_color(COLOR_ELECTRON_BLUE)
         self.elements.append(menu_title_box)
 
         # Thème
@@ -206,8 +209,11 @@ class Gui:
 
                 # On regroupe le titre et le slider dans une box que l'on rajoute à notre liste self.elements
                 box_sliders.append(self.sliders[name])
+
+        thorpy.set_theme("human")
+        thorpy.style.DEF_COLOR = BLACK
+        # box_sliders.set_main_color(BLACK)
         box_sliders = thorpy.Box(box_sliders)
-        box_sliders.set_main_color(BLACK)
         self.elements.append(box_sliders)
 
     def set_style(self):
