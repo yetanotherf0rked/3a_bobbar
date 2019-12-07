@@ -22,8 +22,6 @@ class View:
 
         # Ouverture de la fenêtre Pygame
         self.fenetre = pygame.display.set_mode((self.width, self.height),RESIZABLE)
-        fond = pygame.image.load(image_FOND).convert_alpha()
-        self.fond = pygame.transform.scale(fond,(self.width,self.height))
 
         # On distingue deux surfaces
         self.menu_surface = pygame.Surface(DIM_MENU)
@@ -32,26 +30,11 @@ class View:
         # Initialisation de la GUI
         self.gui = Gui(self.menu_surface)
 
-        # Chargement et collage du fond
-        # self.sol = pygame.image.load(image_SOL).convert_alpha()
-        for i in range(1,7):
-            exec("terre" +str(i)+ "= pygame.image.load(image_EARTH"+str(i)+").convert_alpha()")
-            exec("self.terre"+str(i)+" = pygame.transform.scale(terre"+str(i)+" , (40,40))")
+        #Chargement de la food
         food = pygame.image.load(image_FOOD).convert_alpha()
         self.food = pygame.transform.scale(food, (40, 40))
-
-        #Initialisation grilleFond avec le fond random
-        self.grilleFond = []
-        for y in range(TAILLE):
-            liste = []
-            for x in range(TAILLE):
-                i = randint(1,6)
-                eval("liste.append(self.terre" + str(i) + ")")
-            self.grilleFond.append(liste)
-
         # Chargement et collage des Bob
         self.perso = pygame.image.load(image_BOB).convert_alpha()
-        # self.perso = pygame.transform.scale(perso , (25,25))
 
     # Fonction d'affichage
     def affichage(self,grille,listebob):
@@ -61,7 +44,6 @@ class View:
         self.gui.update()
 
         # Simu Update
-        # self.simu_surface.blit(self.fond , (0 , 0))
         rect = pygame.Rect(0,0,self.width,self.height)
         pygame.draw.rect(self.simu_surface,(40,233,242),rect)
         pygame.draw.polygon(self.simu_surface, (38, 37, 42), [(50+ self.depx,500+self.depy),(850+ self.depx,100+self.depy),(1650+ self.depx,500+self.depy),(850+ self.depx,900+self.depy)]) #1600*800
