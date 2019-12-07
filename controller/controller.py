@@ -54,6 +54,7 @@ class Controller:
             #Si le bob est mort on le retire
             if bob.is_dead() :
                 self.listebob.remove(bob)
+                self.grille[bob.x][bob.y].place.remove(bob)
 
         #on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
         self.listebob += new_bobs
@@ -78,7 +79,7 @@ class Controller:
 
 
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
-                self.update(self.grille, self.listebob)
+                self.update()
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
 
