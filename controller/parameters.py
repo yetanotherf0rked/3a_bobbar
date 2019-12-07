@@ -1,5 +1,5 @@
 #Nourriture sur la carte 200
-NB_FOOD = 200
+NB_FOOD = 100
 #Energy par food 100
 ENERGY_FOOD = 100
 #Energy par spawn de Bob 100

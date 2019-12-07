@@ -4,25 +4,9 @@ parameters = Parameters()
 # Tick par jour 100
 TICK_DAY = 100
 # Population initiale 200
-NB_POP = 50
+NB_POP = 20
 # Taille de la carte 100
-TAILLE = 40
-#Nourriture sur la carte 200
-NB_FOOD = 200
-#Energy par food 100
-ENERGY_FOOD = 100
-#Energy par spawn de Bob 100
-ENERGY_SPAWN = 100
-#Cout d'un déplacement 1 -> velocity**2
-ENERGY_MOVE = 1
-#Cout sans déplacement 0.5
-ENERGY_STAY = 0.5
-#Energy_max d'un Bob 200
-ENERGY_MAX = 200
-#Energy après naissance 50
-ENERGY_MOTHER = 50
-#Energy enfant 50
-ENERGY_SON = 50
+TAILLE = 20
 #Taux de mutation de la vitesse
 MUT_VELOCITY = 0.1
 #Taux de mutation de la masse
