@@ -83,11 +83,17 @@ class View:
 
         # Affichage des Bobs
         for case in bobliste:
-            for bob in case:
-                x, y = bob.x, bob.y
-                size = int(32*bob.masse**2 -16*bob.masse+16)
+            n = min(5,len(case))
+            liste = case[0:n]
+            if n == 5:
+                print(len(liste))
+            x, y = liste[0].x, liste[0].y
+            Pos = self.bobCase(n,x,y,xdec,ydec)
+            for i in range(n):
+                size = int(32*liste[i].masse**2 -16*liste[i].masse+16)
                 perso = pygame.transform.scale(self.perso, (32,size))
-                self.simu_surface.blit(perso, (850 - 16 + xdec * (x - y) + self.depx,107 - size + ydec * (x + y + 1) + self.depy))
+                PosX , PosY = Pos[i]
+                self.simu_surface.blit(perso, (850 - 16 + PosX + self.depx,107 - size + PosY + self.depy))
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, POS_SURFACE_SIMU)
         self.fenetre.blit(self.menu_surface, POS_SURFACE_MENU)
@@ -95,3 +101,26 @@ class View:
         # Update
         pygame.display.flip()
         self.run = False
+
+
+    def bobCase(self,n,x,y,xdec,ydec):
+        if n == 1:
+            return [(xdec * (x - y),ydec * (x + y + 1))]
+        if n == 2:
+            return [(xdec * (x - y - 1/4),ydec * (x + y + 1 - 1/4)),
+                    (xdec * (x - y + 1/4),ydec * (x + y + 1 + 1/4))]
+        if n == 3:
+            return [(xdec * (x - y),ydec * (x + y + 1 - 1/4)),
+                    (xdec * (x - y - 1/4),ydec * (x + y + 1 + 1/4)),
+                    (xdec * (x - y + 1/4),ydec * (x + y + 1 + 1/4))]
+        if n == 4:
+            return [(xdec * (x - y - 1 / 4), ydec * (x + y + 1 - 1 / 4)),
+                    (xdec * (x - y + 1 / 4), ydec * (x + y + 1 - 1 / 4)),
+                    (xdec * (x - y - 1 / 4), ydec * (x + y + 1 + 1 / 4)),
+                    (xdec * (x - y + 1 / 4), ydec * (x + y + 1 + 1 / 4))]
+        if n == 5:
+            return [(xdec * (x - y - 1 / 4), ydec * (x + y + 1 - 1 / 4)),
+                    (xdec * (x - y + 1 / 4), ydec * (x + y + 1 - 1 / 4)),
+                    (xdec * (x - y), ydec * (x + y + 1)),
+                    (xdec * (x - y - 1 / 4), ydec * (x + y + 1 + 1 / 4)),
+                    (xdec * (x - y + 1 / 4), ydec * (x + y + 1 + 1 / 4))]
