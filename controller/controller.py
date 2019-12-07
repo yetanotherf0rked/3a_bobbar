@@ -22,12 +22,6 @@ class Controller:
             self.view = View()
         self.run(affichage,stats)
 
-    # Fonction de débug des Sliders
-    # def paramDebug(self):
-    #     for name, value in parameters.actual.items():
-    #         print(value,"\t", end='')
-    #     print('')
-
     #Initialisation des Bobs
     def initbob(self, grille):
         listebob = []
@@ -50,24 +44,26 @@ class Controller:
             for y in range(TAILLE):
                 grille[x][y].food = 0
 
-    def update(self, grille, listebob):
+    def update(self):
         new_bobs=[]
-        for bob in listebob:
+        for bob in self.listebob:
             #update du bob
-            new_bobs+=bob.update(grille,listebob)
+            if not bob.is_dead() :
+                new_bobs+=bob.update(self.grille)
 
             #Si le bob est mort on le retire
-            bob.is_dead(listebob,grille[bob.x][bob.y])
+            if bob.is_dead() :
+                self.listebob.remove(bob)
 
         #on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
-        listebob += new_bobs
+        self.listebob += new_bobs
 
     def run(self,affichage,stats):
         tick = 0
         day = 0
         continuer = True
         wait = False
-        while continuer:
+        while continuer and self.listebob:
             if not wait:
                 # Comptage des ticks/Days
                 if tick % TICK_DAY == 0:
@@ -120,11 +116,3 @@ class Controller:
                         self.view.depx += DEP_STEP
                     # Réagit si l'on bouge les sliders
                     self.view.gui.menu.react(event)
-
-"""def pause_mode(self):
-        while(self.view.gui.gui_pause):
-            for event in pygame.event.get():
-                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.gui_quit:
-                    self.continuer = False
-                    self.view.gui.gui_pause = False
-                self.view.gui.menu.react(event)"""

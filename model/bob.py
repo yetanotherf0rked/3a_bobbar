@@ -3,6 +3,7 @@ from model.case import *
 from ressources.constantes import *
 from model.utils import *
 
+
 class Bob:
 
     def __init__(self, pos):
@@ -17,14 +18,14 @@ class Bob:
         self.mem_food = Memory(self.memory_points)
         self.place_historic = Memory(2*self.memory_points)
 
-    def update(self,grille,liste_bob) :
-        """update le bob : combats, manger, déplacement...
+    def update(self, grille):
+        """update le bob : combats, manger, déplacement... 
         Si le bob se reproduit update retourne une liste contenant le nouveau fils sinon une liste vide"""
         is_moving = False
         current_case = grille[self.x][self.y]
 
         # Fight ?
-        self.fight(current_case, liste_bob)
+        self.fight(current_case)
 
         # Mange la nourriture restante si possible
         if current_case.food != 0:
@@ -48,7 +49,7 @@ class Bob:
                 self.energy -= self.energy_move if is_moving else ENERGY_STAY
 
                 #fight ?
-                self.fight(current_case, liste_bob)
+                self.fight(current_case)
 
                 # Bob mange si nouriture sur la  nouvelle case
                 if current_case.food != 0:
@@ -56,8 +57,6 @@ class Bob:
 
         #reproduction si possible :
         return self.parthenogenesis(current_case)
-
-
 
 
     def move(self, grille, dx, dy):
@@ -71,17 +70,15 @@ class Bob:
             return True
         return False
 
-    def is_dead(self, listebob, case):
+    def is_dead(self,):
         #Test si le bob est mort et le supprime si c'est le cas
         if self.energy <= 0:
-            listebob.remove(self)
-            case.place.remove(self)
             return True
         return False
 
     def eat(self, food, rate=1):
         eaten_food = rate*food
-        if eaten_food + self.energy <= ENERGY_MAX :
+        if eaten_food + self.energy <= ENERGY_MAX:
             self.energy += eaten_food
             food-=eaten_food
         else:
@@ -89,7 +86,7 @@ class Bob:
             self.energy = 200
         return food
 
-    def parthenogenesis(self,case):
+    def parthenogenesis(self, case):
         """naissance d'un nouveau bob si assez d'energie
         retourne une liste contenant le fils"""
         if self.energy == ENERGY_MAX:
@@ -111,7 +108,7 @@ class Bob:
         return []
 
 
-    def fight(self,case,list_bob):
+    def fight(self, case):
         """test si un combat est possible sur la case actuelle, dévore l'autre Bob dans ce cas """
         if len(case.place) > 1:  # Fight
             for other_bob in case.place:
@@ -119,13 +116,11 @@ class Bob:
                 if other_bob.masse/self.masse < 2/3:
                     self.energy = min(ENERGY_MAX, self.energy + 0.5*other_bob.energy*(1-(other_bob.masse/self.masse)))
                     other_bob.energy = 0
-                    other_bob.is_dead(list_bob, case)
-
 
 
     # apres ce commentaire : methode en cours d'implementation :
 
-    def see(self,grille):
+    def see(self, grille):
         """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies"""
         radius = self.perception
         danger = False
@@ -147,51 +142,46 @@ class Bob:
                     if grille[self.x+dx][self.y+dy].food > 0:  #si il y a de la nourriture on la voie
                         foods.append(grille(self.x + dx, self.y + dy))
 
-        return dangers,foods,preys
-
+        return dangers, foods, preys
 
 
 
     def move_preference(self, grille):
         """récupere les informations sur les casses vues par le bob et choisit une dirrection en fonction """
 
-        directions=[(-1, 0), (1, 0), (0, -1), (0, 1)]
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         # voit les cases qu'il perçoit
-        dangers,foods,prey = self.see(grille)
+        dangers, foods, prey = self.see(grille)
 
         #si il y a un danger on fuit
-        if dangers :
-            for f in foods :
-                self.mem_food.add(f)
+        if dangers:
+            for food in foods:
+                self.mem_food.add(food)
 
-            for e in directions: #detection d'obstacle
-                if is_obstacle(e[0],e[1]) :
+            for e in directions: #detection d'obstacle 
+                if is_obstacle(e[0],e[1]):
                     directions.remove(e)
 
-            dangers.sort(key=lambda b: distance((b.x,b.y),(self.x,self.y)), reverse =True) #
+            dangers.sort(key=lambda b: distance((b.x, b.y),(self.x, self.y)), reverse =True)
             dax=dangers[0].x, day=dangers[0].y
 
 
-            for dx,dy in directions :
-                dmax = distance((dax,day),(self.x,self.y))
-                if distance((dax,day),(self.x+dx,self.y+dy)) > dmax :
-                    directions.remove((dx,dy))
-
-
+            for dx,dy in directions:
+                dmax = distance((dax, day),(self.x, self.y))
+                if distance((dax, day),(self.x+dx, self.y+dy)) > dmax:
+                    directions.remove((dx, dy))
+                
+            
             if not directions :
-                directions.append((0,0))
+                directions.append((0, 0))
 
             return choice(directions)
 
 
-
-
-
-
         #si il y a de la nourriture en vue on y va
-        if foods :
-            for f in foods :
-                self.mem_food.add(f)
+        if foods:
+            for food in foods:
+                self.mem_food.add(food)
 
             if len(foods>1) : foods.sort(key=lambda x: grille[x[0]][x[1]].food,reverse=True)
             #choisir direction foeed_places[0],sotcker le reste de la liste
@@ -200,28 +190,5 @@ class Bob:
         if not self.mem_food.is_empty:
             directions =self.mem_food.remember(self.memory_points)
             directions = directions.max(key=lambda x: x.food)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
