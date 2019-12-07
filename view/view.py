@@ -55,25 +55,39 @@ class View:
         for y in range(TAILLE):
             xdec, ydec = 800 / TAILLE, 800 / (2 * TAILLE)
             if y == 0:
+                # Affichages des lignes extérieurs du haut
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (850 - xdec * y+ self.depx, 100 + ydec * y+self.depy),(1650 - xdec * y+ self.depx, 500 + ydec * y+self.depy),5)
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (850 + xdec * y+ self.depx, 100 + ydec * y+self.depy),(50 + xdec * y+ self.depx, 500 + ydec * y+self.depy),5)
+
             #Lignes Haut-Gauche
             pygame.draw.line(self.simu_surface, (228, 226, 232), (850 - xdec * y+ self.depx, 100 + ydec * y+self.depy),(1650 - xdec * y+ self.depx, 500 + ydec * y+self.depy))
+
             #Lignes Haut-Droite
             pygame.draw.line(self.simu_surface, (228, 226, 232), (850 + xdec * y+ self.depx, 100 + ydec * y+self.depy), (50 + xdec * y+ self.depx, 500 + ydec * y+self.depy))
+
             for x in range(TAILLE):
                 if not(grille[x][y].food ==0):
+                    #Affichage de la food
                     self.simu_surface.blit(self.food, (850 - 20 + xdec * (x - y) + self.depx, 100 - 30 + ydec * (x + y + 1) + self.depy))
-                for bob in grille[x][y].place:
-                    bobliste.append(bob)
+                #Ajout de tout les bobs de la case à bobliste
+                if grille[x][y].place != []:
+                    l = [bob for bob in grille[x][y].place]
+                    l.sort(key = lambda x:x.masse, reverse = True)
+                    bobliste.append(l)
+                # for bob in grille[x][y].place:
+                #     bobliste.append(bob)
+
+        #Affichages des lignes extérieurs du bas
         pygame.draw.line(self.simu_surface, (255, 155, 65), (50+self.depx, 500+self.depy),(850+self.depx, 900+self.depy),5)
         pygame.draw.line(self.simu_surface, (255,155,65), (1650+self.depx, 500+self.depy),(850+self.depx,900+self.depy),5)
+
         # Affichage des Bobs
-        for bob in bobliste:
-            x, y = bob.x, bob.y
-            size = int(32*bob.masse**2 -16*bob.masse+16)
-            perso = pygame.transform.scale(self.perso, (32,size))
-            self.simu_surface.blit(perso, (850 - 16 + xdec * (x - y) + self.depx,107 - size + ydec * (x + y + 1) + self.depy))
+        for case in bobliste:
+            for bob in case:
+                x, y = bob.x, bob.y
+                size = int(32*bob.masse**2 -16*bob.masse+16)
+                perso = pygame.transform.scale(self.perso, (32,size))
+                self.simu_surface.blit(perso, (850 - 16 + xdec * (x - y) + self.depx,107 - size + ydec * (x + y + 1) + self.depy))
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, POS_SURFACE_SIMU)
         self.fenetre.blit(self.menu_surface, POS_SURFACE_MENU)

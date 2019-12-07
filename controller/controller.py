@@ -10,7 +10,6 @@ from time import sleep
 import os
 
 
-
 class Controller:
 
     def __init__(self, affichage=True, stats=False):
