@@ -66,9 +66,13 @@ class View:
             pygame.draw.line(self.simu_surface, (228, 226, 232), (850 + xdec * y+ self.depx, 100 + ydec * y+self.depy), (50 + xdec * y+ self.depx, 500 + ydec * y+self.depy))
 
             for x in range(TAILLE):
-                if not(grille[x][y].food ==0):
-                    #Affichage de la food
-                    self.simu_surface.blit(self.food, (850 - 20 + xdec * (x - y) + self.depx, 100 - 30 + ydec * (x + y + 1) + self.depy))
+                n = min(5,int(grille[x][y].food // parameters.get("Food Energy")))
+                if not(n ==0):
+                    Pos = self.bobCase(n, x, y, xdec, ydec)
+                    for i in range(n):
+                        PosX, PosY = Pos[i]
+                        #Affichage de la food
+                        self.simu_surface.blit(self.food, (850 - 20 + PosX + self.depx, 100 - 30 + PosY + self.depy))
                 #Ajout de tout les bobs de la case à bobliste
                 if grille[x][y].place != []:
                     l = [bob for bob in grille[x][y].place]
