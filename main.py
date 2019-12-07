@@ -26,4 +26,5 @@ app = QApplication(sys.argv)
 window = Prems()
 window.show()
 
-app.exec()
+# app.exec()
+controller = Controller()

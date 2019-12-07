@@ -61,19 +61,37 @@ class View:
         self.gui.update()
 
         # Simu Update
-        self.simu_surface.blit(self.fond , (0 , 0))
+        # self.simu_surface.blit(self.fond , (0 , 0))
+        rect = pygame.Rect(0,0,self.width,self.height)
+        pygame.draw.rect(self.simu_surface,(40,233,242),rect)
+        pygame.draw.polygon(self.simu_surface, (38, 37, 42), [(50+ self.depx,500+self.depy),(850+ self.depx,100+self.depy),(1650+ self.depx,500+self.depy),(850+ self.depx,900+self.depy)]) #1600*800
+        pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(50+ self.depx, 500+self.depy), (850+ self.depx, 900+self.depy), (850+ self.depx, 950+self.depy), (50+ self.depx, 550+self.depy)])
+        pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(1650+ self.depx, 500+self.depy), (850+ self.depx, 900+self.depy), (850+ self.depx, 950+self.depy), (1650+ self.depx, 550+self.depy)])
 
         # Affichage du sol
+        bobliste = []
         for y in range(TAILLE):
+            xdec, ydec = 800 / TAILLE, 800 / (2 * TAILLE)
+            if y == 0:
+                pygame.draw.line(self.simu_surface, (255, 155, 65), (850 - xdec * y+ self.depx, 100 + ydec * y+self.depy),(1650 - xdec * y+ self.depx, 500 + ydec * y+self.depy),5)
+                pygame.draw.line(self.simu_surface, (255, 155, 65), (850 + xdec * y+ self.depx, 100 + ydec * y+self.depy),(50 + xdec * y+ self.depx, 500 + ydec * y+self.depy),5)
+            #Lignes Haut-Gauche
+            pygame.draw.line(self.simu_surface, (228, 226, 232), (850 - xdec * y+ self.depx, 100 + ydec * y+self.depy),(1650 - xdec * y+ self.depx, 500 + ydec * y+self.depy))
+            #Lignes Haut-Droite
+            pygame.draw.line(self.simu_surface, (228, 226, 232), (850 + xdec * y+ self.depx, 100 + ydec * y+self.depy), (50 + xdec * y+ self.depx, 500 + ydec * y+self.depy))
             for x in range(TAILLE):
-                self.simu_surface.blit(self.grilleFond[x][y], (int(self.width/2)-30 + self.depx + x * 18 - 18 * y,self.depy+ 8 + y* 13.7 + x * 13.7))
                 if not(grille[x][y].food ==0):
-                    self.simu_surface.blit(self.food, (int(self.width/2) + self.depx -30 + x * 18 - 18 * y,self.depy-5 + y * 13.7 + x * 13.7))
+                    self.simu_surface.blit(self.food, (850 - 20 + xdec * (x - y) + self.depx, 100 - 30 + ydec * (x + y + 1) + self.depy))
+                for bob in grille[x][y].place:
+                    bobliste.append(bob)
+        pygame.draw.line(self.simu_surface, (255, 155, 65), (50+self.depx, 500+self.depy),(850+self.depx, 900+self.depy),5)
+        pygame.draw.line(self.simu_surface, (255,155,65), (1650+self.depx, 500+self.depy),(850+self.depx,900+self.depy),5)
         # Affichage des Bobs
-        for bob in listebob:
+        for bob in bobliste:
             x, y = bob.x, bob.y
-            perso = pygame.transform.scale(self.perso, (32,int(32*bob.masse**2 -16*bob.masse+16)))
-            self.simu_surface.blit(perso, (int(self.width/2) + self.depx -26 + x * 18 - 18 * y,self.depy + 2 + y * 13.7 + x * 13.7))
+            size = int(32*bob.masse**2 -16*bob.masse+16)
+            perso = pygame.transform.scale(self.perso, (32,size))
+            self.simu_surface.blit(perso, (850 - 16 + xdec * (x - y) + self.depx,107 - size + ydec * (x + y + 1) + self.depy))
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, POS_SURFACE_SIMU)
         self.fenetre.blit(self.menu_surface, POS_SURFACE_MENU)
