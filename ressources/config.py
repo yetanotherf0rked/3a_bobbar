@@ -44,6 +44,7 @@ image_EARTH4 = "ressources/images/terre4 clair.png"
 image_EARTH5 = "ressources/images/terre 1.png"
 image_EARTH7 = "ressources/images/Grass.png"
 image_EARTH6 = "ressources/images/terre 3.png"
+image_EARTH_WOW = "ressources/images/terrespec.png"
 
 # Couleurs
 BLACK = (0, 0, 0)
@@ -57,7 +58,7 @@ COLOR_ELECTRON_BLUE = (9, 132, 227)
 DIM_LOGO_X = 210
 DIM_LOGO_Y = 210
 
-DIM_MENU_X = 240 # min recommandé : 210
+DIM_MENU_X = 240 # min recommandé : 240
 
 DIM_SLIDER_X = DIM_MENU_X - 80
 DIM_SLIDER_Y = 7 # valeur par défaut : 20

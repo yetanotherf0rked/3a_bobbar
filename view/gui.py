@@ -12,12 +12,16 @@ class Gui:
         Hiérarchie des boxs :
 
         --- Box: box principale self.main_box (the father of all the boxes)
+        ------ Box: Box Titre Stats
+        --------- Texte: Titre Stats
         ------ Box: box des stats self.stats_box. Pour tous les deux stats :
         --------- Box: box horizontale (regroupe deux box stats)
         ------------ Box: box stat (correspond à 1 stat)
         --------------- Texte: Nom du stat
         --------------- Texte: valeur du stat
         ...
+        ------ Box: Box Titre Paramètres
+        --------- Texte: Titre Paramètres
         ------ Box: box des sliders. Pour chaque paramètre :
         --------- Texte: Titre du paramètre
         --------- Slider.
@@ -39,13 +43,6 @@ class Gui:
         # On définit menu_surface comme la surface de l'interface GUI
         self.assign_surface(self.menu, menu_surface)
 
-        # for element in self.main_box.get_elements():
-        #     element.set_main_color((0,255,0,100))
-        for element in self.main_box.get_descendants():
-            if element.get_text() != "":
-                self.set_font_style(element, FONT_COLOR, FONT_SIZE, FONT)
-        for element in self.main_box.get_elements():
-            element.set_main_color((9, 132, 227, 100))
         # Puis on affiche le menu
         self.main_box.set_topleft(POS_SURFACE_MENU)
 
@@ -60,7 +57,6 @@ class Gui:
         self.elements = []
 
         # Logo
-        thorpy.style.MARGINS = (6,6)
         img = thorpy.Image(path=image_LOGO)
         self.elements.append(img)
 
@@ -174,7 +170,7 @@ class Gui:
             Vérifie si l'argument SHOW est bien égal à True avant de créer le slider"""
         # Titre du Menu Paramètres
         thorpy.set_theme("classic")
-        menu_title = thorpy.make_text("Parameters", font_color=BLACK)
+        menu_title = thorpy.make_text("Parameters")
         thorpy.style.DEF_COLOR = (COLOR_ELECTRON_BLUE)
         menu_title_box = thorpy.Box(elements=[menu_title], size=[DIM_MENU_X-25, 25])
         menu_title_box.set_main_color(COLOR_ELECTRON_BLUE)
@@ -212,7 +208,6 @@ class Gui:
 
         thorpy.set_theme("human")
         thorpy.style.DEF_COLOR = BLACK
-        # box_sliders.set_main_color(BLACK)
         box_sliders = thorpy.Box(box_sliders)
         self.elements.append(box_sliders)
 
@@ -221,21 +216,6 @@ class Gui:
 
         # Box principale
         self.main_box.set_main_color(BLACK)
-
-        # Boxs
-        # for box in self.elements:
-        #     box.set_main_color(BLACK)
-
-        # Titres
-        # for title in self.titles:
-        #     self.set_font_style(title, FONT_COLOR, FONT_SIZE, FONT)
-
-        # De la personnalisation des Sliders : Un objet thorpy.SliderX est composé
-        # - d'un élément textuel pour le titre (que l'on n'utilisera pas car difficilement personnalisable)
-        # - d'un Slider(thorpy.SliderX.get_slider())
-        # - d'un dragger (thorpy.SliderX.get_dragger())
-        # - et d'un élément textuel pour la valeur (thorpy.SliderX._value_element)
-        # Chaque attribut de ces constituants est personnalisable
 
         for slider in self.sliders.values():
             slider.get_dragger().set_main_color(WHITE)
@@ -251,6 +231,13 @@ class Gui:
         # Boutton Pause
         self.set_font_style(self.pause_button, FONT_COLOR, FONT_SIZE, FONT)
         self.pause_button.set_font_color_hover(WHITE)
+
+        # Toutes les boxs
+        for element in self.main_box.get_descendants():
+            if element.get_text() != "":
+                self.set_font_style(element, FONT_COLOR, FONT_SIZE, FONT)
+        for element in self.main_box.get_elements():
+            element.set_main_color((9, 132, 227, 100))
 
     def set_font_style(self, element, font_color, font_size, font):
         """Prend en argument un élément textuel et lui affecte une police (str),
