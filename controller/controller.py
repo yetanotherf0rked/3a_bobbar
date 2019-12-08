@@ -89,7 +89,10 @@ class Controller:
                 while self.view.run:
                     # Limitation de vitesse de la boucle
                     sleep(0.05)
-                self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),))
+                if not wait:
+                    self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),))
+                else :
+                    self._thread = Thread(target=self.view.affichage, args=(self.file.current(),))
                 self._thread.start()
 
                 # Test de fin

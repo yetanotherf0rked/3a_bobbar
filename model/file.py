@@ -15,4 +15,8 @@ class File():
         self.file.append(copie)
 
     def defile(self):
-        return self.file.pop(0)
+        self.last = self.file.pop(0)
+        return self.last
+
+    def current(self):
+        return self.last
