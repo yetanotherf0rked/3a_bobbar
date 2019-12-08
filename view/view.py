@@ -91,7 +91,7 @@ class View:
             for x in range(TAILLE):
                 n = min(5,int(grille[x][y].food // parameters.get("Food Energy")))
                 if not(n ==0):
-                    Pos = self.bobCase(n, x, y, xdec, ydec)
+                    Pos = Case(0,0).bobCase(n, x, y, xdec, ydec)
                     for i in range(n):
                         PosX, PosY = Pos[i]
                         #Affichage de la food
@@ -112,7 +112,7 @@ class View:
             n = min(5,len(case))
             liste = case[0:n]
             x, y = liste[0].x, liste[0].y
-            Pos = self.bobCase(n,x,y,xdec,ydec)
+            Pos = Case(0,0).bobCase(n,x,y,xdec,ydec)
             for i in range(n):
                 size = int(32*liste[i].masse**2 -16*liste[i].masse+16)
                 perso = pygame.transform.scale(self.perso, (32,size))
@@ -125,25 +125,3 @@ class View:
         # Update
         pygame.display.flip()
         self.run = False
-
-    def bobCase(self,n,x,y,xdec,ydec):
-        if n == 1:
-            return [(xdec * (x - y),ydec * (x + y + 1))]
-        if n == 2:
-            return [(xdec * (x - y - 1/4),ydec * (x + y + 1 - 1/4)),
-                    (xdec * (x - y + 1/4),ydec * (x + y + 1 + 1/4))]
-        if n == 3:
-            return [(xdec * (x - y),ydec * (x + y + 1 - 1/4)),
-                    (xdec * (x - y - 1/4),ydec * (x + y + 1 + 1/4)),
-                    (xdec * (x - y + 1/4),ydec * (x + y + 1 + 1/4))]
-        if n == 4:
-            return [(xdec * (x - y - 1 / 4), ydec * (x + y + 1 - 1 / 4)),
-                    (xdec * (x - y + 1 / 4), ydec * (x + y + 1 - 1 / 4)),
-                    (xdec * (x - y - 1 / 4), ydec * (x + y + 1 + 1 / 4)),
-                    (xdec * (x - y + 1 / 4), ydec * (x + y + 1 + 1 / 4))]
-        if n == 5:
-            return [(xdec * (x - y - 1 / 4), ydec * (x + y + 1 - 1 / 4)),
-                    (xdec * (x - y + 1 / 4), ydec * (x + y + 1 - 1 / 4)),
-                    (xdec * (x - y), ydec * (x + y + 1)),
-                    (xdec * (x - y - 1 / 4), ydec * (x + y + 1 + 1 / 4)),
-                    (xdec * (x - y + 1 / 4), ydec * (x + y + 1 + 1 / 4))]
