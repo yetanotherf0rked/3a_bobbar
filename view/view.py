@@ -20,7 +20,7 @@ class View:
         info = pygame.display.Info()
         self.width,self.height = info.current_w,info.current_h
 
-        self.dim_menu = (int(self.width * 0.1) , int(self.height))
+        self.dim_menu = (220 , int(self.height))
         simu_x, simu_y = self.width - self.dim_menu[0], int(self.height)
         self.dim_simu = (simu_x, simu_y)
 
@@ -45,7 +45,7 @@ class View:
         self.run = True
 
         #Resize des surfaces:
-        self.dim_menu = (int(self.width * 0.1) , int(self.height))
+        self.dim_menu = (220, int(self.height))
         simu_x, simu_y = self.width - self.dim_menu[0], int(self.height)
         self.dim_simu = (simu_x, simu_y)
         pygame.transform.scale(self.menu_surface, self.dim_menu)

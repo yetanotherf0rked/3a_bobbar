@@ -7,7 +7,6 @@ import pygame
 from pygame.locals import *
 from threading import Thread
 from time import sleep
-import os
 
 
 class Controller:
