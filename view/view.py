@@ -3,7 +3,7 @@ from random import randint
 from pygame.locals import RESIZABLE
 from ressources.constantes import *
 from .gui import *
-import numpy as np
+from model import *
 
 class View:
 
@@ -40,9 +40,9 @@ class View:
         self.food = pygame.transform.scale(food, (40, 40))
         # Chargement des Bob
         self.perso = pygame.image.load(image_BOB).convert_alpha()
-        #Chargement du Soleil
-        soleil = pygame.image.load(image_SOLEIL).convert_alpha()
-        self.soleil = pygame.transform.scale(soleil, (100,100))
+
+        #Création d'un soleil
+        self.soleil = Soleil()
 
     # Fonction d'affichage
     def affichage(self,grille,tick):
@@ -69,6 +69,10 @@ class View:
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y+self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2* cote_y + 50 +self.depy), (PosX_init + self.depx,PosY_init + cote_y + 50 +self.depy)])
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(2* cote_x + PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +50 +self.depy), (PosX_init + 2* cote_x + self.depx,PosY_init + cote_y + 50 +self.depy)])
 
+        #Update et affichage Soleil
+        self.soleil.updateListeX(cote_x)
+        Pos = self.soleil.Pos(tick,cote_x,cote_y)
+        self.simu_surface.blit(self.soleil.image, Pos)
         # Affichage du sol
         bobliste = []
         for y in range(TAILLE):
@@ -99,11 +103,6 @@ class View:
                     l.sort(key = lambda x:x.masse, reverse = True)
                     bobliste.append(l)
 
-        #Affichage du soleil
-        self.soleilX = np.linspace(80, 2 * cote_x - 80, TICK_DAY)
-        x = self.soleilX[tick%TICK_DAY]
-        y = self.f_soleil(x,cote_x,cote_y)
-        self.simu_surface.blit(self.soleil, (x,y))
         #Affichages des lignes extérieurs du bas
         pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init+self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx, PosY_init + 2* cote_y + self.depy),5)
         pygame.draw.line(self.simu_surface, (255,155,65), (PosX_init + 2* cote_x + self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx,PosY_init + 2* cote_y + self.depy),5)
@@ -148,7 +147,3 @@ class View:
                     (xdec * (x - y), ydec * (x + y + 1)),
                     (xdec * (x - y - 1 / 4), ydec * (x + y + 1 + 1 / 4)),
                     (xdec * (x - y + 1 / 4), ydec * (x + y + 1 + 1 / 4))]
-
-    def f_soleil(self,x,cx,cy):
-        a = (cy+100)/((80-cx)**2)
-        return a * (x-cx)**2 + 50
