@@ -18,6 +18,19 @@ class Bob:
         self.mem_food = Memory(self.memory_points)
         self.place_historic = Memory(2*self.memory_points)
 
+    def copie(self):
+        bob = Bob((self.x,self.y))
+        bob.energy = self.energy
+        bob.velocity = self.velocity
+        bob.masse = self.masse
+        bob.perception = self.perception
+        bob.memory_points = self.memory_points
+        bob.energy_move = self.energy_move
+        bob.speed_buffer = self.speed_buffer
+        bob.mem_food = self.mem_food
+        bob.place_historic = self.place_historic
+        return bob
+
     def update(self, grille):
         """update le bob : combats, manger, déplacement... 
         Si le bob se reproduit update retourne une liste contenant le nouveau fils sinon une liste vide"""

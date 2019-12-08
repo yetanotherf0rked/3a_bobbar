@@ -8,6 +8,12 @@ class Case:
         self.food = 0
         self.place = []        #Contenue de la Case
 
+    def copie(self):
+        case = Case(self.x,self.y)
+        case.food = self.food
+        case.place = [bob.copie() for bob in self.place]
+        return case
+
     def bobCase(self,n,x,y,xdec,ydec):
         if n == 1:
             return [(xdec * (x - y),ydec * (x + y + 1))]

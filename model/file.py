@@ -7,11 +7,7 @@ class File():
         self.file = []
 
     def enfile(self,new):
-        copie = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
-        for x in range(TAILLE):
-            for y in range(TAILLE):
-                copie[x][y].food = new[x][y].food
-                copie[x][y].place = [bob for bob in new[x][y].place]
+        copie = [[case.copie() for case in liste] for liste in new]
         self.file.append(copie)
 
     def defile(self):

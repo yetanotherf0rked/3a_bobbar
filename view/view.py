@@ -98,7 +98,6 @@ class View:
                         self.simu_surface.blit(self.food, (PosX_init + cote_x - 20 + PosX + self.depx, PosY_init - 30 + PosY + self.depy))
                 #Ajout de tout les bobs de la case à bobliste
                 if grille[x][y].place != []:
-                    # print("Grille = ",grille[x][y].place)
                     l = [bob for bob in grille[x][y].place]
                     l.sort(key = lambda x:x.masse, reverse = True)
                     bobliste.append(l)
