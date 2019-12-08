@@ -5,7 +5,6 @@ from model.utils import *
 
 
 class Bob:
-
     def __init__(self, pos):
         self.x, self.y = pos      # Case où ce trouve le Bob
         self.energy = ENERGY_SPAWN 
@@ -29,8 +28,6 @@ class Bob:
         # Fight ?
         self.fight(current_case)
 
-      
-        
         # boucle tant que le bob peut  faire une action (speedbuffer > 1)
         self.speed_buffer += self.velocity
         while self.speed_buffer >= 1:
@@ -41,7 +38,7 @@ class Bob:
                     current_case.food = self.eat(current_case.food)
 
                 #choix direction déplacement
-                dx, dy = choice([(-1, 0), (1, 0), (0, -1), (0, 1)])  #self.move_preference(grille)   
+                dx, dy = self.move_preference(grille) #choice([(-1, 0), (1, 0), (0, -1), (0, 1)]
                 
                 # déplacement
                 is_moving = self.move(grille, dx, dy)
@@ -65,7 +62,6 @@ class Bob:
                 
         #reproduction si possible : 
         return sons
-                   
 
     def move(self, grille, dx, dy):
         nx=self.x+dx
@@ -125,8 +121,6 @@ class Bob:
                     self.energy = min(ENERGY_MAX, self.energy + 0.5*other_bob.energy*(1-(other_bob.masse/self.masse)))
                     other_bob.energy = 0
 
-
-
     # apres ce commentaire : methodes en cours d'implementation :
 
     def reproduction(self, case):
@@ -150,12 +144,6 @@ class Bob:
                     sons.append(son)
         return sons
 
-
-                    
-                    
-
-
-
     def see(self, grille):
         """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies"""
         radius = self.perception 
@@ -173,16 +161,15 @@ class Bob:
                         dangers.append(other)
                     
                     if (not danger) and other.masse/self.masse < 2/3:  # si on est pas en danger, on cherche les proies possibles
-                          preys.append(other)
+                        preys.append(other)
 
-                    if grille[self.x+dx][self.y+dy].food > 0:  # si il y a de la nourriture on la voie
-                        foods.append(grille(self.x + dx, self.y + dy))
-                       
+                if grille[self.x+dx][self.y+dy].food > 0:  # si il y a de la nourriture on la voit
+                    foods.append(grille[self.x + dx][self.y + dy])
+
         return dangers, foods, preys
 
-
     def move_preference(self, grille):
-        """récupere les informations sur les casses vues par le bob et choisit une dirrection en fonction """
+        """récupere les informations sur les cases vues par le bob et choisit une direction en fonction """
 
         directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         # voit les cases qu'il perçoit 
@@ -193,12 +180,13 @@ class Bob:
             for food in foods:
                 self.mem_food.add(food)
 
-            for e in directions:  # detection d'obstacle
+            for e in directions:  # detection d'obstacle/bords de carte
                 if is_obstacle(e[0],e[1]):
                     directions.remove(e)
 
-            dangers.sort(key=lambda b: distance((b.x, b.y),(self.x, self.y)), reverse =True)
-            dax = dangers[0].x, day=dangers[0].y
+            dangers.sort(key=lambda b: distance((b.x, b.y), (self.x, self.y)), reverse=True)
+            dax = dangers[0].x
+            day = dangers[0].y
 
             for dx, dy in directions:
                 dmax = distance((dax, day),(self.x, self.y)) 
@@ -211,15 +199,34 @@ class Bob:
             return choice(directions)
 
         # si il y a de la nourriture en vue on y va
+        foods = [case for case in set(foods) if case != grille[self.x][self.y]]
         if foods:
             for food in foods:
                 self.mem_food.add(food) 
 
-            if len(foods) > 1: foods.sort(key=lambda x: grille[x[0]][x[1]].food, reverse=True)
-            # choisir direction foeed_places[0],sotcker le reste de la liste
+            if len(foods) > 1: foods.sort(key=lambda case: case.food if case != grille[self.x][self.y] else -1, reverse=True)
+            target = (foods[0].x, foods[0].y)  # case avec la meilleure food
+            current = (self.x, self.y)  # case actuelle
+            vector = (target[0] - current[0], target[1] - current[1])  # direction vectorielle vers target
+            # choix des deux meilleures directions (si il y en a deux)
+            directions = []
+            if vector[0] != 0: directions.append((vector[0]//abs(vector[0]), 0))
+            if vector[1] != 0: directions.append((0, vector[1]//abs(vector[1])))
+            return choice(directions)
 
         if not self.mem_food.is_empty:
-            directions = self.mem_food.remember(self.memory_points)
-            directions = directions.max(key=lambda x: x.food)
+            possibilities = self.mem_food.remember(self.memory_points)
+            food_case = possibilities.max(key=lambda x: x.food)
+            target = (food_case[0].x, food_case[0].y)  # case avec la meilleure food
+            current = (self.x, self.y)  # case actuelle
+            vector = (target[0] - current[0], target[1] - current[1])  # direction vectorielle vers target
+            # choix des deux meilleures directions (si il y en a deux)
+            directions = []
+            if vector[0] != 0: directions.append((vector[0] // abs(vector[0]), 0))
+            if vector[1] != 0: directions.append((0, vector[1] // abs(vector[1])))
+            return choice(directions)
+
+        #print("RANDOM")
+        return choice(directions)
             
 

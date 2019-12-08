@@ -65,7 +65,7 @@ class Controller:
             if not wait:
                 # Comptage des ticks/Days
                 if tick % TICK_DAY == 0:
-                    # Suppression de la nourritue restante
+                    # Suppression de la nourriture restante
                     self.world.removefood()
                     day += 1
                     # Spawn de la nouvelle food
@@ -75,10 +75,7 @@ class Controller:
                 #drawStats(self.grille, self.listebob, tick)
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
-                
 
-
-            
             # Update de la fenêtre
             while self.view.run:
                 # Limitation de vitesse de la boucle
