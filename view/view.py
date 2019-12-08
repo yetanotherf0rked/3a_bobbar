@@ -37,7 +37,7 @@ class View:
         self.perso = pygame.image.load(image_BOB).convert_alpha()
 
     # Fonction d'affichage
-    def affichage(self,grille,listebob):
+    def affichage(self,grille):
         self.run = True
 
         # GUI update
@@ -78,8 +78,6 @@ class View:
                     l = [bob for bob in grille[x][y].place]
                     l.sort(key = lambda x:x.masse, reverse = True)
                     bobliste.append(l)
-                # for bob in grille[x][y].place:
-                #     bobliste.append(bob)
 
         #Affichages des lignes extérieurs du bas
         pygame.draw.line(self.simu_surface, (255, 155, 65), (50+self.depx, 500+self.depy),(850+self.depx, 900+self.depy),5)

@@ -17,6 +17,7 @@ class Controller:
         self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         #Initialisation des Bobs
         self.listebob = self.initbob(self.grille)
+        self.file = File()
         if affichage:
             self.view = View()
         self.run(affichage,stats)
@@ -79,6 +80,7 @@ class Controller:
 
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
+                self.file.enfile(self.grille)
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
 
@@ -87,7 +89,7 @@ class Controller:
                 while self.view.run:
                     # Limitation de vitesse de la boucle
                     sleep(0.05)
-                self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
+                self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),))
                 self._thread.start()
 
                 # Test de fin
