@@ -64,7 +64,7 @@ class View:
         PosX_init = 50
         PosY_init = simu_y - 2*cote_y - 125
         rect = pygame.Rect(0,0,self.width,self.height)
-        pygame.draw.rect(self.simu_surface,(40,233,242),rect)
+        pygame.draw.rect(self.simu_surface,(30,200-tick%100,255),rect)
         pygame.draw.polygon(self.simu_surface, (38, 37, 42), [(PosX_init + self.depx,PosY_init + cote_y +self.depy),(PosX_init + cote_x + self.depx, PosY_init + self.depy),(PosX_init + 2* cote_x + self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx,PosY_init + 2*cote_y+ self.depy)]) #1600*800
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y+self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2* cote_y + 50 +self.depy), (PosX_init + self.depx,PosY_init + cote_y + 50 +self.depy)])
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(2* cote_x + PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +50 +self.depy), (PosX_init + 2* cote_x + self.depx,PosY_init + cote_y + 50 +self.depy)])
