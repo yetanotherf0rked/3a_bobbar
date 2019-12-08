@@ -6,7 +6,7 @@ TICK_DAY = 100
 # Population initiale 200
 NB_POP = 20
 # Taille de la carte 100
-TAILLE = 50
+TAILLE = 30
 #Taux de mutation de la vitesse
 MUT_VELOCITY = 0.1
 #Taux de mutation de la masse
@@ -22,6 +22,7 @@ DEP_STEP = 20
 image_BOB = "ressources/images/polar_bear_white2.png"
 image_FOOD = "ressources/images/biere.png"
 image_LOGO = "ressources/images/logov2.png"
+image_SOLEIL = "ressources/images/Soleil300*300.png"
 
 # Couleurs
 BLACK = (0, 0, 0)
