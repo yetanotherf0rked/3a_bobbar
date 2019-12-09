@@ -12,7 +12,8 @@ class Bob:
         self.masse = 1.0
         self.perception = 0
         self.memory_points = 0
-        self.energy_move = self.velocity**2*self.masse + self.perception/5 + self.memory_points/5
+        self.energy_move = self.velocity**2*self.masse 
+        self.energy_brain = self.perception/5 + self.memory_points/5
         self.speed_buffer = 0.0
         self.mem_food = Memory(self.memory_points)
         self.place_historic = Memory(2*self.memory_points)
@@ -65,7 +66,7 @@ class Bob:
                 #Reproduction ou parthenogenese si possible 
                 sons+= self.reproduction(current_case)
                 sons+= self.parthenogenesis(current_case)
-                
+        self.energy-=self.energy_brain
         #reproduction si possible : 
         return sons
 
@@ -80,11 +81,9 @@ class Bob:
             return True
         return False
 
-    def is_dead(self,):
+    def is_dead(self):
         # Test si le bob est mort et le supprime si c'est le cas
-        if self.energy <= 0:
-            return True
-        return False
+        return self.energy<=0
 
     def eat(self, food, rate=1):
         eaten_food = rate*food
