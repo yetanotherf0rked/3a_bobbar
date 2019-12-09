@@ -89,7 +89,7 @@ class Controller:
                     if not wait:
                         self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.file.tick))
                     else :
-                        self._thread = Thread(target=self.view.affichage, args=(self.file.current(),self.file.tick))
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.file.tick))
                     self._thread.start()
 
                 # Test de fin
@@ -116,6 +116,11 @@ class Controller:
                         self.view.depx -= DEP_STEP
                     if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
                         self.view.depx += DEP_STEP
+                    if wait and event.type == KEYDOWN and event.key == K_KP4:
+                        self.file.precTick()
+                    if wait and event.type == KEYDOWN and event.key == K_KP6:
+                        self.file.nextTick()
+                        print("Bonjour")
                     # Réagit si l'on bouge les sliders
                     self.view.gui.menu.react(event)
 
