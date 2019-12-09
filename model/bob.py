@@ -82,7 +82,7 @@ class Bob:
 
     def eat(self, food, rate=1):
         eaten_food = rate*food
-        if eaten_food + self.energy <= ENERGY_MAX:r
+        if eaten_food + self.energy <= ENERGY_MAX:
             self.energy += eaten_food
             food-=eaten_food
         else:
