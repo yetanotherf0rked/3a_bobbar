@@ -250,7 +250,10 @@ class Bob:
         if self == other_bob:
             return True
 
-        # on regarde d'abord les parents
+        if self.parents[0] in other_bob.parents and self.parents.parents[1] in other_bob.parents:  # si ils ont deux parents en commun (frère/soeur)
+            return True
+
+        # on regarde les parents
         if other_bob.age > self.age:
             open_list = self.parents.copy()
             while open_list:
