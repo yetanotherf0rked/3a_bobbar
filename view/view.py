@@ -54,7 +54,7 @@ class View:
         # self.perso = pygame.transform.scale(perso , (25,25))
 
     # Fonction d'affichage
-    def affichage(self,grille,listebob):
+    def affichage(self, grille, listebob, tick):
         self.run = True
 
         # GUI update
@@ -74,6 +74,12 @@ class View:
             x, y = bob.x, bob.y
             perso = pygame.transform.scale(self.perso, (32,int(32*bob.masse**2 -16*bob.masse+16)))
             self.simu_surface.blit(perso, (int(self.width/2) + self.depx -26 + x * 18 - 18 * y,self.depy + 2 + y * 13.7 + x * 13.7))
+
+        # Affichage progress bar days
+        len_progress_bar_days = self.simu_surface.get_width() - 20
+        # (self.width - len_progress_bar_days)/2 to center pos
+        self.gui.progress_bar((0, 20), (len_progress_bar_days, 10), (tick % TICK_DAY)/100, self.simu_surface, WHITE, GREEN)
+
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, POS_SURFACE_SIMU)
         self.fenetre.blit(self.menu_surface, POS_SURFACE_MENU)

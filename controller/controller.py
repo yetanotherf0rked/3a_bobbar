@@ -95,7 +95,7 @@ class Controller:
                 while self.view.run:
                     # Limitation de vitesse de la boucle
                     sleep(0.001)
-                self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
+                self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob, tick))
                 self._thread.start()
 
                 # Test de fin
