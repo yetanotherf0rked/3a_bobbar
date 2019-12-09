@@ -7,6 +7,7 @@ import pygame
 from pygame.locals import *
 from threading import Thread
 import gc
+from view.graphs import Graph
 
 
 class Controller:
@@ -18,6 +19,7 @@ class Controller:
         # Initialisation des Bobs
         self.listebob = self.initbob()
         self.file = File()
+        self.graph = Graph()
         if mode == 'a':
             self.view = View()
             self.run(True,False)
@@ -71,11 +73,13 @@ class Controller:
                     print(day, len(self.listebob))
                 tick += 1
                 #drawStats(self.grille, self.listebob, tick)
+                self.graph.launch_anim((tick/TICK_DAY,len(self.listebob)))
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
                 self.file.enfile(self.grille)
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
+                
 
             if affichage:
                 # Update de la fenêtre
