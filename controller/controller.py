@@ -20,7 +20,7 @@ class Controller:
         self.file = File()
         if mode == 'a':
             self.view = View()
-            self.run()
+            self.run(True,False)
         elif mode == 'd':
             self.run_debug()
         elif mode == 's':
@@ -36,17 +36,6 @@ class Controller:
             self.grille[x][y].place.append(bob)
             listebob.append(bob)
         return listebob
-
-    #Spawn de food
-    def spawnfood(self, grille):
-        for k in range(parameters.get("Food Number")):
-            x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
-            grille[x][y].food += parameters.get("Food Energy")
-
-    def removefood(self, grille):
-        for x in range(TAILLE):
-            for y in range(TAILLE):
-                grille[x][y].food = 0
 
     def update(self):
         new_bobs=[]
