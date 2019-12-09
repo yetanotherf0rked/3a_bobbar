@@ -7,8 +7,11 @@ class Memory:
         self.memory =[]
 
     def add(self,case) :
+        for case_in_memory in self.memory:
+            if case_in_memory == case:
+                return None
         self.memory.insert(0,case)
-        if len(self.memory)>self.taillemax :
+        if len(self.memory)>self.taillemax:
             self.memory.pop(self.taillemax)
 
     def remember(self,nmbr=1):
@@ -19,6 +22,7 @@ class Memory:
         for i in range(len(self.memory)) :
             if self.memory[i].x == case.x and self.memory[i].y == case.y :
                 self.memory.pop(i)
+                break
 
     def is_empty(self):
         return len(self.memory)==0 
@@ -39,4 +43,3 @@ def Danger_coeff(dangers,pos) :
 
 def is_obstacle(x,y):
     return x<0 or y<0 or x>=TAILLE or y>=TAILLE 
-        
