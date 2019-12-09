@@ -38,8 +38,8 @@ class View:
         #Chargement de la food
         food = pygame.image.load(image_FOOD).convert_alpha()
         self.food = pygame.transform.scale(food, (40, 40))
-        # Chargement des Bob
-        self.perso = pygame.image.load(image_BOB).convert_alpha()
+        # # Chargement des Bob
+        # self.perso = pygame.image.load(image_BOB).convert_alpha()
 
         #Création d'un soleil
         self.soleil = Soleil()
@@ -63,18 +63,23 @@ class View:
         cote_y = cote_x/2.5
         PosX_init = 50
         PosY_init = simu_y - 2*cote_y - 125
-        rect = pygame.Rect(0,0,self.width,self.height)
-        pygame.draw.rect(self.simu_surface,(30,200-tick%100,255),rect)
+
+        #Affichage du fond
+        rect = pygame.Rect(0, 0, self.width, self.height)
+        pygame.draw.rect(self.simu_surface, (30, 200 - tick % 100, 255), rect)
+
+        # Update et affichage Soleil
+        self.soleil.updateListeX(cote_x)
+        Pos = self.soleil.Pos(tick, cote_x, cote_y)
+        self.soleil.blit = self.simu_surface.blit(self.soleil.image, Pos)
+
+        #Affichage du sol
         pygame.draw.polygon(self.simu_surface, (38, 37, 42), [(PosX_init + self.depx,PosY_init + cote_y +self.depy),(PosX_init + cote_x + self.depx, PosY_init + self.depy),(PosX_init + 2* cote_x + self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx,PosY_init + 2*cote_y+ self.depy)]) #1600*800
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y+self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2* cote_y + 50 +self.depy), (PosX_init + self.depx,PosY_init + cote_y + 50 +self.depy)])
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(2* cote_x + PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +50 +self.depy), (PosX_init + 2* cote_x + self.depx,PosY_init + cote_y + 50 +self.depy)])
 
-        #Update et affichage Soleil
-        self.soleil.updateListeX(cote_x)
-        Pos = self.soleil.Pos(tick,cote_x,cote_y)
-        self.simu_surface.blit(self.soleil.image, Pos)
         # Affichage du sol
-        bobliste = []
+        caseliste = []
         for y in range(TAILLE):
             xdec, ydec = cote_x / TAILLE, cote_y / TAILLE
             if y == 0:
@@ -100,23 +105,29 @@ class View:
                 if grille[x][y].place != []:
                     l = [bob for bob in grille[x][y].place]
                     l.sort(key = lambda x:x.masse, reverse = True)
-                    bobliste.append(l)
+                    caseliste.append(l)
 
         #Affichages des lignes extérieurs du bas
         pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init+self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx, PosY_init + 2* cote_y + self.depy),5)
         pygame.draw.line(self.simu_surface, (255,155,65), (PosX_init + 2* cote_x + self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx,PosY_init + 2* cote_y + self.depy),5)
 
         # Affichage des Bobs
-        for case in bobliste:
+        self.bobliste = []
+        for case in caseliste:
             n = min(5,len(case))
             liste = case[0:n]
             x, y = liste[0].x, liste[0].y
             Pos = Case(0,0).bobCase(n,x,y,xdec,ydec)
             for i in range(n):
-                size = int(32*liste[i].masse**2 -16*liste[i].masse+16)
-                perso = pygame.transform.scale(self.perso, (32,size))
+                bob = liste[i]
+                size = int(32*bob.masse**2 -16*bob.masse+16)
+                if bob.bobController.select:
+                    perso = pygame.transform.scale(bob.redImage, (32, size))
+                else:
+                    perso = pygame.transform.scale(bob.image, (32,size))
                 PosX , PosY = Pos[i]
-                self.simu_surface.blit(perso, (PosX_init + cote_x - 16 + PosX + self.depx,PosY_init + 7 - size + PosY + self.depy))
+                bob.blit = self.simu_surface.blit(perso, (PosX_init + cote_x - 16 + PosX + self.depx,PosY_init + 7 - size + PosY + self.depy))
+                self.bobliste.append(bob)
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))
         self.fenetre.blit(self.menu_surface, (0, 0))

@@ -120,3 +120,12 @@ class Controller:
                         self.view.depx += DEP_STEP
                     # Réagit si l'on bouge les sliders
                     self.view.gui.menu.react(event)
+
+                    if event.type == MOUSEBUTTONDOWN:
+                        x,y = pygame.mouse.get_pos()
+                        x-= self.view.dim_menu[0]
+                        if self.view.soleil.blit.collidepoint((x,y)):
+                            wait = not wait
+                        for bob in self.view.bobliste:
+                            if bob.blit.collidepoint((x,y)):
+                                bob.bobController.select = True

@@ -8,6 +8,7 @@ class Soleil():
         # Chargement du Soleil
         soleil = pygame.image.load(image_SOLEIL).convert_alpha()
         self.image = pygame.transform.scale(soleil, (100, 100))
+        self.blit = None
 
     def y_function(self,x,cx,cy):
         a = (cy + 100) / ((80 - cx) ** 2)

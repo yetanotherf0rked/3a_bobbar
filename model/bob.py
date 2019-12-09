@@ -2,6 +2,7 @@ from random import uniform, choice
 from model.case import *
 from ressources.constantes import *
 from model.utils import *
+import pygame
 
 
 class Bob:
@@ -17,6 +18,9 @@ class Bob:
         self.speed_buffer = 0.0
         self.mem_food = Memory(self.memory_points)
         self.place_historic = Memory(2*self.memory_points)
+        self.blit = None
+        self.select = False
+        self.bobController = self
 
     def copie(self):
         bob = Bob((self.x,self.y))
@@ -29,6 +33,10 @@ class Bob:
         bob.speed_buffer = self.speed_buffer
         bob.mem_food = self.mem_food
         bob.place_historic = self.place_historic
+        bob.image = pygame.image.load(image_BOB).convert_alpha()
+        bob.redImage = pygame.image.load(image_REDBOB).convert_alpha()
+        bob.blit = self.blit
+        bob.bobController = self.bobController
         return bob
 
     def update(self, grille):
@@ -203,5 +211,3 @@ class Bob:
         if not self.mem_food.is_empty:
             directions =self.mem_food.remember(self.memory_points)
             directions = directions.max(key=lambda x: x.food)
-
-

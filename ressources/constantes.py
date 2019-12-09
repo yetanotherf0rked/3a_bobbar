@@ -20,6 +20,7 @@ DEP_STEP = 20
 
 # Chargement des images
 image_BOB = "ressources/images/polar_bear_white2.png"
+image_REDBOB = "ressources/images/polar_bear_red.png"
 image_FOOD = "ressources/images/biere.png"
 image_LOGO = "ressources/images/logov2.png"
 image_SOLEIL = "ressources/images/Soleil300*300.png"
