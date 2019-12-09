@@ -109,7 +109,8 @@ class Bob:
             son.masse = max(1.0, self.masse + uniform(-MUT_MASSE, MUT_MASSE))
             son.perception = max(0, self.perception+ choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
             son.memory_points=max(0, self.memory_points + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
-            son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
+            son.energy_move = son.velocity**2*son.masse
+            son.energy_brain = son.perception/5 + son.memory_points/5
             # Ajout du fils dans la case
             case.place.append(son)
             self.childs.add(son)
@@ -145,7 +146,8 @@ class Bob:
                     son.masse = max(1.0, (self.masse + other_bob.masse)/2 + uniform(-MUT_MASSE, MUT_MASSE))
                     son.perception = max(0, round((self.perception + other_bob.perception )/2) + choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
                     son.memory_points=max(0, round((self.memory_points + other_bob.memory_points)/2) + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
-                    son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
+                    son.energy_move = son.velocity**2*son.masse
+                    son.energy_brain = son.perception/5 + son.memory_points/5
 
                     case.place.append(son)
 
