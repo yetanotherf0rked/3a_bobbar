@@ -30,7 +30,7 @@ class Bob:
         is_moving = False
         current_case = grille[self.x][self.y]
 
-        sons = [] #liste contenant les envantuels enfant du bob à ce tour 
+        sons = []  # liste contenant les envantuels enfant du bob à ce tour
 
         # Fight ?
         self.fight(current_case)
@@ -44,7 +44,7 @@ class Bob:
                 if current_case.food != 0:
                     current_case.food = self.eat(current_case.food)
 
-                #choix direction déplacement
+                # choix direction déplacement
                 dx, dy = self.move_preference(grille) #choice([(-1, 0), (1, 0), (0, -1), (0, 1)]
                 
                 # déplacement
@@ -63,33 +63,44 @@ class Bob:
                 if current_case.food != 0:
                     current_case.food = self.eat(current_case.food)
                 
-                #Reproduction ou parthenogenese si possible 
-                sons+= self.reproduction(current_case)
-                sons+= self.parthenogenesis(current_case)
-        self.energy-=self.energy_brain
-        #reproduction si possible : 
+                # Reproduction ou parthenogenese si possible
+                sons += self.reproduction(current_case)
+                sons += self.parthenogenesis(current_case)
+        self.energy -= self.energy_brain
+        # reproduction si possible :
         return sons
 
     def move(self, grille, dx, dy):
-        nx=self.x+dx
-        ny=self.y+dy
-        if(0<=nx<TAILLE and 0<=ny<TAILLE): # test limites du monde
+        """Déplace le bob sur la grille
+
+        Parametres:
+            grille (world.grid): une liste bidimensionnelle contenant des objets Case
+            dx (int): déplacement sur x
+            dy (int): déplacement sur y
+
+        Returns:
+            Boolean: représente le fait que le bob ait bougé ou pas (pour savoir combien il faut lui enlever d'énergie)
+
+        """
+        nx = self.x+dx
+        ny = self.y+dy
+        if(0<=nx<TAILLE and 0<=ny<TAILLE):  # test limites du monde
             grille[self.x][self.y].place.remove(self)
-            self.x=nx
-            self.y=ny
+            self.x = nx
+            self.y = ny
             grille[self.x][self.y].place.append(self)   
             return True
         return False
 
     def is_dead(self):
-        # Test si le bob est mort et le supprime si c'est le cas
-        return self.energy<=0
+        """Test si le bob est mort"""
+        return self.energy <= 0
 
     def eat(self, food, rate=1):
         eaten_food = rate*food
         if eaten_food + self.energy <= ENERGY_MAX:
             self.energy += eaten_food
-            food-=eaten_food
+            food -= eaten_food
         else:
             food -= ENERGY_MAX-self.energy
             self.energy = 200
@@ -116,12 +127,16 @@ class Bob:
             self.childs.add(son)
             son.parents.add(self)
             return [son]
-         # si le bob n'enfante pas on retourne une liste vide
+        # si le bob n'enfante pas on retourne une liste vide
         return []
-            
 
     def fight(self, case):
-        """test si un combat est possible sur la case actuelle, dévore l'autre Bob dans ce cas """
+        """test si des combats sont possibles sur la case actuelle, dévore les autres bobs dans ce cas
+
+        Parametres:
+            case (Case): la case où les fights vont se produire
+        Returns:
+        """
         if len(case.place) > 1:  # Fight
             for other_bob in case.place:
                 # if other_bob != bob:  # inutile car bob.masse/bob.masse > 2/3
@@ -129,10 +144,15 @@ class Bob:
                     self.energy = min(ENERGY_MAX, self.energy + 0.5*other_bob.energy*(1-(other_bob.masse/self.masse)))
                     other_bob.energy = 0
 
-    # apres ce commentaire : methodes en cours d'implementation :
-
     def reproduction(self, case):
-        """ """
+        """Réalise les reproduction sur une case entre self et les bobs sur cette case
+
+        Parametres:
+            case (Case): la case où le bob va se reproduire
+
+        Return:
+            sons [Bob]: une liste de Bob représentant les enfants nés de self et de other_bob pendant ce tick
+        """
         sons=[]
         if self.energy > ENERGY_MIN_REPRO and len(case.place) > 1:
             for other_bob in case.place :
@@ -161,7 +181,16 @@ class Bob:
         return sons
 
     def see(self, grille):
-        """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies"""
+        """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies
+
+        Parametres:
+            grille (world.grid): une liste bidimensionnelle contenant des objets Case
+
+        Returns:
+            dangers [Bob]: Une liste de Bob plus gros de 2/3 selon la masse par rapport à self.masse
+            foods [Case]: Une liste de Case avec de la nourriture
+            preys [Bob]: Une liste de Bob plus petit de 2/3 selon la masse par rapport à self.masse
+        """
         radius = self.perception 
         danger = False
         dangers = []
@@ -185,7 +214,14 @@ class Bob:
         return dangers, foods, preys
 
     def move_preference(self, grille):
-        """récupere les informations sur les cases vues par le bob et choisit une direction en fonction """
+        """récupere les informations sur les cases vues par le bob et choisit une direction en fonction
+
+        Parametres:
+            grille (world.grid): Une liste bidimensionnelle contenant des objets Case
+
+        Returns:
+            direction (int, int): Un tuple représentant la direction vers laquelle va se diriger le bob
+        """
 
         directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         # voit les cases qu'il perçoit 
@@ -245,10 +281,17 @@ class Bob:
 
         #print("RANDOM")
         return choice(directions)
-            
-
 
     def areInSameFamily(self, other_bob):
+        """Méthode qui détermine si deux bobs sont de la même famille
+
+        Parametres:
+            other_bob (Bob): Le bob que l'on va comparer avec self
+
+        Returns:
+            Boolean
+
+        """
         if self == other_bob:
             return True
 
@@ -276,7 +319,6 @@ class Bob:
                 if current.age > other_bob.age:  # si on regarde un bob plus jeune, on ne continue pas sur les enfants de current
                     open_list.update(current.childs)
 
-        #TODO regarder les cousins/neveux ?
+        # TODO regarder les cousins/neveux ?
 
         return False
-
