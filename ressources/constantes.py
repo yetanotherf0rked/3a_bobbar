@@ -41,6 +41,8 @@ DEP_STEP = 20
 FAMILY_REPRODUCTION = False
 FAMILY_AGGRESSION = False
 
+DIFF_AGE_FOR_REPRODUCTION = 500  # valeur en tick
+
 # Chargement des images
 image_FOND = "ressources/images/wall.jpg"
 image_SOL = "ressources/images/isometric_pixel_0046.png"

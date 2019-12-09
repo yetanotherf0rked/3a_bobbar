@@ -135,7 +135,7 @@ class Bob:
         sons=[]
         if self.energy > ENERGY_MIN_REPRO and len(case.place) > 1:
             for other_bob in case.place :
-                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO and (FAMILY_REPRODUCTION or (not FAMILY_REPRODUCTION and not self.areInSameFamily(other_bob))):
+                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO and abs(self.age-other_bob.age) < DIFF_AGE_FOR_REPRODUCTION and (FAMILY_REPRODUCTION or (not FAMILY_REPRODUCTION and not self.areInSameFamily(other_bob))):
                     other_bob.energy -= ENERGY_REPRO
                     self.energy -= ENERGY_REPRO
                     son = Bob([self.x, self.y])
