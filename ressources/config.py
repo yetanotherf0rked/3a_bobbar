@@ -30,6 +30,17 @@ MUT_PERCEPT=1
 MUT_MEMORY = 1
 #Deplacement step
 DEP_STEP = 20
+#Energie min nescessaire pour la reproduction sexuée
+ENERGY_MIN_REPRO = 150
+#energie enfant de la reproduction sexuée
+ENERGY_SON_REPRO = 100
+#Energie dépensée lors de la reproduction sexuée
+ENERGY_REPRO = 150
+
+FAMILY_REPRODUCTION = False
+FAMILY_AGGRESSION = False
+
+DIFF_AGE_FOR_REPRODUCTION = 500  # valeur en tick
 
 # Chargement des images
 image_BOB = "ressources/images/polar_bear_white2.png"
