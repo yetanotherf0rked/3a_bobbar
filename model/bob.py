@@ -192,6 +192,7 @@ class Bob:
                 dmax = distance((dax, day),(self.x, self.y)) 
                 if distance((dax, day),(self.x+dx, self.y+dy)) > dmax:
                     directions.remove((dx, dy))
+                    dmax = distance((dax, day),(self.x+dx, self.y+dy))
 
             if not directions:
                 directions.append((0, 0))
