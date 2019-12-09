@@ -44,7 +44,7 @@ class Bob:
                 is_moving = self.move(grille, dx, dy)
                 self.place_historic.add(current_case)  # ajoute la case qu'il vient de quitter a son historique des cases visités
                 current_case = grille[self.x][self.y]
-                self.mem_food.forgot(current_case)  # si on arrive le bob arrive à une case dont il se souvenait il la supprime de sa memoire.
+                self.place_historic.forgot(current_case)  # si on arrive le bob arrive à une case dont il se souvenait il la supprime de sa memoire.
 
                 # perte d'energie due au deplacement
                 self.energy -= self.energy_move if is_moving else ENERGY_STAY
@@ -82,7 +82,7 @@ class Bob:
 
     def eat(self, food, rate=1):
         eaten_food = rate*food
-        if eaten_food + self.energy <= ENERGY_MAX:
+        if eaten_food + self.energy <= ENERGY_MAX:r
             self.energy += eaten_food
             food-=eaten_food
         else:
@@ -175,11 +175,11 @@ class Bob:
         # voit les cases qu'il perçoit 
         dangers, foods, prey = self.see(grille)
         
+        for food in foods:
+            self.mem_food.add(food)
+
         # si il y a un danger on fuit
         if dangers:
-            for food in foods:
-                self.mem_food.add(food)
-
             for e in directions:  # detection d'obstacle/bords de carte
                 if is_obstacle(e[0],e[1]):
                     directions.remove(e)
