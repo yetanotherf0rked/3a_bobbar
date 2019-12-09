@@ -11,7 +11,7 @@ class Gui:
 
         Hiérarchie des boxs :
 
-        --- Box: box principale self.main_box (the father of all the boxes)
+        --- Box: box prinxcipale self.main_box (the father of all the boxes)
         ------ Box: Box Titre Stats
         --------- Texte: Titre Stats
         ------ Box: box des stats self.stats_box. Pour tous les deux stats :

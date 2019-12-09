@@ -93,7 +93,7 @@ class Controller:
                     else :
                         self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.file.tick))
                     self._thread.start()
-                print(len(self.file.file),len(self.file.historique.pile),TICK_DAY*10)
+                # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY*10)
                 # Test de fin
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
@@ -122,6 +122,7 @@ class Controller:
                     if wait and event.type == KEYDOWN and event.key == K_KP6:
                         self.file.nextTick()
                     # Réagit si l'on bouge les sliders
+                    self.view.menu_surface.unlock()
                     self.view.gui.menu.react(event)
 
                     if event.type == MOUSEBUTTONDOWN:
