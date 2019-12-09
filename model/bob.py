@@ -125,7 +125,7 @@ class Bob:
         if len(case.place) > 1:  # Fight
             for other_bob in case.place:
                 # if other_bob != bob:  # inutile car bob.masse/bob.masse > 2/3
-                if other_bob.masse/self.masse < 2/3 and not self.areInSameFamily(other_bob):
+                if other_bob.masse/self.masse < 2/3 and (FAMILY_AGGRESSION or (not FAMILY_AGGRESSION and not self.areInSameFamily(other_bob))):
                     self.energy = min(ENERGY_MAX, self.energy + 0.5*other_bob.energy*(1-(other_bob.masse/self.masse)))
                     other_bob.energy = 0
 
@@ -136,7 +136,7 @@ class Bob:
         sons=[]
         if self.energy > ENERGY_MIN_REPRO and len(case.place) > 1:
             for other_bob in case.place :
-                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO and not self.areInSameFamily(other_bob):
+                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO and (FAMILY_REPRODUCTION or (not FAMILY_REPRODUCTION and not self.areInSameFamily(other_bob))):
                     other_bob.energy -= ENERGY_REPRO
                     self.energy -= ENERGY_REPRO
                     son = Bob([self.x, self.y])

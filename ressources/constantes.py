@@ -39,6 +39,7 @@ ENERGY_REPRO = 150
 DEP_STEP = 20
 
 FAMILY_REPRODUCTION = False
+FAMILY_AGGRESSION = False
 
 # Chargement des images
 image_FOND = "ressources/images/wall.jpg"
