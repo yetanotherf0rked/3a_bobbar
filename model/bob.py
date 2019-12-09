@@ -17,8 +17,8 @@ class Bob:
         self.speed_buffer = 0.0
         self.mem_food = Memory(self.memory_points)
         self.place_historic = Memory(2*self.memory_points)
-        self.parents = []
-        self.childs = []
+        self.parents = set()
+        self.childs = set()
         self.age = 0
 
     def update(self, grille):
@@ -112,8 +112,8 @@ class Bob:
             son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
             # Ajout du fils dans la case
             case.place.append(son)
-            self.childs.append(son)
-            son.parents.append(self)
+            self.childs.add(son)
+            son.parents.add(self)
             return [son]
          # si le bob n'enfante pas on retourne une liste vide
         return []
@@ -149,11 +149,11 @@ class Bob:
 
                     case.place.append(son)
 
-                    self.childs.append(son)
-                    other_bob.childs.append(son)
+                    self.childs.add(son)
+                    other_bob.childs.add(son)
 
-                    son.parents.append(self)
-                    son.parents.append(other_bob)
+                    son.parents.add(self)
+                    son.parents.add(other_bob)
 
                     sons.append(son)
         return sons
@@ -250,7 +250,8 @@ class Bob:
         if self == other_bob:
             return True
 
-        if self.parents[0] in other_bob.parents and self.parents.parents[1] in other_bob.parents:  # si ils ont deux parents en commun (frère/soeur)
+        # si ils ont le(s) même(s) parent(s) (frère/soeur)
+        if self.parents == other_bob.parents:  
             return True
 
         # on regarde les parents
@@ -261,7 +262,7 @@ class Bob:
                 if current == other_bob:
                     return True
                 if current.age < other_bob.age:  # si on regarde un bob plus vieux, on ne continue pas sur les parents de current
-                    open_list.extend(current.parents)
+                    open_list.update(current.parents)
 
         # on regarde les enfants
         if other_bob.age < self.age:
@@ -271,9 +272,9 @@ class Bob:
                 if current == other_bob:
                     return True
                 if current.age > other_bob.age:  # si on regarde un bob plus jeune, on ne continue pas sur les enfants de current
-                    open_list.extend(current.childs)
+                    open_list.update(current.childs)
 
-        #TODO regarder les freres/soeurs/cousins/neveux ?
+        #TODO regarder les cousins/neveux ?
 
         return False
 
