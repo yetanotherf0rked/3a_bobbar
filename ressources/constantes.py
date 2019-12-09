@@ -6,7 +6,7 @@ TICK_DAY = 100
 # Population initiale 200
 NB_POP = 20
 # Taille de la carte 100
-TAILLE = 30
+TAILLE = 50
 #Taux de mutation de la vitesse
 MUT_VELOCITY = 0.1
 #Taux de mutation de la masse

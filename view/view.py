@@ -70,7 +70,7 @@ class View:
 
         # Update et affichage Soleil
         self.soleil.updateListeX(cote_x)
-        Pos = self.soleil.Pos(tick, cote_x, cote_y)
+        Pos = self.soleil.Pos(tick, cote_x, cote_y,PosX_init,PosY_init,self.depx,self.depy)
         self.soleil.blit = self.simu_surface.blit(self.soleil.image, Pos)
 
         #Affichage du sol
