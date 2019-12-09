@@ -16,10 +16,16 @@ class Bob:
         self.speed_buffer = 0.0
         self.mem_food = Memory(self.memory_points)
         self.place_historic = Memory(2*self.memory_points)
+        self.parents = []
+        self.childs = []
+        self.age = 0
 
     def update(self, grille):
         """update le bob : combats, manger, déplacement... 
         Si le bob se reproduit update retourne une liste contenant le nouveau fils sinon une liste vide"""
+
+        self.age += 1
+
         is_moving = False
         current_case = grille[self.x][self.y]
 
@@ -107,6 +113,8 @@ class Bob:
             son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
             # Ajout du fils dans la case
             case.place.append(son)
+            self.childs.append(son)
+            son.parents.append(self)
             return [son]
          # si le bob n'enfante pas on retourne une liste vide
         return []
@@ -117,7 +125,7 @@ class Bob:
         if len(case.place) > 1:  # Fight
             for other_bob in case.place:
                 # if other_bob != bob:  # inutile car bob.masse/bob.masse > 2/3
-                if other_bob.masse/self.masse < 2/3:
+                if other_bob.masse/self.masse < 2/3 and not self.areInSameFamily(other_bob):
                     self.energy = min(ENERGY_MAX, self.energy + 0.5*other_bob.energy*(1-(other_bob.masse/self.masse)))
                     other_bob.energy = 0
 
@@ -128,7 +136,7 @@ class Bob:
         sons=[]
         if self.energy > ENERGY_MIN_REPRO and len(case.place) > 1:
             for other_bob in case.place :
-                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO :
+                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO and not self.areInSameFamily(other_bob):
                     other_bob.energy -= ENERGY_REPRO
                     self.energy -= ENERGY_REPRO
                     son = Bob([self.x, self.y])
@@ -141,6 +149,13 @@ class Bob:
                     son.energy_move = son.velocity**2*son.masse + son.perception/5 + son.memory_points/5
 
                     case.place.append(son)
+
+                    self.childs.append(son)
+                    other_bob.childs.append(son)
+
+                    son.parents.append(self)
+                    son.parents.append(other_bob)
+
                     sons.append(son)
         return sons
 
@@ -230,4 +245,33 @@ class Bob:
         #print("RANDOM")
         return choice(directions)
             
+
+
+    def areInSameFamily(self, other_bob):
+        if self == other_bob:
+            return True
+
+        # on regarde d'abord les parents
+        if other_bob.age > self.age:
+            open_list = self.parents.copy()
+            while open_list:
+                current = open_list.pop()
+                if current == other_bob:
+                    return True
+                if current.age < other_bob.age:  # si on regarde un bob plus vieux, on ne continue pas sur les parents de current
+                    open_list.extend(current.parents)
+
+        # on regarde les enfants
+        if other_bob.age < self.age:
+            open_list = self.childs.copy()
+            while open_list:
+                current = open_list.pop()
+                if current == other_bob:
+                    return True
+                if current.age > other_bob.age:  # si on regarde un bob plus jeune, on ne continue pas sur les enfants de current
+                    open_list.extend(current.childs)
+
+        #TODO regarder les freres/soeurs/cousins/neveux ?
+
+        return False
 

@@ -1,7 +1,7 @@
 #Tick par jour 100
 TICK_DAY = 100
 #Population initiale 200
-NB_POP = 50
+NB_POP = 5
 #Taille de la carte 100
 TAILLE = 40
 #Nourriture sur la carte 200
@@ -37,6 +37,8 @@ ENERGY_REPRO = 150
 
 #Deplacement step
 DEP_STEP = 20
+
+FAMILY_REPRODUCTION = False
 
 # Chargement des images
 image_FOND = "ressources/images/wall.jpg"
