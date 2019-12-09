@@ -85,14 +85,12 @@ class Controller:
 
             if affichage:
                 # Update de la fenêtre
-                while self.view.run:
-                    # Limitation de vitesse de la boucle
-                    sleep(0.05)
-                if not wait:
-                    self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),tick))
-                else :
-                    self._thread = Thread(target=self.view.affichage, args=(self.file.current(),tick))
-                self._thread.start()
+                if not self.view.run:
+                    if not wait:
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.file.tick))
+                    else :
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.current(),self.file.tick))
+                    self._thread.start()
 
                 # Test de fin
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
