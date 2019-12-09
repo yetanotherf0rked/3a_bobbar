@@ -1,4 +1,4 @@
-from ressources.constantes import *
+from ressources.config import *
 import numpy as np
 import pygame
 

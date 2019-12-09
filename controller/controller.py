@@ -6,7 +6,6 @@ from view import View
 import pygame
 from pygame.locals import *
 from threading import Thread
-from time import sleep
 
 
 class Controller:
@@ -129,7 +128,7 @@ class Controller:
                         x,y = pygame.mouse.get_pos()
                         x-= self.view.dim_menu[0]
                         if self.view.soleil.blit.collidepoint((x,y)):
-                            wait = not wait
+                            self.view.gui.pause_button_pressed()
                         for bob in self.view.bobliste:
                             if bob.blit.collidepoint((x,y)):
                                 bob.bobController.select = True

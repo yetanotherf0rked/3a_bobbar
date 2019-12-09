@@ -32,8 +32,6 @@ MUT_MEMORY = 1
 DEP_STEP = 20
 
 # Chargement des images
-image_FOND = "ressources/images/wall.jpg"
-image_SOL = "ressources/images/isometric_pixel_0046.png"
 image_BOB = "ressources/images/polar_bear_white2.png"
 image_FOOD = "ressources/images/biere.png"
 image_LOGO = "ressources/images/logo_round_210.png"
@@ -45,6 +43,8 @@ image_EARTH5 = "ressources/images/terre 1.png"
 image_EARTH7 = "ressources/images/Grass.png"
 image_EARTH6 = "ressources/images/terre 3.png"
 image_EARTH_WOW = "ressources/images/terrespec.png"
+image_REDBOB = "ressources/images/polar_bear_red.png"
+image_SOLEIL = "ressources/images/Soleil300*300.png"
 
 # Couleurs
 BLACK = (0, 0, 0)

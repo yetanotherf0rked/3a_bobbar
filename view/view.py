@@ -47,7 +47,7 @@ class View:
         self.soleil = Soleil()
 
     # Fonction d'affichage
-    def affichage(self, grille, listebob, tick):
+    def affichage(self, grille, tick):
         self.run = True
 
         #Resize des surfaces:
@@ -56,9 +56,6 @@ class View:
         self.dim_simu = (simu_x, simu_y)
         pygame.transform.scale(self.menu_surface, self.dim_menu)
         pygame.transform.scale(self.simu_surface, self.dim_simu)
-
-        # GUI update
-        self.gui.update(update_stats(grille, listebob, tick))
 
         # Simu Update
         cote_x = simu_x/2 - 50
@@ -133,6 +130,9 @@ class View:
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))
         self.fenetre.blit(self.menu_surface, (0, 0))
+
+        # GUI update
+        self.gui.update(update_stats(grille, self.bobliste, tick))
 
         # Update
         pygame.display.flip()

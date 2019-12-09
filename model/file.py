@@ -1,4 +1,3 @@
-from ressources.constantes import *
 from model.case import *
 from model.pile import *
 

@@ -73,7 +73,7 @@ class Gui:
         self.elements.append(self.quit_button)
 
         # Boutton Pause
-        self.gui_pause = True
+        self.gui_pause = False
         self.pause_button = thorpy.make_button("Play/Pause", func=self.pause_button_pressed)
         self.pause_button.set_main_color(BLACK)
         self.elements.append(self.pause_button)
