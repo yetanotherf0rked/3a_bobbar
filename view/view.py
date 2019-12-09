@@ -1,7 +1,7 @@
 import pygame
 from random import randint
 from pygame.locals import RESIZABLE
-from ressources.constantes import *
+from ressources.config import *
 from .gui import *
 from model import *
 
@@ -10,16 +10,18 @@ class View:
     def __init__(self):
         self.initView()
         self.run = False
-        # 2 Attributs permettant de ce déplacer dans la fenêtre.
+        # 2 Attributs permettant de se déplacer dans la fenêtre
         self.depx = 0
         self.depy = 0
 
     def initView(self):
+
         # Initialisation de pygame
         pygame.init()
+
         #Calcul de la taille de l'écran
         info = pygame.display.Info()
-        self.width,self.height = info.current_w,info.current_h
+        self.width, self.height = info.current_w, info.current_h
 
         self.dim_menu = (220 , int(self.height))
         simu_x, simu_y = self.width - self.dim_menu[0], int(self.height)
@@ -45,7 +47,7 @@ class View:
         self.soleil = Soleil()
 
     # Fonction d'affichage
-    def affichage(self,grille,tick):
+    def affichage(self, grille, listebob, tick):
         self.run = True
 
         #Resize des surfaces:
@@ -56,7 +58,7 @@ class View:
         pygame.transform.scale(self.simu_surface, self.dim_simu)
 
         # GUI update
-        self.gui.update()
+        self.gui.update(update_stats(grille, listebob, tick))
 
         # Simu Update
         cote_x = simu_x/2 - 50

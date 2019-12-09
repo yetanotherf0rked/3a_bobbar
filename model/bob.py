@@ -1,6 +1,6 @@
 from random import uniform, choice
 from model.case import *
-from ressources.constantes import *
+from ressources.config import *
 from model.utils import *
 import pygame
 

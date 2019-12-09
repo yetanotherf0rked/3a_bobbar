@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 
 
 # Affiche la fenêtre au centre
-# os.environ["SDL_VIDEO_CENTERED"] = "1"
+os.environ["SDL_VIDEO_CENTERED"] = "1"
 
 
 

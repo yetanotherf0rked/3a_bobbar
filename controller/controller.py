@@ -1,6 +1,6 @@
 from model import *
 from random import randint,choice
-from ressources.constantes import *
+from ressources.config import *
 from view.debug import *
 from view import View
 import pygame
@@ -62,21 +62,23 @@ class Controller:
         tick = 0
         day = 0
         continuer = True
-        wait = False
+
         while continuer and self.listebob:
+            wait = self.view.gui.gui_pause
             if not wait:
                 # Comptage des ticks/Days
                 if tick % TICK_DAY == 0:
-                    # Suppression de la nourritue restante
+
+                    # Suppression de la nourriture restante
                     self.removefood(self.grille)
                     day += 1
+
                     # Spawn de la nouvelle food
                     self.spawnfood(self.grille)
+
                 tick += 1
-                # Affichage du tick, du day et de la population
-                self.view.gui.update_state_box(day, tick, len(self.listebob))
 
-
+                # Update
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
                 self.file.enfile(self.grille)
@@ -101,9 +103,8 @@ class Controller:
 
                     # Pause
                     if event.type == KEYDOWN and event.key == K_SPACE:
-                        wait = not wait
+                        self.view.gui.pause_button_pressed()
 
-                    # Test si on a resize la fenêtre
                     if event.type == VIDEORESIZE:
                         self.view.width,self.view.height = event.size
 
