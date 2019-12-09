@@ -44,7 +44,7 @@ image_EARTH7 = "ressources/images/Grass.png"
 image_EARTH6 = "ressources/images/terre 3.png"
 image_EARTH_WOW = "ressources/images/terrespec.png"
 image_REDBOB = "ressources/images/polar_bear_red.png"
-image_SOLEIL = "ressources/images/Soleil300*300.png"
+image_SOLEIL = "ressources/images/Soleil300x300.png"
 
 # Couleurs
 BLACK = (0, 0, 0)

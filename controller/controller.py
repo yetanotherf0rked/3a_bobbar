@@ -6,6 +6,7 @@ from view import View
 import pygame
 from pygame.locals import *
 from threading import Thread
+import gc
 
 
 class Controller:
@@ -92,7 +93,7 @@ class Controller:
                     else :
                         self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.file.tick))
                     self._thread.start()
-
+                print(len(self.file.file),len(self.file.historique.pile),TICK_DAY*10)
                 # Test de fin
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
@@ -120,7 +121,6 @@ class Controller:
                         self.file.precTick()
                     if wait and event.type == KEYDOWN and event.key == K_KP6:
                         self.file.nextTick()
-                        print("Bonjour")
                     # Réagit si l'on bouge les sliders
                     self.view.gui.menu.react(event)
 

@@ -1,3 +1,5 @@
+from ressources.config import *
+
 class Pile():
 
     def __init__(self):
@@ -5,6 +7,8 @@ class Pile():
         self.len = 0
 
     def empile(self,new):
+        if self.len == 10*TICK_DAY:
+            del self.pile[0]
         self.pile.append(new)
         self.len+=1
 
