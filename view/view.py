@@ -44,7 +44,7 @@ class View:
         # self.perso = pygame.image.load(image_BOB).convert_alpha()
 
         #Création d'un soleil
-        self.soleil = Soleil()
+        self.soleil = Star()
 
     # Fonction d'affichage
     def affichage(self, grille, tick):
