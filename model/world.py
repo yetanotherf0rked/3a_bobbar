@@ -8,7 +8,6 @@ class World:
         self.grid = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
 
     def spawnfood(self):
-        print("Food number =",parameters.get("Food Number"))
         for _ in range(parameters.get("Food Number")):
             x, y = randint(0, TAILLE - 1), randint(0, TAILLE - 1)
             self.grid[x][y].food += parameters.get("Food Energy")

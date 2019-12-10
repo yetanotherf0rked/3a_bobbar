@@ -73,7 +73,6 @@ class View:
         self.soleil.blit = self.simu_surface.blit(self.soleil.image, Pos)
 
         #Affichage du sol
-        pygame.draw.polygon(self.simu_surface, (38, 37, 42), [(PosX_init + self.depx,PosY_init + cote_y +self.depy),(PosX_init + cote_x + self.depx, PosY_init + self.depy),(PosX_init + 2* cote_x + self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx,PosY_init + 2*cote_y+ self.depy)]) #1600*800
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y+self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2* cote_y + 50 +self.depy), (PosX_init + self.depx,PosY_init + cote_y + 50 +self.depy)])
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(2* cote_x + PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +50 +self.depy), (PosX_init + 2* cote_x + self.depx,PosY_init + cote_y + 50 +self.depy)])
 
@@ -85,14 +84,8 @@ class View:
                 # Affichages des lignes extérieurs du haut
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x - xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + 2* cote_x - xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x + xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
-
-            #Lignes Haut-Gauche
-            pygame.draw.line(self.simu_surface, (228, 226, 232), (PosX_init + cote_x - xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + 2* cote_x - xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy))
-
-          #Lignes Haut-Droite
-            pygame.draw.line(self.simu_surface, (228, 226, 232), (PosX_init + cote_x + xdec * y+ self.depx, PosY_init + ydec * y+self.depy), (PosX_init + xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy))
-
             for x in range(TAILLE):
+                grille[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x)
                 n = min(5,int(grille[x][y].food // parameters.get("Food Energy")))
                 if not(n ==0):
                     Pos = Case(0,0).bobCase(n, x, y, xdec, ydec)

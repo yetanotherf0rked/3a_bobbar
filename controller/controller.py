@@ -68,7 +68,6 @@ class Controller:
 
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
-                    print(day, len(self.listebob))
                 tick += 1
                 #drawStats(self.grille, self.listebob, tick)
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
