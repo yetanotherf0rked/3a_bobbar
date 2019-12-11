@@ -89,7 +89,7 @@ class View:
         progress_beer = pygame.transform.scale(beer_image, (200, 200))
         pos_bar_food = (10, 5)
         size_bar_food = (progress_beer.get_width() * 0.68, progress_beer.get_height() - 10)
-        progress_food = 1 - ((NB_FOOD-current_food) % TICK_DAY)/100
+        progress_food = (current_food/NB_FOOD) % TICK_DAY
         print("NB_FOOD : ", NB_FOOD, "current_food : ", current_food, "progress_food : ", progress_food)
         self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, BEER, vertical=True, reverse=True)
         self.simu_surface.blit(progress_beer, (35, 50))
