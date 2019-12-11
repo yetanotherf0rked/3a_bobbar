@@ -185,8 +185,10 @@ class Bob:
                     sons.append(son)
         return sons
 
-    def see(self, grille):
-        """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies"""
+    def see(self, grille, show = False):
+        """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies
+        show permet de tester si on est dans la view ou non"""
+
         radius = self.perception
         danger = False
         dangers = []
@@ -195,8 +197,12 @@ class Bob:
 
         for dx, dy in [(i, j) for i in range(-radius, radius+1) for j in range(abs(i)-radius, radius+1-abs(i))]:  # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
             if 0 <= self.x + dx < TAILLE and 0 <= self.y+dy < TAILLE:  # si la position qu'on regarde est bien dans la grille
-
-                for other in grille[self.x+dx][self.y+dy].place:  # si il y a des bobs sur cette case
+                case = grille[self.x+dx][self.y+dy]
+                if show:
+                    case.type = "Perception"
+                    case.nbPerception += 1
+                    continue
+                for other in case.place:  # si il y a des bobs sur cette case
                     if self.masse/other.masse < 2/3:  # si il y a un bob menaçant, on est en danger
                         danger = True
                         dangers.append(other)
@@ -204,8 +210,8 @@ class Bob:
                     if (not danger) and other.masse/self.masse < 2/3:  # si on est pas en danger, on cherche les proies possibles
                         preys.append(other)
 
-                if grille[self.x+dx][self.y+dy].food > 0:  # si il y a de la nourriture on la voit
-                    foods.append(grille[self.x + dx][self.y + dy])
+                if case.food > 0:  # si il y a de la nourriture on la voit
+                    foods.append(case)
 
         return dangers, foods, preys
 

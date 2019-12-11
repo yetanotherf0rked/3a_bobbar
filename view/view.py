@@ -76,8 +76,19 @@ class View:
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y+self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2* cote_y + 50 +self.depy), (PosX_init + self.depx,PosY_init + cote_y + 50 +self.depy)])
         pygame.draw.polygon(self.simu_surface, (159, 158, 159), [(2* cote_x + PosX_init + self.depx,PosY_init + cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +self.depy), (PosX_init + cote_x + self.depx,PosY_init + 2*cote_y +50 +self.depy), (PosX_init + 2* cote_x + self.depx,PosY_init + cote_y + 50 +self.depy)])
 
-        # Affichage du sol
+        """Obligé de séparaer cette boucle de l'affichage du sol car elle chage les cases."""
         caseliste = []
+        for y in range(TAILLE):
+            for x in range(TAILLE):
+                #Ajout de tout les bobs de la case à bobliste
+                if grille[x][y].place != []:
+                    l = [bob for bob in grille[x][y].place]
+                    l.sort(key = lambda x:x.perception)
+                    l[0].see(grille,True)
+                    l.sort(key = lambda x:x.masse, reverse = True)
+                    caseliste.append(l)
+
+        # Affichage du sol
         for y in range(TAILLE):
             xdec, ydec = cote_x / TAILLE, cote_y / TAILLE
             if y == 0:
@@ -93,11 +104,6 @@ class View:
                         PosX, PosY = Pos[i]
                         #Affichage de la food
                         self.simu_surface.blit(self.food, (PosX_init + cote_x - 20 + PosX + self.depx, PosY_init - 30 + PosY + self.depy))
-                #Ajout de tout les bobs de la case à bobliste
-                if grille[x][y].place != []:
-                    l = [bob for bob in grille[x][y].place]
-                    l.sort(key = lambda x:x.masse, reverse = True)
-                    caseliste.append(l)
 
         #Affichages des lignes extérieurs du bas
         pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init+self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx, PosY_init + 2* cote_y + self.depy),5)
