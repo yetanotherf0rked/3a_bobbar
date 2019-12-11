@@ -98,6 +98,9 @@ FONT = "verdana"
 # FULLSCREEN
 FULLSCREEN = False
 
+#Affichage de la perception de chaque bob
+WATCH_PERCEPTION = False
+
 class Parameters:
 
     def __init__(self):

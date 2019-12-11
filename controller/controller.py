@@ -124,6 +124,7 @@ class Controller:
                         for bob in self.view.bobliste:
                             if bob.blit.collidepoint((x,y)):
                                 bob.bobController.select = True
+                                bob.select = True
 
     def run_debug(self):
         tick = 0
