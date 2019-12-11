@@ -56,6 +56,7 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 BEER = (242, 142, 28)
+BEER_PALETTE = [(204,111,150),(204,125,35),(242,142,28),(255,200,80),(255,200,150),(255,215,0),(204,111,0)]
 
 # Dimensions et Positions des Elements Graphiques
 DIM_WINDOW_X = 960 * 2

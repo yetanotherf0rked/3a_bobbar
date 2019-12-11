@@ -3,6 +3,7 @@ from random import randint
 from pygame.locals import RESIZABLE
 from ressources.constantes import *
 from .gui import *
+from view.gradient import Gradient
 
 class View:
 
@@ -78,20 +79,24 @@ class View:
             perso = pygame.transform.scale(self.perso, (32,int(32*bob.masse**2 -16*bob.masse+16)))
             self.simu_surface.blit(perso, (int(self.width/2) + self.depx -26 + x * 18 - 18 * y,self.depy + 2 + y * 13.7 + x * 13.7))
 
+
+        #### PROGRESS BARS ####
+
         # Affichage progress bar days
         pos_bar_day = (0, 20)
         size_bar_day = (self.simu_surface.get_width() - 10, 5)
         progress_day = (tick % TICK_DAY)/100
-        self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER)
+        self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER, round=True, radius=3)
 
         # Progress bar food
         beer_image = pygame.image.load(image_EMPTY_BEER).convert_alpha()
         progress_beer = pygame.transform.scale(beer_image, (200, 200))
-        pos_bar_food = (10, 5)
-        size_bar_food = (progress_beer.get_width() * 0.68, progress_beer.get_height() - 10)
+        pos_bar_food = (12, 5)
+        size_bar_food = (progress_beer.get_width() - 67, progress_beer.get_height() - 12)
         progress_food = (current_food/NB_FOOD) % TICK_DAY
-        print("NB_FOOD : ", NB_FOOD, "current_food : ", current_food, "progress_food : ", progress_food)
-        self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, BEER, vertical=True, reverse=True)
+        #  Get color palette
+        beer_palette = Gradient(BEER_PALETTE, progress_beer.get_width()).gradient(int(progress_food*100))
+        self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, beer_palette, vertical=True, reverse=True, round=True, radius=5)
         self.simu_surface.blit(progress_beer, (35, 50))
 
         # Affichage des surfaces dans la fenêtre

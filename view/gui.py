@@ -1,6 +1,7 @@
 import thorpy
 import pygame
 from ressources.constantes import *
+from .gradient import Gradient
 
 class Gui:
 
@@ -264,7 +265,7 @@ class Gui:
     def button_tick_minus_pressed(self):
         pass
 
-    def progress_bar(self, pos, size, progress, screen, bar_color, border=False, border_color=WHITE, vertical=False, reverse=False):
+    def progress_bar(self, pos, size, progress, screen, bar_color, border=False, border_color=WHITE, vertical=False, reverse=False, round=False, radius=20):
         """
         Draws a progress bar
         param pos sets position of progress bar
@@ -272,6 +273,10 @@ class Gui:
         param progress is the current progress
         param screen is the screen where the bar should be drawn
         param border is border, if is necessary
+        param vertical is wether you want vertical or horizontal bar
+        param reverse make the bar drawing backward (100% -> 0%)
+        param round sets if you want round rectangles or not
+        param radius is the radius of angles if round is True
         """
         if progress < 0:
             progress = 0
@@ -288,5 +293,32 @@ class Gui:
             inner_size = (size[0], progress)
         elif not reverse and not vertical:
             inner_size = (size[0] * progress, size[1])
+        if round:
+            self.round_rect(screen, pygame.Rect(inner_pos, inner_size), bar_color, radius)
+        else:
+            pygame.draw.rect(screen, bar_color, pygame.Rect(inner_pos, inner_size))
 
-        pygame.draw.rect(screen, bar_color, pygame.Rect(inner_pos, inner_size))
+    def round_rect(self, surface, rect, color, rad=20):
+        """
+        Draw a rect with rounded corners to surface.  Argument rad can be specified
+        to adjust curvature of edges (given in pixels).  An optional border
+        width can also be supplied; if not provided the rect will be filled.
+        Both the color and optional interior color (the inside argument) support
+        alpha.
+        """
+        rect = pygame.Rect(rect)
+        zeroed_rect = rect.copy()
+        zeroed_rect.topleft = 0, 0
+        image = pygame.Surface(rect.size).convert_alpha()
+        image.fill((0, 0, 0, 0))
+        self._render_region(image, zeroed_rect, color, rad)
+        surface.blit(image, rect)
+
+    def _render_region(self, image, rect, color, rad):
+        """Helper function for round_rect."""
+        corners = rect.inflate(-2 * rad, -2 * rad)
+        for attribute in ("topleft", "topright", "bottomleft", "bottomright"):
+            pygame.draw.circle(image, color, getattr(corners, attribute), rad)
+        image.fill(color, rect.inflate(-2 * rad, 0))
+        image.fill(color, rect.inflate(0, -2 * rad))
+
