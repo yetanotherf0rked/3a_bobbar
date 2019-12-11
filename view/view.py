@@ -63,11 +63,14 @@ class View:
         # Simu Update
         self.simu_surface.blit(self.fond , (0 , 0))
 
+        current_food = 0
+
         # Affichage du sol
         for y in range(TAILLE):
             for x in range(TAILLE):
                 self.simu_surface.blit(self.grilleFond[x][y], (int(self.width/2)-30 + self.depx + x * 18 - 18 * y,self.depy+ 8 + y* 13.7 + x * 13.7))
-                if not(grille[x][y].food ==0):
+                if grille[x][y].food:
+                    current_food += 1
                     self.simu_surface.blit(self.food, (int(self.width/2) + self.depx -30 + x * 18 - 18 * y,self.depy-5 + y * 13.7 + x * 13.7))
         # Affichage des Bobs
         for bob in listebob:
@@ -76,9 +79,20 @@ class View:
             self.simu_surface.blit(perso, (int(self.width/2) + self.depx -26 + x * 18 - 18 * y,self.depy + 2 + y * 13.7 + x * 13.7))
 
         # Affichage progress bar days
-        len_progress_bar_days = self.simu_surface.get_width() - 20
-        # (self.width - len_progress_bar_days)/2 to center pos
-        self.gui.progress_bar((0, 20), (len_progress_bar_days, 10), (tick % TICK_DAY)/100, self.simu_surface, WHITE, GREEN)
+        pos_bar_day = (0, 20)
+        size_bar_day = (self.simu_surface.get_width() - 10, 5)
+        progress_day = (tick % TICK_DAY)/100
+        self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER)
+
+        # Progress bar food
+        beer_image = pygame.image.load(image_EMPTY_BEER).convert_alpha()
+        progress_beer = pygame.transform.scale(beer_image, (200, 200))
+        pos_bar_food = (10, 5)
+        size_bar_food = (progress_beer.get_width() * 0.68, progress_beer.get_height() - 10)
+        progress_food = 1 - ((NB_FOOD-current_food) % TICK_DAY)/100
+        print("NB_FOOD : ", NB_FOOD, "current_food : ", current_food, "progress_food : ", progress_food)
+        self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, BEER, vertical=True, reverse=True)
+        self.simu_surface.blit(progress_beer, (35, 50))
 
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, POS_SURFACE_SIMU)

@@ -47,6 +47,7 @@ image_EARTH4 = "ressources/images/terre4 clair.png"
 image_EARTH5 = "ressources/images/terre 1.png"
 image_EARTH7 = "ressources/images/Grass.png"
 image_EARTH6 = "ressources/images/terre 3.png"
+image_EMPTY_BEER = "ressources/images/empty_beer_icon.png"
 
 # Couleurs
 BLACK = (0, 0, 0)
@@ -54,6 +55,7 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+BEER = (242, 142, 28)
 
 # Dimensions et Positions des Elements Graphiques
 DIM_WINDOW_X = 960 * 2

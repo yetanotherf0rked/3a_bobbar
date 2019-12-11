@@ -263,15 +263,30 @@ class Gui:
 
     def button_tick_minus_pressed(self):
         pass
-    def progress_bar(self, pos, size, progress, screen, border_color, bar_color):
+
+    def progress_bar(self, pos, size, progress, screen, bar_color, border=False, border_color=WHITE, vertical=False, reverse=False):
         """
         Draws a progress bar
         param pos sets position of progress bar
         param size sets size of progress bar
-        param progress is the current progress (0 - 100)
+        param progress is the current progress
         param screen is the screen where the bar should be drawn
+        param border is border, if is necessary
         """
-        pygame.draw.rect(screen, border_color,(pos, size))
-        innerPos = (pos[0] + 3, pos[1] + 3)
-        innerSize = ((size[0] - 6) * progress, size[1] - 6)
-        pygame.draw.rect(screen, bar_color, (innerPos, innerSize))
+        if progress < 0:
+            progress = 0
+
+        if border:
+            pygame.draw.rect(screen, border_color, ((pos[0] + 3, pos[1] + 3), (size[0] + 3, size[1] + 3)))
+
+        inner_pos = pos
+        if reverse and vertical:
+            changed_size = size[1] - (size[1] * progress)
+            inner_pos = (pos[0], pos[1] + changed_size)
+            inner_size = (size[0], size[1] * progress)
+        elif not reverse and vertical:
+            inner_size = (size[0], progress)
+        elif not reverse and not vertical:
+            inner_size = (size[0] * progress, size[1])
+
+        pygame.draw.rect(screen, bar_color, pygame.Rect(inner_pos, inner_size))

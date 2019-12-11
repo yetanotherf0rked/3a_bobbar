@@ -82,9 +82,6 @@ class Controller:
                 tick += 1
                 # Affichage du tick, du day et de la population
                 self.view.gui.update_state_box(day, tick, len(self.listebob))
-
-
-
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update(self.grille, self.listebob)
                 if stats:
