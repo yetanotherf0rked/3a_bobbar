@@ -6,6 +6,7 @@ from view import View
 import pygame
 from pygame.locals import *
 from threading import Thread
+from time import sleep
 import gc
 
 
@@ -75,7 +76,8 @@ class Controller:
                 self.file.enfile(self.grille)
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
-
+            else:
+                sleep(0.1)
             if affichage:
                 # Update de la fenêtre
                 if not self.view.run:

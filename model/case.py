@@ -16,7 +16,6 @@ class Case:
         if self.type == "Normal":
             couleur = (38,37,42)
         if self.type == "Perception":
-            print(self.nbPerception)
             couleur = (max(0,173-20 * self.nbPerception), max(0,205-20*self.nbPerception), 226)
         pygame.draw.polygon(surface, couleur, [(cx+Px_init + depx + xdec * (x-y-1), Py_init + depy + ydec *  (x+y+1)) ,(cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y)),(cx+Px_init + depx + xdec * (x-y+1), Py_init + depy + ydec *  (x+y+1)) , (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y+2)) ])
         pygame.draw.line(surface, (228,226,232),

@@ -199,9 +199,7 @@ class Bob:
         for dx, dy in [(i, j) for i in range(-radius, radius+1) for j in range(abs(i)-radius, radius+1-abs(i))]:  # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
             if 0 <= self.x + dx < TAILLE and 0 <= self.y+dy < TAILLE:  # si la position qu'on regarde est bien dans la grille
                 case = grille[self.x+dx][self.y+dy]
-                print(self.select)
                 if show and (self.select or WATCH_PERCEPTION):
-                    print("Bonjour")
                     case.type = "Perception"
                     case.nbPerception += 1
                     continue
