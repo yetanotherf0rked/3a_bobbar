@@ -290,35 +290,19 @@ class Bob:
 
         Returns:
             Boolean
-
         """
         if self == other_bob:
             return True
 
-        # si ils ont le(s) même(s) parent(s) (frère/soeur)
-        if self.parents == other_bob.parents:  
-            return True
+        family = set()
+        family.add(self)
 
-        # on regarde les parents
-        if other_bob.age > self.age:
-            open_list = self.parents.copy()
-            while open_list:
-                current = open_list.pop()
-                if current == other_bob:
-                    return True
-                if current.age < other_bob.age:  # si on regarde un bob plus vieux, on ne continue pas sur les parents de current
-                    open_list.update(current.parents)
-
-        # on regarde les enfants
-        if other_bob.age < self.age:
-            open_list = self.childs.copy()
-            while open_list:
-                current = open_list.pop()
-                if current == other_bob:
-                    return True
-                if current.age > other_bob.age:  # si on regarde un bob plus jeune, on ne continue pas sur les enfants de current
-                    open_list.update(current.childs)
-
-        # TODO regarder les cousins/neveux ?
-
+        for _ in range(DISTANCE_TO_BE_IN_SAME_FAMILY):  # recherche en largeur dans l'arbre généalogique
+            tmp = set()
+            for bob in family:
+                tmp.update(bob.parents.union({bro for parent in bob.parents for bro in parent.childs if bro != self}))
+                tmp.update(bob.childs)
+            family = tmp.copy()
+            if other_bob in family:
+                return True
         return False

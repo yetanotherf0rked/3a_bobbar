@@ -38,6 +38,14 @@ ENERGY_REPRO = 150
 #Deplacement step
 DEP_STEP = 20
 
+# Distance dans un arbre généalogique pour considérer deux bobs dans la même famille
+# Une distance trop grande mêne à ce que tout les bobs soient de la même famille (donc pas d'agression/reproduction)
+# 0: Le bob
+# 1: les parents, les enfants et les frères
+# 2: les grands parents, les oncles, les cousins, les neveux et les petits-enfants
+# etc
+DISTANCE_TO_BE_IN_SAME_FAMILY = 3
+
 FAMILY_REPRODUCTION = False
 FAMILY_AGGRESSION = False
 
