@@ -1,4 +1,4 @@
-from ressources.constantes import TICK_DAY,TAILLE,NB_FOOD,ENERGY_FOOD
+from ressources.config import TICK_DAY,TAILLE,ENERGY_FOOD,parameters
 
 def velocity_stat(pop):
 	return (sum(b.velocity for b in pop)/len(pop),max(b.velocity for b in pop),min(b.velocity for b in pop))
@@ -40,8 +40,33 @@ def drawStats(grille, liste_bobs, tick):
     memstat=memory_stat(liste_bobs)
     print(f'mémoire moyenne : {memstat[0]:.3f} mémoire max : {memstat[1]:.3f} mémoire min : {memstat[2]:.3f}')
     print('food :')
-    print_bar(NB_FOOD*ENERGY_FOOD,total_food(grille))
+    print_bar(parameters.get("Food Number")*parameters.get("Food Energy"),total_food(grille))
 
+def init_stats():
+    """initialise les noms des statistiques à afficher sur l'interface GUI
+    Les deux premières valeurs sont obligatoirement Day et Tick
+    Retourne un tableau de strings."""
+    return ["Day",
+            "Tick",
+            "Population",
+            "Food",
+            "Mass",
+            "Velocity",
+            "Perception",
+            "Memory"]
 
+def update_stats(grille, liste_bobs, tick):
+    """met à jour les statistiques pour la GUI
+    Les deux premières valeurs sont obligatoirement Day et Tick
+    Retourne un tableau des valeurs des statistiques
+    Les valeurs peuvent des nombres (int, float) ou des tuples"""
 
-
+    return [tick//TICK_DAY + 1,
+            tick%TICK_DAY,
+            len(liste_bobs),
+            int(total_food(grille)/ENERGY_FOOD),
+            mass_stat(liste_bobs),
+            velocity_stat(liste_bobs),
+            perception_stat(liste_bobs),
+            memory_stat(liste_bobs)
+            ]

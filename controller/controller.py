@@ -1,100 +1,96 @@
 from model import *
 from random import randint,choice
-from ressources.constantes import *
+from ressources.config import *
 from view.debug import *
 from view import View
 import pygame
 from pygame.locals import *
 from threading import Thread
 from time import sleep
-import os
-
+import gc
 
 
 class Controller:
 
-    def __init__(self, affichage=True, stats=False):
+    def __init__(self, mode='a', simul=1000):
         # Initialisation de la grille
-        self.grille = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
+        self.world = World()
+        self.grille = self.world.grid
         # Initialisation des Bobs
-        self.listebob = self.initbob(self.grille)
-        if affichage:
+        self.listebob = self.initbob()
+        self.file = File()
+        if mode == 'a':
             self.view = View()
-        self.run(affichage,stats)
+            self.run(True,False)
+        elif mode == 'd':
+            self.run_debug()
+        elif mode == 's':
+            self.simul(simul)
 
-    # Fonction de débug des Sliders
-    # def paramDebug(self):
-    #     for name, value in parameters.actual.items():
-    #         print(value,"\t", end='')
-    #     print('')
-
-    #Initialisation des Bobs
-    def initbob(self, grille):
+    # Initialisation des Bobs
+    def initbob(self):
         listebob = []
         for bob in range(NB_POP):
-            #Position du Bob
+            # Position du Bob
             x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
             bob = Bob([x, y])
-            grille[x][y].place.append(bob)
+            self.grille[x][y].place.append(bob)
             listebob.append(bob)
         return listebob
 
-    #Spawn de food
-    def spawnfood(self, grille):
-        for k in range(parameters.get("Food Number")):
-            x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
-            grille[x][y].food += parameters.get("Food Energy")
-
-    def removefood(self, grille):
-        for x in range(TAILLE):
-            for y in range(TAILLE):
-                grille[x][y].food = 0
-
-    def update(self, grille, listebob):
+    def update(self):
         new_bobs=[]
-        for bob in listebob:
-            #update du bob
-            new_bobs+=bob.update(grille,listebob)
+        for bob in self.listebob:
+            # update du bob
+            if not bob.is_dead() :
+                new_bobs+=bob.update(self.grille)
 
-            #Si le bob est mort on le retire
-            bob.is_dead(listebob,grille[bob.x][bob.y])
+            # Si le bob est mort on le retire
+            if bob.is_dead() :
+                self.grille[bob.x][bob.y].place.remove(bob)
+                self.listebob.remove(bob)
 
-        #on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
-        listebob += new_bobs
+        # on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
+        self.listebob += new_bobs
 
     def run(self,affichage,stats):
         tick = 0
         day = 0
         continuer = True
-        wait = False
-        while continuer:
+
+        while continuer and self.listebob:
+            wait = self.view.gui.gui_pause
             if not wait:
                 # Comptage des ticks/Days
                 if tick % TICK_DAY == 0:
-                    # Suppression de la nourritue restante
-                    self.removefood(self.grille)
+                    # Suppression de la nourriture restante
+                    self.world.removefood()
                     day += 1
-                    # Spawn de la nouvelle food
-                    self.spawnfood(self.grille)
                     for s in self.view.gui.sliders:
                         print(s,str(parameters.actual.get(s)).rjust(20-len(s)))
                     print()
+
+                    # Spawn de la nouvelle food
+                    self.world.spawnfood()
                 tick += 1
-                # Affichage du tick, du day et de la population
-                self.view.gui.update_state_box(day, tick, len(self.listebob))
+                #drawStats(self.grille, self.listebob, tick)
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
-                self.update(self.grille, self.listebob)
+                self.update()
+                self.file.enfile(self.grille)
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
+            else:
+                sleep(0.1)
 
             if affichage:
                 # Update de la fenêtre
-                while self.view.run:
-                    # Limitation de vitesse de la boucle
-                    sleep(0.001)
-                self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob, tick))
-                self._thread.start()
-
+                if not self.view.run:
+                    if not wait:
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.file.tick))
+                    else :
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.file.tick))
+                    self._thread.start()
+                # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY*10)
                 # Test de fin
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
@@ -104,9 +100,8 @@ class Controller:
 
                     # Pause
                     if event.type == KEYDOWN and event.key == K_SPACE:
-                        wait = not wait
+                        self.view.gui.pause_button_pressed()
 
-                    # Test si on a resize la fenêtre
                     if event.type == VIDEORESIZE:
                         self.view.width,self.view.height = event.size
 
@@ -119,13 +114,54 @@ class Controller:
                         self.view.depx -= DEP_STEP
                     if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
                         self.view.depx += DEP_STEP
+                    if wait and event.type == KEYDOWN and event.key == K_KP4:
+                        self.file.precTick()
+                    if wait and event.type == KEYDOWN and event.key == K_KP6:
+                        self.file.nextTick()
                     # Réagit si l'on bouge les sliders
+                    self.view.menu_surface.unlock()
                     self.view.gui.menu.react(event)
 
-"""def pause_mode(self):
-        while(self.view.gui.gui_pause):
-            for event in pygame.event.get():
-                if event.type == KEYDOWN and event.key == K_ESCAPE or self.view.gui.gui_quit:
-                    self.continuer = False
-                    self.view.gui.gui_pause = False
-                self.view.gui.menu.react(event)"""
+                    if event.type == MOUSEBUTTONDOWN:
+                        x,y = pygame.mouse.get_pos()
+                        x-= self.view.dim_menu[0]
+                        if self.view.soleil.blit.collidepoint((x,y)):
+                            self.view.gui.pause_button_pressed()
+                        for bob in self.view.bobliste:
+                            if bob.blit.collidepoint((x,y)):
+                                bob.bobController.select = True
+                                bob.select = True
+
+    def run_debug(self):
+        tick = 0
+        day = 0
+        continuer = True
+        while continuer and self.listebob:
+
+            # Comptage des ticks/Days
+            if tick % TICK_DAY == 0:
+            # Suppression de la nourritue restante
+                self.world.removefood()
+                day += 1
+                # Spawn de la nouvelle food
+                self.world.spawnfood()
+                print(day, len(self.listebob))
+            tick += 1
+            drawStats(self.grille, self.listebob, tick)
+            self.listebob.sort(key=lambda x: x.velocity, reverse=True)
+            self.update()
+            sleep(0.01)
+            os.system('cls' if os.name == 'nt' else 'clear')
+
+    def simul(self, ticks):
+        """simule un nombre de tick donné et affiche l'etat de la simulation."""
+        tick = 0
+        day = 0
+        for _ in range(ticks):
+            if tick % TICK_DAY == 0:
+                self.world.removefood()
+                day += 1
+                self.world.spawnfood()
+            tick += 1
+            self.update()
+        drawStats(self.grille, self.listebob, tick)
