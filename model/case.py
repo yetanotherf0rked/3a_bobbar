@@ -1,5 +1,6 @@
 from random import randint
 import pygame
+from ressources.config import *
 
 class Case:
 
@@ -17,7 +18,10 @@ class Case:
             couleur = (38,37,42)
         if self.type == "Perception":
             couleur = (max(0,173-20 * self.nbPerception), max(0,205-20*self.nbPerception), 226)
-        pygame.draw.polygon(surface, couleur, [(cx+Px_init + depx + xdec * (x-y-1), Py_init + depy + ydec *  (x+y+1)) ,(cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y)),(cx+Px_init + depx + xdec * (x-y+1), Py_init + depy + ydec *  (x+y+1)) , (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y+2)) ])
+        pygame.draw.polygon(surface, couleur, [(cx+Px_init + depx + xdec * (x-y-1), Py_init + depy + ydec *  (x+y+1)),
+                                               (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y)),
+                                               (cx+Px_init + depx + xdec * (x-y+1), Py_init + depy + ydec *  (x+y+1)),
+                                               (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y+2))])
         pygame.draw.line(surface, (228,226,232),
                          (cx+Px_init + depx + xdec * (x-y-1), Py_init + depy + ydec *  (x+y+1)),
                          (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y)))
@@ -25,6 +29,26 @@ class Case:
                          (cx + Px_init + depx + xdec * (x - y), Py_init + depy + ydec * (x + y)),
                          (cx+Px_init + depx + xdec * (x-y+1), Py_init + depy + ydec *  (x+y+1)))
         self.nbPerception = 0
+        if MINIMAP:
+            self.drawMap(surface, couleur, xdec,ydec,Px_init,Py_init,depx,depy,cx)
+
+    def drawMap(self,surface, couleur, xdec,ydec,Px_init,Py_init,depx,depy,cx):
+        x = int(xdec/2.5)
+        if self.food != 0:
+            couleur = (166,230, 38)
+        initx,inity = int(Px_init/5),int(Py_init/50)
+        pygame.draw.rect(surface, couleur, (initx+self.x*x,inity+self.y*x,x,x))
+        pygame.draw.line(surface, (228,226,232), (initx+self.x*x,inity+self.y*x),(initx+self.x*x+x,inity+self.y*x))
+        pygame.draw.line(surface, (228, 226, 232), (Px_init / 5 + self.x * x, Py_init / 50 + self.y * x),
+                         (Px_init / 5 + self.x * x, Py_init / 50 + self.y * x + x))
+        if self.place != []:
+            couleur = (255,255,255)
+            for bob in self.place:
+                if bob.select:
+                    couleur = (255,0,0)
+                    break
+            radius = int(x/2)
+            pygame.draw.circle(surface, couleur, (initx+self.x*x+radius,inity+self.y*x+radius), radius-1)
 
     def copie(self):
         case = Case(self.x,self.y)

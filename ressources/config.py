@@ -101,6 +101,9 @@ FULLSCREEN = False
 #Affichage de la perception de chaque bob
 WATCH_PERCEPTION = False
 
+#Affichage minimap
+MINIMAP = True
+
 class Parameters:
 
     def __init__(self):
