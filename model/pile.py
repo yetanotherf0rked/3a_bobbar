@@ -7,7 +7,7 @@ class Pile():
         self.len = 0
 
     def empile(self,new):
-        if self.len == 10*TICK_DAY:
+        if self.len == TICK_DAY:
             del self.pile[0]
             self.len-=1
         self.pile.append(new)

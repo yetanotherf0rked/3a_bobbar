@@ -35,3 +35,6 @@ class File():
     def nextTick(self):
         if self.len !=0:
             self.defile()
+
+    def full(self):
+        return self.len == TICK_DAY
