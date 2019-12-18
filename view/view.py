@@ -96,7 +96,7 @@ class View:
         for y in range(TAILLE):
             xdec, ydec = cote_x / TAILLE, cote_y / TAILLE
             if y == 0:
-                # Affichages des lignes extérieurs du haut
+                # Affichages des lignes extérieures du haut
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x - xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + 2* cote_x - xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x + xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
             for x in range(TAILLE):
@@ -110,7 +110,7 @@ class View:
                         #Affichage de la food
                         self.simu_surface.blit(self.food, (PosX_init + cote_x - 20 + PosX + self.depx, PosY_init - 30 + PosY + self.depy))
 
-        #Affichages des lignes extérieurs du bas
+        #Affichages des lignes extérieures du bas
         pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init+self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx, PosY_init + 2* cote_y + self.depy),5)
         pygame.draw.line(self.simu_surface, (255,155,65), (PosX_init + 2* cote_x + self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx,PosY_init + 2* cote_y + self.depy),5)
 
@@ -131,6 +131,35 @@ class View:
                 PosX , PosY = Pos[i]
                 bob.blit = self.simu_surface.blit(perso, (PosX_init + cote_x - 16 + PosX + self.depx,PosY_init + 7 - size + PosY + self.depy))
                 self.bobliste.append(bob)
+
+        #### PROGRESS BARS ####
+
+        # Life progress bar
+        pos_life_bar = (0, 0)
+        size_life_bar = (25, 5)
+        for bob in self.bobliste:
+            self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True, radius=3)
+
+        # Progress bar day
+        pos_bar_day = (0, 20)
+        size_bar_day = (self.simu_surface.get_width() - 10, 5)
+        progress_day = (tick % TICK_DAY) / 100
+        self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER, round=True,
+                              radius=3)
+
+        # Progress bar food
+        beer_image = pygame.image.load(image_EMPTY_BEER).convert_alpha()
+        progress_beer = pygame.transform.scale(beer_image, (200, 200))
+        pos_bar_food = (12, 5)
+        size_bar_food = (progress_beer.get_width() - 67, progress_beer.get_height() - 12)
+        progress_food = (current_food / NB_FOOD) % TICK_DAY
+        #  Get color palette
+        beer_palette = Gradient(BEER_PALETTE, progress_beer.get_width()).gradient(int(progress_food * 100))
+
+        #  Draw the bar
+        self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, beer_palette,
+                              vertical=True, reverse=True, round=True, radius=5)
+        self.simu_surface.blit(progress_beer, (35, 50))
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))
         self.fenetre.blit(self.menu_surface, (0, 0))
@@ -150,32 +179,5 @@ class View:
         #     # bob_surf.set_alpha(0)
         #     perso = pygame.transform.scale(self.perso, (32,int(32*bob.masse**2 -16*bob.masse+16)))
         #     # bob_surf.blit(perso,(32,int(32*bob.masse**2 -16*bob.masse+16) + 20))
-        #
-        #     # Life progress bar
-        #     pos_life_bar = (0, 0)
-        #     size_life_bar = (25, 5)
-        #     progress_life_bar = (bob.energy % ENERGY_MAX)/100
-        #     self.gui.progress_bar(pos_life_bar, size_life_bar, progress_life_bar, perso, GREEN, True, RED, round=True, radius=3)
-        #     self.simu_surface.blit(perso, (int(self.width/2) + self.depx - 26 + x * 18 - 18 * y,self.depy + 2 + y * 13.7 + x * 13.7))
-        #
-        #
-        # #### PROGRESS BARS ####
-        #
-        # # Progress bar day
-        # pos_bar_day = (0, 20)
-        # size_bar_day = (self.simu_surface.get_width() - 10, 5)
-        # progress_day = (tick % TICK_DAY)/100
-        # self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER, round=True, radius=3)
-        #
-        # # Progress bar food
-        # beer_image = pygame.image.load(image_EMPTY_BEER).convert_alpha()
-        # progress_beer = pygame.transform.scale(beer_image, (200, 200))
-        # pos_bar_food = (12, 5)
-        # size_bar_food = (progress_beer.get_width() - 67, progress_beer.get_height() - 12)
-        # progress_food = (current_food/NB_FOOD) % TICK_DAY
-        # #  Get color palette
-        # beer_palette = Gradient(BEER_PALETTE, progress_beer.get_width()).gradient(int(progress_food*100))
-        #
-        # #  Draw the bar
-        # self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, beer_palette, vertical=True, reverse=True, round=True, radius=5)
-        # self.simu_surface.blit(progress_beer, (35, 50))
+
+

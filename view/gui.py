@@ -67,13 +67,13 @@ class Gui:
         # On génère pour chaque paramètre son slider associé
         self.generate_sliders()
 
-        # Boutton Quitter
+        # Bouton Quitter
         self.gui_quit = False
         self.quit_button = thorpy.make_button("Quit", func=self.quit_button_pressed)
         self.quit_button.set_main_color(BLACK)
         self.elements.append(self.quit_button)
 
-        # Boutton Pause
+        # Bouton Pause
         self.gui_pause = False
         self.pause_button = thorpy.make_button("Play/Pause", func=self.pause_button_pressed)
         self.pause_button.set_main_color(BLACK)

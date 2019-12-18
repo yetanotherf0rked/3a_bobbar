@@ -7,7 +7,7 @@ import pygame
 
 class Bob:
     def __init__(self, pos):
-        self.x, self.y = pos      #Case où ce trouve le Bob
+        self.x, self.y = pos      #Case où se trouve le Bob
         self.energy = parameters.get("Spawn Energy")
         self.velocity = 1.0
         self.masse = 1.0
@@ -24,6 +24,9 @@ class Bob:
         self.parents = set()
         self.childs = set()
         self.age = 0
+
+        # Life for progress bar
+        self.life = (self.energy % ENERGY_MAX)/100
 
     def copie(self):
         bob = Bob((self.x,self.y))
@@ -52,7 +55,7 @@ class Bob:
         is_moving = False
         current_case = grille[self.x][self.y]
 
-        sons = [] #liste contenant les envantuels enfant du bob à ce tour
+        sons = [] #liste contenant les enventuels enfants du bob à ce tour
 
         # Fight ?
         self.fight(current_case)
@@ -310,7 +313,7 @@ class Bob:
                 if current.age > other_bob.age:  # si on regarde un bob plus jeune, on ne continue pas sur les enfants de current
                     open_list.update(current.childs)
 
-        #TODO regarder les cousins/neveux ?
+        # TODO regarder les cousins/neveux ?
 
         return False
 

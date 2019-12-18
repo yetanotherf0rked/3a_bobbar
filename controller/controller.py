@@ -86,7 +86,7 @@ class Controller:
                 # Update de la fenêtre
                 if not self.view.run:
                     if not wait:
-                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.file.tick))
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.listebob,self.file.tick))
                     else :
                         self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.file.tick))
                     self._thread.start()
