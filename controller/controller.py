@@ -67,7 +67,7 @@ class Controller:
                     self.world.removefood()
                     day += 1
                     for s in self.view.gui.sliders:
-                        print(s,str(parameters.actual.get(s)).rjust(20-len(s)))
+                        print(s,str(parameters.actual.get(s)).rjust(40-len(s)))
                     print()
 
                     # Spawn de la nouvelle food
@@ -88,7 +88,7 @@ class Controller:
                     if not wait:
                         self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.listebob,self.file.tick))
                     else :
-                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.file.tick))
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.listebob, self.file.tick))
                     self._thread.start()
                 # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY*10)
                 # Test de fin
