@@ -34,5 +34,4 @@ class File():
 
     def nextTick(self):
         if self.len !=0:
-            self.historique.empile(self.current)
             self.defile()
