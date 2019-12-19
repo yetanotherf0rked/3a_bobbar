@@ -37,4 +37,8 @@ class File():
             self.defile()
 
     def full(self):
-        return self.len == TICK_DAY
+        if HISTORIQUE:
+            taille_max = HISTORIQUE_MAX * TICK_DAY
+        else:
+            taille_max = 1
+        return self.len == taille_max

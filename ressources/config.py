@@ -104,6 +104,10 @@ WATCH_PERCEPTION = False
 #Affichage minimap
 MINIMAP = True
 
+#Choix de l'historique
+HISTORIQUE = False
+HISTORIQUE_MAX = 10
+
 class Parameters:
 
     def __init__(self):

@@ -7,11 +7,13 @@ class Pile():
         self.len = 0
 
     def empile(self,new):
-        if self.len == TICK_DAY:
-            del self.pile[0]
-            self.len-=1
-        self.pile.append(new)
-        self.len+=1
+        if HISTORIQUE:
+            taille_max = HISTORIQUE_MAX * TICK_DAY
+            if self.len == taille_max:
+                del self.pile[0]
+                self.len-=1
+            self.pile.append(new)
+            self.len+=1
 
     def depile(self):
         if self.len == 0:
