@@ -34,5 +34,11 @@ class File():
 
     def nextTick(self):
         if self.len !=0:
-            self.historique.empile(self.current)
             self.defile()
+
+    def full(self):
+        if HISTORIQUE:
+            taille_max = HISTORIQUE_MAX * TICK_DAY
+        else:
+            taille_max = 1
+        return self.len == taille_max

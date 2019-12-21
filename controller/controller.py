@@ -60,7 +60,7 @@ class Controller:
 
         while continuer and self.listebob:
             wait = self.view.gui.gui_pause
-            if not wait:
+            if not self.file.full():
                 # Comptage des ticks/Days
                 if tick % TICK_DAY == 0:
                     # Suppression de la nourriture restante
@@ -90,7 +90,7 @@ class Controller:
                     else :
                         self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.listebob, self.file.tick))
                     self._thread.start()
-                # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY*10)
+                print(len(self.file.file),len(self.file.historique.pile),TICK_DAY)
                 # Test de fin
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
