@@ -150,7 +150,7 @@ class Controller:
             drawStats(self.grille, self.listebob, tick)
             self.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.update()
-            sleep(0.01)
+            # sleep(0.01)
             os.system('cls' if os.name == 'nt' else 'clear')
 
     def simul(self, ticks):

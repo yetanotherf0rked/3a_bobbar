@@ -134,18 +134,18 @@ class View:
 
         #### PROGRESS BARS ####
 
-        # Life progress bar
-        pos_life_bar = (0, 0)
-        size_life_bar = (25, 5)
-        for bob in self.bobliste:
-            self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True, radius=3)
+        # Life progress bar #
+        # pos_life_bar = (0, 0)
+        # size_life_bar = (25, 5)
+        # for bob in self.bobliste:
+        #     self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True, radius=3)
 
-        # Progress bar day
-        pos_bar_day = (0, 20)
-        size_bar_day = (self.simu_surface.get_width() - 10, 5)
-        progress_day = (tick % TICK_DAY) / 100
-        self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER, round=True,
-                              radius=3)
+        # Progress bar day #
+        # pos_bar_day = (0, 20)
+        # size_bar_day = (self.simu_surface.get_width() - 10, 5)
+        # progress_day = (tick % TICK_DAY) / 100
+        # self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER, round=True,
+        #                       radius=3)
 
         # Progress bar food
         beer_image = pygame.image.load(image_EMPTY_BEER).convert_alpha()
@@ -159,7 +159,7 @@ class View:
         #  Draw the bar
         self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, beer_palette,
                               vertical=True, reverse=True, round=True, radius=5)
-        self.simu_surface.blit(progress_beer, (35, 50))
+        self.simu_surface.blit(progress_beer, (1400, 50))
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))
         self.fenetre.blit(self.menu_surface, (0, 0))

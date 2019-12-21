@@ -74,7 +74,7 @@ BEER_PALETTE = [(204,111,150),(204,125,35),(242,142,28),(255,200,80),(255,200,15
 DIM_LOGO_X = 210
 DIM_LOGO_Y = 210
 
-DIM_MENU_X = 240 # min recommandé : 240
+DIM_MENU_X = 220 # min recommandé : 240
 
 DIM_SLIDER_X = DIM_MENU_X - 80
 DIM_SLIDER_Y = 7 # valeur par défaut : 20
