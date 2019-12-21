@@ -141,6 +141,7 @@ class View:
         #     self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True, radius=3)
 
         # Progress bar day #
+        # Useless since there's Star()
         # pos_bar_day = (0, 20)
         # size_bar_day = (self.simu_surface.get_width() - 10, 5)
         # progress_day = (tick % TICK_DAY) / 100

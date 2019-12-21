@@ -280,7 +280,7 @@ class Gui:
 
     def progress_bar(self, pos, size, progress, screen, bar_color, bg=False, bg_color=BLACK, vertical=False, reverse=False, round=False, radius=20):
         """
-        Draws a progress bar /!\ This function works for the project but not all cases are treated
+        Draws a progress bar /!/ This function works for the project but not all cases are treated
         pos sets position of progress bar
         size sets size of progress bar
         progress is the current progress, between 0 and 1
@@ -299,6 +299,10 @@ class Gui:
 
         inner_pos = pos
         if reverse and vertical:
+            """
+            This case is particular, because pos represent the top left corner
+            We have to reduce size and lower position to get what we want
+            """
             changed_size = size[1] - (size[1] * progress)
             inner_pos = (pos[0], pos[1] + changed_size)
             inner_size = (size[0], size[1] * progress)
@@ -310,6 +314,8 @@ class Gui:
             self.round_rect(screen, pygame.Rect(inner_pos, inner_size), bar_color, radius)
         else:
             pygame.draw.rect(screen, bar_color, pygame.Rect(inner_pos, inner_size))
+
+    # The 2 functions below come from an existing project
 
     def round_rect(self, surface, rect, color, rad=20):
         """

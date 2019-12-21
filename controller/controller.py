@@ -90,7 +90,7 @@ class Controller:
                     else :
                         self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.listebob, self.file.tick))
                     self._thread.start()
-                print(len(self.file.file),len(self.file.historique.pile),TICK_DAY)
+                # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY)
                 # Test de fin
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 

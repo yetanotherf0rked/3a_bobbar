@@ -109,7 +109,7 @@ WATCH_PERCEPTION = False
 MINIMAP = True
 
 #Choix de l'historique
-HISTORIQUE = False
+HISTORIQUE = True
 HISTORIQUE_MAX = 10
 
 class Parameters:
