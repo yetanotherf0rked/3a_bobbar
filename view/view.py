@@ -152,14 +152,14 @@ class View:
         beer_image = pygame.image.load(image_EMPTY_BEER).convert_alpha()
         progress_beer = pygame.transform.scale(beer_image, (200, 200))
         pos_bar_food = (12, 5)
-        size_bar_food = (progress_beer.get_width() - 67, progress_beer.get_height() - 12)
+        size_bar_food = (progress_beer.get_width() - 67, progress_beer.get_height() - 12) # 67 and 12 are arbitrary to fit the image 
         progress_food = (current_food / NB_FOOD) % TICK_DAY
+
         #  Get color palette
         beer_palette = Gradient(BEER_PALETTE, progress_beer.get_width()).gradient(int(progress_food * 100))
 
         #  Draw the bar
-        self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, beer_palette,
-                              vertical=True, reverse=True, round=True, radius=5)
+        self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, beer_palette, vertical=True, reverse=True, round=True, radius=5)
         self.simu_surface.blit(progress_beer, (1400, 50))
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))

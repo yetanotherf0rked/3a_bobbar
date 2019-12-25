@@ -294,13 +294,14 @@ class Gui:
         if progress < 0:
             progress = 0
 
+        # Useful for life bars
         if bg:
             self.round_rect(screen, pygame.Rect(pos, size), bg_color, radius)
 
         inner_pos = pos
         if reverse and vertical:
             """
-            This case is particular, because pos represent the top left corner
+            This case is particular, because pos represent the top left corner, and rect is drawn from pos
             We have to reduce size and lower position to get what we want
             """
             changed_size = size[1] - (size[1] * progress)
