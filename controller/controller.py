@@ -92,6 +92,8 @@ class Controller:
                     self._thread.start()
                 # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY)
                 # Test de fin
+
+                # Boucle sur les events
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
                     # Stop
@@ -114,14 +116,17 @@ class Controller:
                         self.view.depx -= DEP_STEP
                     if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
                         self.view.depx += DEP_STEP
+                    # Permet d'avancer/reculer dans l'historique quand on est en pause
                     if wait and event.type == KEYDOWN and event.key == K_KP4:
                         self.file.precTick()
                     if wait and event.type == KEYDOWN and event.key == K_KP6:
                         self.file.nextTick()
+
                     # Réagit si l'on bouge les sliders
                     self.view.menu_surface.unlock()
                     self.view.gui.menu.react(event)
 
+                    #Permet la sélection d'un bob
                     if event.type == MOUSEBUTTONDOWN:
                         x,y = pygame.mouse.get_pos()
                         x-= self.view.dim_menu[0]
@@ -150,7 +155,7 @@ class Controller:
             drawStats(self.grille, self.listebob, tick)
             self.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.update()
-            # sleep(0.01)
+            sleep(0.01)
             os.system('cls' if os.name == 'nt' else 'clear')
 
     def simul(self, ticks):
