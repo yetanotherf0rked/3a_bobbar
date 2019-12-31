@@ -53,13 +53,13 @@ class View:
 
         #Resize des surfaces:
         self.dim_menu = (240, int(self.height))
-        simu_x, simu_y = int((self.width - self.dim_menu[0])*(1 + 0.1*self.zoom)), int(self.height*(1+0.1*self.zoom))
+        simu_x, simu_y = int((self.width - self.dim_menu[0])), int(self.height)
         self.dim_simu = (simu_x, simu_y)
         pygame.transform.scale(self.menu_surface, self.dim_menu)
         pygame.transform.scale(self.simu_surface, self.dim_simu)
 
         # Simu Update
-        cote_x = simu_x/2 - 50
+        cote_x = (simu_x/2 - 50)*(1 + 0.1*self.zoom)
         cote_y = cote_x/2.5
         PosX_init = 50
         PosY_init = simu_y - 2*cote_y - 125
@@ -97,7 +97,7 @@ class View:
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x - xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + 2* cote_x - xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x + xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
             for x in range(TAILLE):
-                grille[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x)
+                grille[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x, self.zoom)
                 n = min(5,int(grille[x][y].food // parameters.get("Food Energy")))
                 if not(n ==0):
                     Pos = Case(0,0).bobCase(n, x, y, xdec, ydec)
