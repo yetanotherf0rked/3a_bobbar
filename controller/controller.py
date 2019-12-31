@@ -131,6 +131,12 @@ class Controller:
                                 bob.bobController.select = True
                                 bob.select = True
 
+                    #Permet le zoom
+                    if event.type == KEYDOWN and event.key == K_KP_PLUS:
+                        self.view.zoom+=1
+                    if event.type == KEYDOWN and event.key == K_KP_MINUS:
+                        self.view.zoom-=1
+
     def run_debug(self):
         tick = 0
         day = 0

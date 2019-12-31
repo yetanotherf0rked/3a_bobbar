@@ -13,6 +13,7 @@ class View:
         # 2 Attributs permettant de se déplacer dans la fenêtre
         self.depx = 0
         self.depy = 0
+        self.zoom = 0
 
     def initView(self):
 
@@ -51,8 +52,8 @@ class View:
         self.run = True
 
         #Resize des surfaces:
-        self.dim_menu = (220, int(self.height))
-        simu_x, simu_y = self.width - self.dim_menu[0], int(self.height)
+        self.dim_menu = (240, int(self.height))
+        simu_x, simu_y = int((self.width - self.dim_menu[0])*(1 + 0.1*self.zoom)), int(self.height*(1+0.1*self.zoom))
         self.dim_simu = (simu_x, simu_y)
         pygame.transform.scale(self.menu_surface, self.dim_menu)
         pygame.transform.scale(self.simu_surface, self.dim_simu)
