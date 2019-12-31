@@ -31,6 +31,7 @@ class Case:
         self.nbPerception = 0
         if MINIMAP:
             xdec/=(1 + 0.1*zoom)
+            Px_init = 50
             self.drawMap(surface, couleur, xdec, Px_init)
 
     def drawMap(self,surface, couleur, xdec, Px_init):
