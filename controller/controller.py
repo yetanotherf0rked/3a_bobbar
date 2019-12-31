@@ -103,13 +103,13 @@ class Controller:
 
                     # Permet le déplacement dans la fenêtre
                     if event.type == KEYDOWN and (event.key == K_UP or event.key == K_z):
-                        self.view.depy -= DEP_STEP
+                        self.view.depy -= DEP_STEP*(1+0.1*self.view.zoom)
                     if event.type == KEYDOWN and (event.key == K_DOWN or event.key == K_s):
-                        self.view.depy += DEP_STEP
+                        self.view.depy += DEP_STEP*(1+0.1*self.view.zoom)
                     if event.type == KEYDOWN and (event.key == K_LEFT or event.key == K_q):
-                        self.view.depx -= DEP_STEP
+                        self.view.depx -= DEP_STEP*(1+0.1*self.view.zoom)
                     if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
-                        self.view.depx += DEP_STEP
+                        self.view.depx += DEP_STEP*(1+0.1*self.view.zoom)
                     # Permet d'avancer/reculer dans l'historique quand on est en pause
                     if wait and event.type == KEYDOWN and event.key == K_KP4:
                         self.file.precTick()
