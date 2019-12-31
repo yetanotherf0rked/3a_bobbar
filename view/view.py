@@ -61,7 +61,7 @@ class View:
         # Simu Update
         cote_x = (simu_x/2 - 50)*(1 + 0.1*self.zoom)
         cote_y = cote_x/2.5
-        PosX_init = 50
+        PosX_init = 50 - 0.1*self.zoom * (simu_x/2 -50)
         PosY_init = simu_y - 2*cote_y - 125
 
         #Affichage du fond
