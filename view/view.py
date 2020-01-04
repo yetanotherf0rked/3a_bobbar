@@ -127,6 +127,11 @@ class View:
                 PosX , PosY = Pos[i]
                 bob.blit = self.simu_surface.blit(perso, (PosX_init + cote_x - 16 + PosX + self.depx,PosY_init + 7 - size + PosY + self.depy))
                 self.bobliste.append(bob)
+        if MINIMAP:
+            xdec /= (1 + 0.1 * self.zoom)
+            for y in range(TAILLE):
+                for x in range(TAILLE):
+                    grille[x][y].drawMap(self.simu_surface, xdec, 50)
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))
         self.fenetre.blit(self.menu_surface, (0, 0))

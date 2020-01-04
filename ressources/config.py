@@ -3,7 +3,7 @@ TICK_DAY = 100
 # Population initiale 200
 NB_POP = 50
 # Taille de la carte 100
-TAILLE = 40
+TAILLE = 50
 #Nourriture sur la carte 200
 NB_FOOD = 100
 #Energy par food 100
@@ -103,6 +103,9 @@ WATCH_PERCEPTION = False
 
 #Affichage minimap
 MINIMAP = True
+
+#Affihage contour des cases
+CONTOUR_CASE = False
 
 #Choix de l'historique
 HISTORIQUE = False

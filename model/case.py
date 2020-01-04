@@ -15,34 +15,34 @@ class Case:
     def draw(self,surface,xdec,ydec,Px_init,Py_init,depx,depy,cx,zoom):
         x,y = self.x,self.y
         if self.type == "Normal":
-            couleur = (38,37,42)
+            self.couleur = (38,37,42)
         if self.type == "Perception":
-            couleur = (max(0,173-20 * self.nbPerception), max(0,205-20*self.nbPerception), 226)
-        pygame.draw.polygon(surface, couleur, [(cx+Px_init + depx + xdec * (x-y-1), Py_init + depy + ydec *  (x+y+1)),
+            self.couleur = (max(0,173-20 * self.nbPerception), max(0,205-20*self.nbPerception), 226)
+        pygame.draw.polygon(surface, self.couleur, [(cx+Px_init + depx + xdec * (x-y-1), Py_init + depy + ydec *  (x+y+1)),
                                                (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y)),
                                                (cx+Px_init + depx + xdec * (x-y+1), Py_init + depy + ydec *  (x+y+1)),
                                                (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y+2))])
-        pygame.draw.line(surface, (228,226,232),
-                         (cx+Px_init + depx + xdec * (x-y-1), Py_init + depy + ydec *  (x+y+1)),
-                         (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y)))
-        pygame.draw.line(surface, (228, 226, 232),
-                         (cx + Px_init + depx + xdec * (x - y), Py_init + depy + ydec * (x + y)),
-                         (cx+Px_init + depx + xdec * (x-y+1), Py_init + depy + ydec *  (x+y+1)))
+        if CONTOUR_CASE:
+            pygame.draw.line(surface, (228,226,232),
+                             (cx+Px_init + depx + xdec * (x-y-1), Py_init + depy + ydec *  (x+y+1)),
+                             (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y)))
+            pygame.draw.line(surface, (228, 226, 232),
+                             (cx + Px_init + depx + xdec * (x - y), Py_init + depy + ydec * (x + y)),
+                             (cx+Px_init + depx + xdec * (x-y+1), Py_init + depy + ydec *  (x+y+1)))
         self.nbPerception = 0
-        if MINIMAP:
-            xdec/=(1 + 0.1*zoom)
-            Px_init = 50
-            self.drawMap(surface, couleur, xdec, Px_init)
 
-    def drawMap(self,surface, couleur, xdec, Px_init):
+    def drawMap(self,surface, xdec, Px_init):
         x = int(xdec/2.5)
         if self.food != 0:
             couleur = (166,230, 38)
+        else:
+            couleur = self.couleur
         initx,inity = int(Px_init/5),int(Px_init/5)
         pygame.draw.rect(surface, couleur, (initx+self.x*x,inity+self.y*x,x,x))
-        pygame.draw.line(surface, (228,226,232), (initx+self.x*x,inity+self.y*x),(initx+self.x*x+x,inity+self.y*x))
-        pygame.draw.line(surface, (228, 226, 232), (Px_init / 5 + self.x * x, Px_init / 5 + self.y * x),
-                         (Px_init / 5 + self.x * x, Px_init / 5 + self.y * x + x))
+        if CONTOUR_CASE:
+            pygame.draw.line(surface, (228,226,232), (initx+self.x*x,inity+self.y*x),(initx+self.x*x+x,inity+self.y*x))
+            pygame.draw.line(surface, (228, 226, 232), (Px_init / 5 + self.x * x, Px_init / 5 + self.y * x),
+                             (Px_init / 5 + self.x * x, Px_init / 5 + self.y * x + x))
         if self.place != []:
             couleur = (255,255,255)
             for bob in self.place:
