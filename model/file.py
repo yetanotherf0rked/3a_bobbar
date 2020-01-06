@@ -27,13 +27,14 @@ class File():
         return self.current
 
     def precTick(self):
-        self.file = [self.current] + self.file
-        self.current = self.historique.depile()
-        self.tick-=1
-        self.len+=1
+        if HISTORIQUE:
+            self.file = [self.current] + self.file
+            self.current = self.historique.depile()
+            self.tick-=1
+            self.len+=1
 
     def nextTick(self):
-        if self.len !=0:
+        if HISTORIQUE and self.len !=0:
             self.defile()
 
     def full(self):

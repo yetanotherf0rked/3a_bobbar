@@ -1,11 +1,11 @@
 # Tick par jour 100
 TICK_DAY = 100
 # Population initiale 200
-NB_POP = 50
+NB_POP = 200
 # Taille de la carte 100
-TAILLE = 50
+TAILLE = 40
 #Nourriture sur la carte 200
-NB_FOOD = 100
+NB_FOOD = 200
 #Energy par food 100
 ENERGY_FOOD = 100
 #Energy par spawn de Bob 100

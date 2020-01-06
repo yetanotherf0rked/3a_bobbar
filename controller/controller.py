@@ -12,16 +12,19 @@ import gc
 
 class Controller:
 
-    def __init__(self, mode='a', simul=1000):
+    def __init__(self, mode='a', simul=0,bar = None):
         # Initialisation de la grille
         self.world = World()
         self.grille = self.world.grid
         # Initialisation des Bobs
         self.listebob = self.initbob()
         self.file = File()
+        # #  a : affichage
+        # #  d : debug
+        # #  s : simulation de n tour passsé à la suite pour stats
         if mode == 'a':
-            self.view = View()
-            self.run(True,False)
+            self.simuBar = bar
+            self.run(True,False,simul)
         elif mode == 'd':
             self.run_debug()
         elif mode == 's':
@@ -53,12 +56,29 @@ class Controller:
         # on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
         self.listebob += new_bobs
 
-    def run(self,affichage,stats):
+    def updateBar(self,tick,max):
+        self.simuBar.setValue(tick/max*100)
+
+    def run(self,affichage,stats,simul=0):
         tick = 0
         day = 0
         continuer = True
+        for _ in range(simul * TICK_DAY):
+            if tick % TICK_DAY == 0:
+                # Suppression de la nourriture restante
+                self.world.removefood()
+                day += 1
 
+                # Spawn de la nouvelle food
+                self.world.spawnfood()
+            tick += 1
+            # drawStats(self.grille, self.listebob, tick)
+            self.listebob.sort(key=lambda x: x.velocity, reverse=True)
+            self.update()
+            self.updateBar(tick,simul*TICK_DAY)
+        self.view = View()
         while continuer and self.listebob:
+            print(day)
             wait = self.view.gui.gui_pause
             if not self.file.full():
                 # Comptage des ticks/Days

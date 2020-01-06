@@ -19,22 +19,25 @@ class Prems(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
     def normal(self):
-        controller = Controller()
+        Controller(simul=self.Day_Box.value(),bar = self.progressBar)
 
+    def barMax(self):
+        if self.progressBar.value() == 100:
+            self.close()
 
 app = QApplication(sys.argv)
 
 window = Prems()
 window.show()
 
-# app.exec()
-controller = Controller()
+app.exec()
+# Controller()
 
 # #execution sans argument -> affichage vue
 # # python main.py [option..]
 # #  a : affichage
 # #  d : debug
-# #  s : simulation de n tour passsé à la suite
+# #  s : simulation de n tour passsé à la suite pour stats
 # if len(sys.argv)>1 :
 #     controller = Controller(sys.argv[1], int(sys.argv[2]) if len(sys.argv)>2 else 1000)
 # else :
