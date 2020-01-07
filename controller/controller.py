@@ -78,7 +78,6 @@ class Controller:
             self.updateBar(tick,simul*TICK_DAY)
         self.view = View()
         while continuer and self.listebob:
-            print(day)
             wait = self.view.gui.gui_pause
             if not self.file.full():
                 # Comptage des ticks/Days
