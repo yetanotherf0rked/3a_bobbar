@@ -95,7 +95,15 @@ class Bob:
                 #Reproduction ou parthenogenese si possible
                 sons+= self.reproduction(current_case)
                 sons+= self.parthenogenesis(current_case)
+
         self.energy-=self.energy_brain
+        # Update life in function of energy
+        self.life = (self.energy % ENERGY_MAX) / 100
+        if self.life < 0:
+            self.life = 0
+        elif self.life > 1:
+            self.life = 1
+
         #reproduction si possible :
         return sons
 

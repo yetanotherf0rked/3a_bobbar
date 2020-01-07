@@ -116,6 +116,10 @@ class View:
 
         # Affichage des Bobs
         self.bobliste = []
+        # Life progress bar 
+        pos_life_bar = (0, 0)
+        size_life_bar = (25, 5)
+
         for case in caseliste:
             n = min(5,len(case))
             liste = case[0:n]
@@ -129,16 +133,11 @@ class View:
                 else:
                     perso = pygame.transform.scale(bob.image, (32,size))
                 PosX , PosY = Pos[i]
+                self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True, radius=3)
                 bob.blit = self.simu_surface.blit(perso, (PosX_init + cote_x - 16 + PosX + self.depx,PosY_init + 7 - size + PosY + self.depy))
                 self.bobliste.append(bob)
 
         #### PROGRESS BARS ####
-
-        # Life progress bar #
-        # pos_life_bar = (0, 0)
-        # size_life_bar = (25, 5)
-        # for bob in self.bobliste:
-        #     self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True, radius=3)
 
         # Progress bar day #
         # Useless since there's Star()
