@@ -324,7 +324,5 @@ class Bob:
                 if current.age > other_bob.age:  # si on regarde un bob plus jeune, on ne continue pas sur les enfants de current
                     open_list.update(current.childs)
 
-        # TODO regarder les cousins/neveux ?
-
         return False
 
