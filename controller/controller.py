@@ -85,9 +85,9 @@ class Controller:
                     # Suppression de la nourriture restante
                     self.world.removefood()
                     day += 1
-                    # for s in self.view.gui.sliders:
-                    #     print(s,str(parameters.actual.get(s)).rjust(40-len(s)))
-                    # print()
+                    for s in self.view.gui.sliders:
+                        print(s,str(parameters.actual.get(s)).rjust(40-len(s)))
+                    print()
 
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
@@ -176,7 +176,7 @@ class Controller:
                 day += 1
                 # Spawn de la nouvelle food
                 self.world.spawnfood()
-                # print(day, len(self.listebob))
+                print(day, len(self.listebob))
             tick += 1
             drawStats(self.grille, self.listebob, tick)
             self.listebob.sort(key=lambda x: x.velocity, reverse=True)
