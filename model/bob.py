@@ -44,6 +44,7 @@ class Bob:
         bob.blit = self.blit
         bob.bobController = self.bobController
         bob.select = self.select
+        bob.life = self.life
         return bob
 
     def update(self, grille):
@@ -97,8 +98,10 @@ class Bob:
                 sons+= self.parthenogenesis(current_case)
 
         self.energy-=self.energy_brain
+
         # Update life in function of energy
-        self.life = (self.energy % ENERGY_MAX) / 100
+        self.life = self.energy / ENERGY_MAX
+
         if self.life < 0:
             self.life = 0
         elif self.life > 1:

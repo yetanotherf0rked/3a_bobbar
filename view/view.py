@@ -48,7 +48,7 @@ class View:
         self.soleil = Star()
 
     # Fonction d'affichage
-    def affichage(self, grille, listebob, tick):
+    def affichage(self, grille, tick):
         self.run = True
 
         #Resize des surfaces:
@@ -117,7 +117,7 @@ class View:
         # Affichage des Bobs
         self.bobliste = []
         # Life progress bar 
-        pos_life_bar = (0, 0)
+        pos_life_bar = (4, 0)
         size_life_bar = (25, 5)
 
         for case in caseliste:
@@ -133,6 +133,7 @@ class View:
                 else:
                     perso = pygame.transform.scale(bob.image, (32,size))
                 PosX , PosY = Pos[i]
+                # print(bob.life) stays at 1 (?)
                 self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True, radius=3)
                 bob.blit = self.simu_surface.blit(perso, (PosX_init + cote_x - 16 + PosX + self.depx,PosY_init + 7 - size + PosY + self.depy))
                 self.bobliste.append(bob)
@@ -152,7 +153,7 @@ class View:
         progress_beer = pygame.transform.scale(beer_image, (200, 200))
         pos_bar_food = (12, 5)
         size_bar_food = (progress_beer.get_width() - 67, progress_beer.get_height() - 12) # 67 and 12 are arbitrary to fit the image 
-        progress_food = (current_food / NB_FOOD) % TICK_DAY
+        progress_food = current_food / NB_FOOD
 
         #  Get color palette
         beer_palette = Gradient(BEER_PALETTE, progress_beer.get_width()).gradient(int(progress_food * 100))

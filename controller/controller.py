@@ -77,6 +77,7 @@ class Controller:
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
                 self.file.enfile(self.grille)
+
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
             else:
@@ -86,9 +87,9 @@ class Controller:
                 # Update de la fenêtre
                 if not self.view.run:
                     if not wait:
-                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.listebob,self.file.tick))
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.file.tick))
                     else :
-                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.listebob, self.file.tick))
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(), self.file.tick))
                     self._thread.start()
                 # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY)
                 # Test de fin
