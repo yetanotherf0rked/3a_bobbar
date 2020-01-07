@@ -7,7 +7,7 @@ import pygame
 
 class Bob:
     def __init__(self, pos):
-        self.x, self.y = pos      #Case où ce trouve le Bob
+        self.x, self.y = pos      #Case où se trouve le Bob
         self.energy = parameters.get("Spawn Energy")
         self.velocity = 1.0
         self.masse = 1.0
@@ -25,6 +25,9 @@ class Bob:
         self.childs = set()
         self.age = 0
 
+        # Life for progress bar
+        self.life = (self.energy % ENERGY_MAX)/100
+
     def copie(self):
         bob = Bob((self.x,self.y))
         bob.energy = self.energy
@@ -41,6 +44,7 @@ class Bob:
         bob.blit = self.blit
         bob.bobController = self.bobController
         bob.select = self.select
+        bob.life = self.life
         return bob
 
     def update(self, grille):
@@ -52,7 +56,7 @@ class Bob:
         is_moving = False
         current_case = grille[self.x][self.y]
 
-        sons = [] #liste contenant les envantuels enfant du bob à ce tour
+        sons = [] #liste contenant les enventuels enfants du bob à ce tour
 
         # Fight ?
         self.fight(current_case)
@@ -92,7 +96,17 @@ class Bob:
                 #Reproduction ou parthenogenese si possible
                 sons+= self.reproduction(current_case)
                 sons+= self.parthenogenesis(current_case)
+
         self.energy-=self.energy_brain
+
+        # Update life in function of energy
+        self.life = self.energy / ENERGY_MAX
+
+        if self.life < 0:
+            self.life = 0
+        elif self.life > 1:
+            self.life = 1
+
         #reproduction si possible :
         return sons
 
@@ -309,8 +323,6 @@ class Bob:
                     return True
                 if current.age > other_bob.age:  # si on regarde un bob plus jeune, on ne continue pas sur les enfants de current
                     open_list.update(current.childs)
-
-        #TODO regarder les cousins/neveux ?
 
         return False
 

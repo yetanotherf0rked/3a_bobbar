@@ -3,6 +3,7 @@ import pygame
 from ressources.config import *
 from random import randint # for testing purposes
 from view.debug import *
+from .gradient import Gradient
 
 class Gui:
 
@@ -66,13 +67,13 @@ class Gui:
         # On génère pour chaque paramètre son slider associé
         self.generate_sliders()
 
-        # Boutton Quitter
+        # Bouton Quitter
         self.gui_quit = False
         self.quit_button = thorpy.make_button("Quit", func=self.quit_button_pressed)
         self.quit_button.set_main_color(BLACK)
         self.elements.append(self.quit_button)
 
-        # Boutton Pause
+        # Bouton Pause
         self.gui_pause = False
         self.pause_button = thorpy.make_button("Play/Pause", func=self.pause_button_pressed)
         self.pause_button.set_main_color(BLACK)
@@ -276,3 +277,68 @@ class Gui:
 
     def button_tick_minus_pressed(self):
         pass
+
+    def progress_bar(self, pos, size, progress, screen, bar_color, bg=False, bg_color=BLACK, vertical=False, reverse=False, round=False, radius=20):
+        """
+        Draws a progress bar /!/ This function works for the project but not all cases are treated
+        pos sets position of progress bar
+        size sets size of progress bar
+        progress is the current progress, between 0 and 1
+        screen is the screen where the bar should be drawn
+        bg is background, if is necessary
+        vertical is wether you want vertical or horizontal bar
+        reverse make the bar drawing backward (100% -> 0%)
+        round sets if you want round rectangles or not
+        radius is the radius of angles if round is True
+        """
+        if progress < 0:
+            progress = 0
+
+        # Useful for life bars
+        if bg:
+            self.round_rect(screen, pygame.Rect(pos, size), bg_color, radius)
+
+        inner_pos = pos
+        if reverse and vertical:
+            """
+            This case is particular, because pos represent the top left corner, and rect is drawn from pos
+            We have to reduce size and lower position to get what we want
+            """
+            changed_size = size[1] - (size[1] * progress)
+            inner_pos = (pos[0], pos[1] + changed_size)
+            inner_size = (size[0], size[1] * progress)
+        elif not reverse and vertical:
+            inner_size = (size[0], progress)
+        elif not reverse and not vertical:
+            inner_size = (size[0] * progress, size[1])
+        if round:
+            self.round_rect(screen, pygame.Rect(inner_pos, inner_size), bar_color, radius)
+        else:
+            pygame.draw.rect(screen, bar_color, pygame.Rect(inner_pos, inner_size))
+
+    # The 2 functions below come from an existing project
+
+    def round_rect(self, surface, rect, color, rad=20):
+        """
+        Draw a rect with rounded corners to surface.  Argument rad can be specified
+        to adjust curvature of edges (given in pixels).  An optional border
+        width can also be supplied; if not provided the rect will be filled.
+        Both the color and optional interior color (the inside argument) support
+        alpha.
+        """
+        rect = pygame.Rect(rect)
+        zeroed_rect = rect.copy()
+        zeroed_rect.topleft = 0, 0
+        image = pygame.Surface(rect.size).convert_alpha()
+        image.fill((0, 0, 0, 0))
+        self._render_region(image, zeroed_rect, color, rad)
+        surface.blit(image, rect)
+
+    def _render_region(self, image, rect, color, rad):
+        """Helper function for round_rect."""
+        corners = rect.inflate(-2 * rad, -2 * rad)
+        for attribute in ("topleft", "topright", "bottomleft", "bottomright"):
+            pygame.draw.circle(image, color, getattr(corners, attribute), rad)
+        image.fill(color, rect.inflate(-2 * rad, 0))
+        image.fill(color, rect.inflate(0, -2 * rad))
+

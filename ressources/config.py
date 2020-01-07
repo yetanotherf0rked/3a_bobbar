@@ -57,6 +57,7 @@ image_EARTH_WOW = "ressources/images/terrespec.png"
 image_REDBOB = "ressources/images/polar_bear_red.png"
 image_SOLEIL = "ressources/images/Soleil300x300.png"
 image_LUNE = "ressources/images/lune.png"
+image_EMPTY_BEER = "ressources/images/empty_beer_icon.png"
 
 # Couleurs
 BLACK = (0, 0, 0)
@@ -65,12 +66,15 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 COLOR_ELECTRON_BLUE = (9, 132, 227)
+BEER = (242, 142, 28)
+BEER_PALETTE = [(204,111,150),(204,125,35),(242,142,28),(255,200,80),(255,200,150),(255,215,0),(204,111,0)]
+
 
 # Dimensions et Positions des Elements Graphiques
 DIM_LOGO_X = 210
 DIM_LOGO_Y = 210
 
-DIM_MENU_X = 240 # min recommandé : 240
+DIM_MENU_X = 220 # min recommandé : 240
 
 DIM_SLIDER_X = DIM_MENU_X - 80
 DIM_SLIDER_Y = 7 # valeur par défaut : 20

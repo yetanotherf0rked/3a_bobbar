@@ -4,6 +4,7 @@ from pygame.locals import RESIZABLE
 from ressources.config import *
 from .gui import *
 from model import *
+from view.gradient import Gradient
 
 class View:
 
@@ -79,6 +80,9 @@ class View:
 
         """Obligé de séparaer cette boucle de l'affichage du sol car elle change les cases."""
         caseliste = []
+        current_food = 0
+
+        # Affichage du sol
         for y in range(TAILLE):
             for x in range(TAILLE):
                 #Ajout de tout les bobs de la case à bobliste
@@ -93,25 +97,30 @@ class View:
         for y in range(TAILLE):
             xdec, ydec = cote_x / TAILLE, cote_y / TAILLE
             if y == 0:
-                # Affichages des lignes extérieurs du haut
+                # Affichages des lignes extérieures du haut
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x - xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + 2* cote_x - xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x + xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
             for x in range(TAILLE):
                 grille[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x, self.zoom)
                 n = min(5,int(grille[x][y].food // parameters.get("Food Energy")))
-                if not(n ==0):
+                if n:
                     Pos = Case(0,0).bobCase(n, x, y, xdec, ydec)
+                    current_food += 1
                     for i in range(n):
                         PosX, PosY = Pos[i]
                         #Affichage de la food
                         self.simu_surface.blit(self.food, (PosX_init + cote_x - 20 + PosX + self.depx, PosY_init - 30 + PosY + self.depy))
 
-        #Affichages des lignes extérieurs du bas
+        #Affichages des lignes extérieures du bas
         pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init+self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx, PosY_init + 2* cote_y + self.depy),5)
         pygame.draw.line(self.simu_surface, (255,155,65), (PosX_init + 2* cote_x + self.depx, PosY_init + cote_y + self.depy),(PosX_init + cote_x + self.depx,PosY_init + 2* cote_y + self.depy),5)
 
         # Affichage des Bobs
         self.bobliste = []
+        # Life progress bar
+        pos_life_bar = (4, 0)
+        size_life_bar = (25, 5)
+
         for case in caseliste:
             n = min(5,len(case))
             liste = case[0:n]
@@ -125,6 +134,8 @@ class View:
                 else:
                     perso = pygame.transform.scale(bob.image, (32,size))
                 PosX , PosY = Pos[i]
+                # print(bob.life) stays at 1 (?)
+                self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True, radius=3)
                 bob.blit = self.simu_surface.blit(perso, (PosX_init + cote_x - 16 + PosX + self.depx,PosY_init + 7 - size + PosY + self.depy))
                 self.bobliste.append(bob)
         if MINIMAP:
@@ -132,6 +143,30 @@ class View:
             for y in range(TAILLE):
                 for x in range(TAILLE):
                     grille[x][y].drawMap(self.simu_surface, xdec, 50)
+
+        #### PROGRESS BARS ####
+
+        # Progress bar day #
+        # Useless since there's Star()
+        # pos_bar_day = (0, 20)
+        # size_bar_day = (self.simu_surface.get_width() - 10, 5)
+        # progress_day = (tick % TICK_DAY) / 100
+        # self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER, round=True,
+        #                       radius=3)
+
+        # Progress bar food
+        beer_image = pygame.image.load(image_EMPTY_BEER).convert_alpha()
+        progress_beer = pygame.transform.scale(beer_image, (200, 200))
+        pos_bar_food = (12, 5)
+        size_bar_food = (progress_beer.get_width() - 67, progress_beer.get_height() - 12) # 67 and 12 are arbitrary to fit the image
+        progress_food = current_food / NB_FOOD
+
+        #  Get color palette
+        beer_palette = Gradient(BEER_PALETTE, progress_beer.get_width()).gradient(int(progress_food * 100))
+
+        #  Draw the bar
+        self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, beer_palette, vertical=True, reverse=True, round=True, radius=5)
+        self.simu_surface.blit(progress_beer, (1400, 50))
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))
         self.fenetre.blit(self.menu_surface, (0, 0))
@@ -142,3 +177,14 @@ class View:
         # Update
         pygame.display.flip()
         self.run = False
+
+        ######### Backup branch progressbar ########
+
+        # for bob in listebob:
+        #     x, y = bob.x, bob.y
+        #     # bob_surf = pygame.Surface((32, int(32*bob.masse**2 -16*bob.masse+16) + 20))
+        #     # bob_surf.set_alpha(0)
+        #     perso = pygame.transform.scale(self.perso, (32,int(32*bob.masse**2 -16*bob.masse+16)))
+        #     # bob_surf.blit(perso,(32,int(32*bob.masse**2 -16*bob.masse+16) + 20))
+
+

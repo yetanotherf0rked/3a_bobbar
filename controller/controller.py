@@ -85,6 +85,9 @@ class Controller:
                     # Suppression de la nourriture restante
                     self.world.removefood()
                     day += 1
+                    for s in self.view.gui.sliders:
+                        print(s,str(parameters.actual.get(s)).rjust(40-len(s)))
+                    print()
 
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
@@ -93,18 +96,22 @@ class Controller:
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
                 self.file.enfile(self.grille)
+
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
             else:
                 sleep(0.1)
+
             if affichage:
                 # Update de la fenêtre
                 if not self.view.run:
                     if not wait:
                         self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.file.tick))
                     else :
-                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.file.tick))
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(), self.file.tick))
                     self._thread.start()
+                # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY)
+                # Test de fin
 
                 # Boucle sur les events
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
