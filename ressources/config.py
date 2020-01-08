@@ -98,4 +98,4 @@ class Sliders:
         self.actual[param] = value
 
 # On déclare notre instance parameters
-sliders = Sliders()
+sliders_Config = Sliders()

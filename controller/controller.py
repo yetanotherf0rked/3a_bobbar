@@ -88,7 +88,7 @@ class Controller:
                     self.world.removefood()
                     day += 1
                     for s in self.view.gui.sliders:
-                        print(s,str(sliders.actual.get(s)).rjust(40-len(s)))
+                        print(s,str(sliders_Config.actual.get(s)).rjust(40-len(s)))
                     print()
 
                     # Spawn de la nouvelle food
