@@ -1,9 +1,11 @@
 from model.case import *
 from model.pile import *
+import model.config
 
 class File():
 
     def __init__(self):
+        self.config = model.config.para
         self.file = []
         self.len = 0
         self.tick = 0
@@ -27,18 +29,18 @@ class File():
         return self.current
 
     def precTick(self):
-        if HISTORIQUE:
+        if self.config.historique:
             self.file = [self.current] + self.file
             self.current = self.historique.depile()
             self.tick-=1
             self.len+=1
 
     def nextTick(self):
-        if HISTORIQUE and self.len !=0:
+        if self.config.historique and self.len !=0:
             self.defile()
 
     def full(self):
-        if HISTORIQUE:
+        if self.config.historique:
             taille_max = HISTORIQUE_MAX * TICK_DAY
         else:
             taille_max = 1

@@ -1,13 +1,12 @@
 from model import *
 from ressources.config import *
 from random import randint
-
+import model.config
 
 class World:
     def __init__(self):
         self.grid = [[Case(x, y) for y in range(TAILLE)] for x in range(TAILLE)]
         self.foodpos = []
-
     def spawnfood(self):
         for _ in range(parameters.get("Food Number")):
             x, y = randint(0, TAILLE - 1), randint(0, TAILLE - 1)

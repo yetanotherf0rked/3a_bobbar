@@ -1,7 +1,7 @@
 # Tick par jour 100
 TICK_DAY = 100
 # Population initiale 200
-NB_POP = 200
+NB_POP = 100
 # Taille de la carte 100
 TAILLE = 40
 #Nourriture sur la carte 200
@@ -37,8 +37,8 @@ ENERGY_SON_REPRO = 100
 #Energie dépensée lors de la reproduction sexuée
 ENERGY_REPRO = 150
 
-FAMILY_REPRODUCTION = False
-FAMILY_AGGRESSION = False
+# FAMILY_REPRODUCTION = False
+# FAMILY_AGGRESSION = False
 
 DIFF_AGE_FOR_REPRODUCTION = 500  # valeur en tick
 
@@ -100,20 +100,20 @@ FONT_SIZE = 11
 FONT = "verdana"
 
 # FULLSCREEN
-FULLSCREEN = False
-
-#Affichage de la perception de chaque bob
-WATCH_PERCEPTION = False
-
-#Affichage minimap
-MINIMAP = True
-
-#Affihage contour des cases
-CONTOUR_CASE = False
-
-#Choix de l'historique
-HISTORIQUE = False
-HISTORIQUE_MAX = 10
+# FULLSCREEN = False
+#
+# #Affichage de la perception de chaque bob
+# WATCH_PERCEPTION = False
+#
+# #Affichage minimap
+# MINIMAP = True
+#
+# #Affihage contour des cases
+# CONTOUR_CASE = False
+#
+# #Choix de l'historique
+# HISTORIQUE = False
+# HISTORIQUE_MAX = 10
 
 class Parameters:
 

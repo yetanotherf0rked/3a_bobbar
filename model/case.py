@@ -1,10 +1,12 @@
 from random import randint
 import pygame
 from ressources.config import *
+import model.config
 
 class Case:
 
     def __init__(self, x, y):
+        self.config = model.config.para
         self.x = x
         self.y = y
         self.food = 0
@@ -22,7 +24,7 @@ class Case:
                                                (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y)),
                                                (cx+Px_init + depx + xdec * (x-y+1), Py_init + depy + ydec *  (x+y+1)),
                                                (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y+2))])
-        if CONTOUR_CASE:
+        if self.config.show_Bord_Case:
             pygame.draw.line(surface, (228,226,232),
                              (cx+Px_init + depx + xdec * (x-y-1), Py_init + depy + ydec *  (x+y+1)),
                              (cx+Px_init + depx + xdec * (x-y), Py_init + depy + ydec *  (x+y)))
@@ -39,7 +41,7 @@ class Case:
             couleur = self.couleur
         initx,inity = int(Px_init/5),int(Px_init/5)
         pygame.draw.rect(surface, couleur, (initx+self.x*x,inity+self.y*x,x,x))
-        if CONTOUR_CASE:
+        if self.config.show_Bord_Case:
             pygame.draw.line(surface, (228,226,232), (initx+self.x*x,inity+self.y*x),(initx+self.x*x+x,inity+self.y*x))
             pygame.draw.line(surface, (228, 226, 232), (Px_init / 5 + self.x * x, Px_init / 5 + self.y * x),
                              (Px_init / 5 + self.x * x, Px_init / 5 + self.y * x + x))

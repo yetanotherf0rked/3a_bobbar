@@ -8,12 +8,14 @@ from pygame.locals import *
 from threading import Thread
 from time import sleep
 import gc
+import model.config
 
 
 class Controller:
 
     def __init__(self, mode='a', simul=0,bar = None):
         # Initialisation de la grille
+        self.config = model.config.para
         self.world = World()
         self.grille = self.world.grid
         # Initialisation des Bobs
@@ -24,7 +26,7 @@ class Controller:
         # #  s : simulation de n tour passsé à la suite pour stats
         if mode == 'a':
             self.simuBar = bar
-            self.run(True,False,simul)
+            self.run(self.config.affichage,False,simul)
         elif mode == 'd':
             self.run_debug()
         elif mode == 's':
@@ -125,7 +127,6 @@ class Controller:
                         self.view.gui.pause_button_pressed()
 
                     if event.type == VIDEORESIZE:
-                        print(event)
                         self.view.width,self.view.height = event.size
 
                     # Permet le déplacement dans la fenêtre

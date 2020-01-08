@@ -4,3 +4,4 @@ from .file import File
 from .star import Star
 from .pile import Pile
 from .world import World
+from .config import Config

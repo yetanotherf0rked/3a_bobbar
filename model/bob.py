@@ -3,10 +3,12 @@ from model.case import *
 from ressources.config import *
 from model.utils import *
 import pygame
+import model.config
 
 
 class Bob:
     def __init__(self, pos):
+        self.config = model.config.para
         self.x, self.y = pos      #Case où se trouve le Bob
         self.energy = parameters.get("Spawn Energy")
         self.velocity = 1.0
@@ -165,7 +167,7 @@ class Bob:
         if len(case.place) > 1:  # Fight
             for other_bob in case.place:
                 # if other_bob != bob:  # inutile car bob.masse/bob.masse > 2/3
-                if other_bob.masse/self.masse < 2/3 and (FAMILY_AGGRESSION or (not FAMILY_AGGRESSION and not self.areInSameFamily(other_bob))):
+                if other_bob.masse/self.masse < 2/3 and (self.config.family_Aggression or (not self.config.family_Aggression and not self.areInSameFamily(other_bob))):
                     self.energy = min(ENERGY_MAX, self.energy + 0.5*other_bob.energy*(1-(other_bob.masse/self.masse)))
                     other_bob.energy = 0
 
@@ -176,7 +178,7 @@ class Bob:
         sons=[]
         if self.energy > ENERGY_MIN_REPRO and len(case.place) > 1:
             for other_bob in case.place :
-                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO and abs(self.age-other_bob.age) < DIFF_AGE_FOR_REPRODUCTION and (FAMILY_REPRODUCTION or (not FAMILY_REPRODUCTION and not self.areInSameFamily(other_bob))):
+                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO and abs(self.age-other_bob.age) < DIFF_AGE_FOR_REPRODUCTION and (self.config.family_Reproduction or (not self.config.family_Reproduction and not self.areInSameFamily(other_bob))):
                     other_bob.energy -= ENERGY_REPRO
                     self.energy -= ENERGY_REPRO
                     son = Bob([self.x, self.y])
@@ -213,7 +215,7 @@ class Bob:
         for dx, dy in [(i, j) for i in range(-radius, radius+1) for j in range(abs(i)-radius, radius+1-abs(i))]:  # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
             if 0 <= self.x + dx < TAILLE and 0 <= self.y+dy < TAILLE:  # si la position qu'on regarde est bien dans la grille
                 case = grille[self.x+dx][self.y+dy]
-                if show and (self.select or WATCH_PERCEPTION):
+                if show and (self.select or self.config.watch_Perception):
                     case.type = "Perception"
                     case.nbPerception += 1
                     continue

@@ -6,10 +6,12 @@ from .gui import *
 from model import *
 from view.gradient import Gradient
 from math import ceil
+import model.config
 
 class View:
 
     def __init__(self):
+        self.config = model.config.para
         self.initView()
         self.run = False
         # 2 Attributs permettant de se déplacer dans la fenêtre
@@ -141,7 +143,7 @@ class View:
                 self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True, radius=3)
                 bob.blit = self.simu_surface.blit(perso, (PosX_init + cote_x - 16 + PosX + self.depx,PosY_init + 7 - size + PosY + self.depy))
                 self.bobliste.append(bob)
-        if MINIMAP:
+        if self.config.show_Minimap:
             xdec /= (1 + 0.1 * self.zoom)
             for y in range(TAILLE):
                 for x in range(TAILLE):
