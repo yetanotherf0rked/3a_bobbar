@@ -1,6 +1,5 @@
 from random import uniform, choice
 from model.case import *
-from ressources.config import *
 from model.utils import *
 import pygame
 import model.config
@@ -10,7 +9,7 @@ class Bob:
     def __init__(self, pos):
         self.config = model.config.para
         self.x, self.y = pos      #Case où se trouve le Bob
-        self.energy = parameters.get("Spawn Energy")
+        self.energy = self.config.ENERGY_SPAWN
         self.velocity = 1.0
         self.masse = 1.0
         self.perception = 0
@@ -28,7 +27,7 @@ class Bob:
         self.age = 0
 
         # Life for progress bar
-        self.life = (self.energy % ENERGY_MAX)/100
+        self.life = (self.energy % self.config.ENERGY_MAX)/100
 
     def copie(self):
         bob = Bob((self.x,self.y))
@@ -41,8 +40,8 @@ class Bob:
         bob.speed_buffer = self.speed_buffer
         bob.mem_food = self.mem_food
         bob.place_historic = self.place_historic
-        bob.image = pygame.image.load(image_BOB).convert_alpha()
-        bob.redImage = pygame.image.load(image_REDBOB).convert_alpha()
+        bob.image = pygame.image.load(self.config.image_BOB).convert_alpha()
+        bob.redImage = pygame.image.load(self.config.image_REDBOB).convert_alpha()
         bob.blit = self.blit
         bob.bobController = self.bobController
         bob.select = self.select
@@ -86,7 +85,7 @@ class Bob:
                 self.place_historic.forgot(current_case)  # si on arrive le bob arrive à une case dont il se souvenait il la supprime de sa memoire.
 
                 # perte d'energie due au deplacement
-                self.energy -= self.energy_move if is_moving else ENERGY_STAY
+                self.energy -= self.energy_move if is_moving else self.config.ENERGY_STAY
 
                 # fight ?
                 self.fight(current_case)
@@ -102,7 +101,7 @@ class Bob:
         self.energy-=self.energy_brain
 
         # Update life in function of energy
-        self.life = self.energy / ENERGY_MAX
+        self.life = self.energy / self.config.ENERGY_MAX
 
         if self.life < 0:
             self.life = 0
@@ -115,7 +114,7 @@ class Bob:
     def move(self, grille, dx, dy):
         nx=self.x+dx
         ny=self.y+dy
-        if(0<=nx<TAILLE and 0<=ny<TAILLE): # test limites du monde
+        if(0<=nx<self.config.TAILLE and 0<=ny<self.config.TAILLE): # test limites du monde
             grille[self.x][self.y].place.remove(self)
             self.x=nx
             self.y=ny
@@ -129,28 +128,28 @@ class Bob:
 
     def eat(self, food, rate=1):
         eaten_food = rate*food
-        if eaten_food + self.energy <= ENERGY_MAX:
+        if eaten_food + self.energy <= self.config.ENERGY_MAX:
             self.energy += eaten_food
             food-=eaten_food
         else:
-            food -= ENERGY_MAX-self.energy
+            food -= self.config.ENERGY_MAX-self.energy
             self.energy = 200
         return food
 
     def parthenogenesis(self, case):
         """naissance d'un nouveau bob si assez d'energie
         retourne une liste contenant le fils"""
-        if self.energy == ENERGY_MAX:
-            self.energy = parameters.get("Mother Energy")
+        if self.energy == self.config.ENERGY_MAX:
+            self.energy = self.config.ENERGY_MOTHER
 
             # Nouveau bob
             son = Bob([self.x, self.y])
-            son.energy = ENERGY_SON
+            son.energy = self.config.ENERGY_SON
             # Fonction max pour eviter qu'un bob est une vitesse < 1
-            son.velocity = max(0, self.velocity + uniform(-MUT_VELOCITY, MUT_VELOCITY))
-            son.masse = max(0, self.masse + uniform(-MUT_MASSE, MUT_MASSE))
-            son.perception = max(0, self.perception+ choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
-            son.memory_points=max(0, self.memory_points + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
+            son.velocity = max(0, self.velocity + uniform(-self.config.MUT_VELOCITY, self.config.MUT_VELOCITY))
+            son.masse = max(0, self.masse + uniform(-self.config.MUT_MASSE, self.config.MUT_MASSE))
+            son.perception = max(0, self.perception+ choice([-self.config.MUT_PERCEPT, 0, self.config.MUT_PERCEPT]))
+            son.memory_points=max(0, self.memory_points + choice([-self.config.MUT_MEMORY, 0 ,self.config.MUT_MEMORY]))
             son.energy_move = son.velocity**2*son.masse
             son.energy_brain = son.perception/5 + son.memory_points/5
             # Ajout du fils dans la case
@@ -167,8 +166,8 @@ class Bob:
         if len(case.place) > 1:  # Fight
             for other_bob in case.place:
                 # if other_bob != bob:  # inutile car bob.masse/bob.masse > 2/3
-                if other_bob.masse/self.masse < 2/3 and (self.config.family_Aggression or (not self.config.family_Aggression and not self.areInSameFamily(other_bob))):
-                    self.energy = min(ENERGY_MAX, self.energy + 0.5*other_bob.energy*(1-(other_bob.masse/self.masse)))
+                if other_bob.masse/self.masse < 2/3 and (self.config.family_Agression or (not self.config.family_Agression and not self.areInSameFamily(other_bob))):
+                    self.energy = min(self.config.ENERGY_MAX, self.energy + 0.5*other_bob.energy*(1-(other_bob.masse/self.masse)))
                     other_bob.energy = 0
 
     # apres ce commentaire : methodes en cours d'implementation :
@@ -176,18 +175,18 @@ class Bob:
     def reproduction(self, case):
         """ """
         sons=[]
-        if self.energy > ENERGY_MIN_REPRO and len(case.place) > 1:
+        if self.energy > self.config.ENERGY_MIN_REPRO and len(case.place) > 1:
             for other_bob in case.place :
-                if other_bob != self and other_bob.energy>ENERGY_MIN_REPRO and self.energy>ENERGY_MIN_REPRO and abs(self.age-other_bob.age) < DIFF_AGE_FOR_REPRODUCTION and (self.config.family_Reproduction or (not self.config.family_Reproduction and not self.areInSameFamily(other_bob))):
-                    other_bob.energy -= ENERGY_REPRO
-                    self.energy -= ENERGY_REPRO
+                if other_bob != self and other_bob.energy>self.config.ENERGY_MIN_REPRO and self.energy>self.config.ENERGY_MIN_REPRO and abs(self.age-other_bob.age) < self.config.DIFF_AGE_FOR_REPRODUCTION and (self.config.family_Reproduction or (not self.config.family_Reproduction and not self.areInSameFamily(other_bob))):
+                    other_bob.energy -= self.config.ENERGY_REPRO
+                    self.energy -= self.config.ENERGY_REPRO
                     son = Bob([self.x, self.y])
-                    son.energy = ENERGY_SON_REPRO
+                    son.energy = self.config.ENERGY_SON_REPRO
 
-                    son.velocity = max(0, (self.velocity + other_bob.velocity)/2 + uniform(-MUT_VELOCITY, MUT_VELOCITY))
-                    son.masse = max(1.0, (self.masse + other_bob.masse)/2 + uniform(-MUT_MASSE, MUT_MASSE))
-                    son.perception = max(0, round((self.perception + other_bob.perception )/2) + choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
-                    son.memory_points=max(0, round((self.memory_points + other_bob.memory_points)/2) + choice([-MUT_MEMORY, 0 ,MUT_MEMORY]))
+                    son.velocity = max(0, (self.velocity + other_bob.velocity)/2 + uniform(-self.config.MUT_VELOCITY, self.config.MUT_VELOCITY))
+                    son.masse = max(1.0, (self.masse + other_bob.masse)/2 + uniform(-self.config.MUT_MASSE, self.config.MUT_MASSE))
+                    son.perception = max(0, round((self.perception + other_bob.perception )/2) + choice([-self.config.MUT_PERCEPT, 0, self.config.MUT_PERCEPT]))
+                    son.memory_points=max(0, round((self.memory_points + other_bob.memory_points)/2) + choice([-self.config.MUT_MEMORY, 0 ,self.config.MUT_MEMORY]))
                     son.energy_move = son.velocity**2*son.masse
                     son.energy_brain = son.perception/5 + son.memory_points/5
 
@@ -213,9 +212,9 @@ class Bob:
         foods = []
 
         for dx, dy in [(i, j) for i in range(-radius, radius+1) for j in range(abs(i)-radius, radius+1-abs(i))]:  # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
-            if 0 <= self.x + dx < TAILLE and 0 <= self.y+dy < TAILLE:  # si la position qu'on regarde est bien dans la grille
+            if 0 <= self.x + dx < self.config.TAILLE and 0 <= self.y+dy < self.config.TAILLE:  # si la position qu'on regarde est bien dans la grille
                 case = grille[self.x+dx][self.y+dy]
-                if show and (self.select or self.config.watch_Perception):
+                if show and (self.select or self.config.show_Perception):
                     case.type = "Perception"
                     case.nbPerception += 1
                     continue

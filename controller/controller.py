@@ -35,9 +35,9 @@ class Controller:
     # Initialisation des Bobs
     def initbob(self):
         listebob = []
-        for bob in range(NB_POP):
+        for bob in range(self.config.NB_POP):
             # Position du Bob
-            x, y = randint(0, TAILLE-1), randint(0, TAILLE-1)
+            x, y = randint(0, self.config.TAILLE-1), randint(0, self.config.TAILLE-1)
             bob = Bob([x, y])
             self.grille[x][y].place.append(bob)
             listebob.append(bob)
@@ -65,8 +65,8 @@ class Controller:
         tick = 0
         day = 0
         continuer = True
-        for _ in range(simul * TICK_DAY):
-            if tick % TICK_DAY == 0:
+        for _ in range(simul * self.config.TICK_DAY):
+            if tick % self.config.TICK_DAY == 0:
                 # Suppression de la nourriture restante
                 self.world.removefood()
                 day += 1
@@ -77,18 +77,18 @@ class Controller:
             # drawStats(self.grille, self.listebob, tick)
             self.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.update()
-            self.updateBar(tick,simul*TICK_DAY)
+            self.updateBar(tick,simul*self.config.TICK_DAY)
         self.view = View()
         while continuer and self.listebob:
             wait = self.view.gui.gui_pause
             if not self.file.full():
                 # Comptage des ticks/Days
-                if tick % TICK_DAY == 0:
+                if tick % self.config.TICK_DAY == 0:
                     # Suppression de la nourriture restante
                     self.world.removefood()
                     day += 1
                     for s in self.view.gui.sliders:
-                        print(s,str(parameters.actual.get(s)).rjust(40-len(s)))
+                        print(s,str(sliders.actual.get(s)).rjust(40-len(s)))
                     print()
 
                     # Spawn de la nouvelle food
@@ -112,7 +112,7 @@ class Controller:
                     else :
                         self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(), self.file.tick))
                     self._thread.start()
-                # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY)
+                # print(len(self.file.file),len(self.file.historique.pile),self.config.TICK_DAY)
                 # Test de fin
 
                 # Boucle sur les events
@@ -172,7 +172,7 @@ class Controller:
         while continuer and self.listebob:
 
             # Comptage des ticks/Days
-            if tick % TICK_DAY == 0:
+            if tick % self.config.TICK_DAY == 0:
             # Suppression de la nourritue restante
                 self.world.removefood()
                 day += 1
@@ -191,7 +191,7 @@ class Controller:
         tick = 0
         day = 0
         for _ in range(ticks):
-            if tick % TICK_DAY == 0:
+            if tick % self.config.TICK_DAY == 0:
                 self.world.removefood()
                 day += 1
                 self.world.spawnfood()

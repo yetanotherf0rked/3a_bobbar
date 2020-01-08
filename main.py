@@ -1,6 +1,5 @@
 import os
 from controller import *
-from model import Config
 from view.Choice import *
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
@@ -28,10 +27,17 @@ class Prems(QMainWindow, Ui_MainWindow):
             self.close()
 
     def update_Config(self):
-        if self.show_Minimap.isChecked():
-            self.config.show_Minimap = True
-        if self.affichage.isChecked():
-            self.config.affichage = True
+        self.config.show_Minimap = self.show_Minimap.isChecked()
+        self.config.fullscreen = self.fullscreen.isChecked()
+        self.config.show_Perception = self.show_Perception.isChecked()
+        self.config.show_Bord_Case = self.show_Bord_Case.isChecked()
+        self.config.historique = self.historique.isChecked()
+        self.config.family_Reproduction = self.family_Reproduction.isChecked()
+        self.config.family_Agression = self.family_Agression.isChecked()
+        self.config.affichage = self.affichage.isChecked()
+        self.config.taille = self.taille.intValue()
+        print(self.config.taille)
+
 
 app = QApplication(sys.argv)
 

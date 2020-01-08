@@ -1,8 +1,9 @@
-from ressources.config import TAILLE
+import model.config
 
 class Memory:
 
     def __init__(self,taillemax):
+        self.config = model.config.para
         self.taillemax = taillemax
         self.memory =[]
 

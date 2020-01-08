@@ -1,4 +1,4 @@
-from ressources.config import TICK_DAY,TAILLE,ENERGY_FOOD,parameters
+import model.config
 
 def velocity_stat(pop):
 	return (sum(b.velocity for b in pop)/len(pop),max(b.velocity for b in pop),min(b.velocity for b in pop))
@@ -14,8 +14,8 @@ def memory_stat(pop):
 
 def total_food(grille):
     s=0
-    for i in range(TAILLE):
-        for j in range(TAILLE):
+    for i in range(model.config.para.TAILLE):
+        for j in range(model.config.para.TAILLE):
             s+=grille[i][j].food
     return s
 
@@ -28,8 +28,8 @@ def print_bar(maxd, dat, size=50):
     print(f'{dat}/{maxd}')
 
 def drawStats(grille, liste_bobs, tick):
-    print(f'Jour : {tick//TICK_DAY}')
-    print_bar(TICK_DAY, tick%TICK_DAY)
+    print(f'Jour : {tick//self.config.TICK_DAY}')
+    print_bar(self.config.TICK_DAY, tick%self.config.TICK_DAY)
     print(f'population : {len(liste_bobs)}' )
     mstat =mass_stat(liste_bobs)
     print(f'masse moyenne : {mstat[0]:.3f} masse max : {mstat[1]:.3f} masse min : {mstat[2]:.3f}')
@@ -61,10 +61,10 @@ def update_stats(grille, liste_bobs, tick):
     Retourne un tableau des valeurs des statistiques
     Les valeurs peuvent des nombres (int, float) ou des tuples"""
 
-    return [tick//TICK_DAY + 1,
-            tick%TICK_DAY,
+    return [tick//model.config.para.TICK_DAY + 1,
+            tick%model.config.para.TICK_DAY,
             len(liste_bobs),
-            int(total_food(grille)/ENERGY_FOOD),
+            int(total_food(grille)/model.config.para.ENERGY_FOOD),
             mass_stat(liste_bobs),
             velocity_stat(liste_bobs),
             perception_stat(liste_bobs),

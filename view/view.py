@@ -1,7 +1,5 @@
 import pygame
-from random import randint
 from pygame.locals import *
-from ressources.config import *
 from .gui import *
 from model import *
 from view.gradient import Gradient
@@ -22,7 +20,7 @@ class View:
     def initView(self):
         # Initialisation de pygame
         pygame.init()
-        #Calcul de la taille de l'écran
+        #Calcul de la self.config.TAILLE de l'écran
         info = pygame.display.Info()
         self.width, self.height = info.current_w, info.current_h
 
@@ -45,7 +43,7 @@ class View:
         self.gui = Gui(self.menu_surface)
 
         #Chargement de la food
-        food = pygame.image.load(image_FOOD).convert_alpha()
+        food = pygame.image.load(self.config.image_FOOD).convert_alpha()
         self.food = pygame.transform.scale(food, (40, 40))
         # # Chargement des Bob
         # self.perso = pygame.image.load(image_BOB).convert_alpha()
@@ -88,8 +86,8 @@ class View:
         current_food = 0
 
         # Affichage du sol
-        for y in range(TAILLE):
-            for x in range(TAILLE):
+        for y in range(self.config.TAILLE):
+            for x in range(self.config.TAILLE):
                 #Ajout de tout les bobs de la case à bobliste
                 if grille[x][y].place != []:
                     l = [bob for bob in grille[x][y].place]
@@ -99,15 +97,15 @@ class View:
                     caseliste.append(l)
 
         # Affichage du sol
-        for y in range(TAILLE):
-            xdec, ydec = cote_x / TAILLE, cote_y / TAILLE
+        for y in range(self.config.TAILLE):
+            xdec, ydec = cote_x / self.config.TAILLE, cote_y / self.config.TAILLE
             if y == 0:
                 # Affichages des lignes extérieures du haut
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x - xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + 2* cote_x - xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x + xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
-            for x in range(TAILLE):
+            for x in range(self.config.TAILLE):
                 grille[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x, self.zoom)
-                n = min(5,ceil(grille[x][y].food / parameters.get("Food Energy")))
+                n = min(5,ceil(grille[x][y].food / self.config.ENERGY_FOOD))
                 if n:
                     Pos = Case(0,0).bobCase(n, x, y, xdec, ydec)
                     current_food += 1
@@ -145,8 +143,8 @@ class View:
                 self.bobliste.append(bob)
         if self.config.show_Minimap:
             xdec /= (1 + 0.1 * self.zoom)
-            for y in range(TAILLE):
-                for x in range(TAILLE):
+            for y in range(self.config.TAILLE):
+                for x in range(self.config.TAILLE):
                     grille[x][y].drawMap(self.simu_surface, xdec, 50)
 
         #### PROGRESS BARS ####
@@ -160,11 +158,11 @@ class View:
         #                       radius=3)
 
         # Progress bar food
-        beer_image = pygame.image.load(image_EMPTY_BEER).convert_alpha()
+        beer_image = pygame.image.load(self.config.image_EMPTY_BEER).convert_alpha()
         progress_beer = pygame.transform.scale(beer_image, (150, 150))
         pos_bar_food = (12, 5)
         size_bar_food = (progress_beer.get_width() - 67, progress_beer.get_height() - 12) # 67 and 12 are arbitrary to fit the image
-        progress_food = current_food / NB_FOOD
+        progress_food = current_food / self.config.NB_FOOD
 
         #  Get color palette
         beer_palette = Gradient(BEER_PALETTE, progress_beer.get_width()).gradient(int(progress_food * 100))

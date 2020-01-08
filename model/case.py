@@ -1,6 +1,4 @@
-from random import randint
 import pygame
-from ressources.config import *
 import model.config
 
 class Case:

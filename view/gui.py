@@ -4,6 +4,7 @@ from ressources.config import *
 from random import randint # for testing purposes
 from view.debug import *
 from .gradient import Gradient
+import model.config
 
 class Gui:
 
@@ -32,6 +33,7 @@ class Gui:
     """
 
     def __init__(self, menu_surface):
+        self.config = model.config.para
         # Thème par défaut
         thorpy.set_theme("human")
 
@@ -58,7 +60,7 @@ class Gui:
         self.elements = []
 
         # Logo
-        img = thorpy.Image(path=image_LOGO)
+        img = thorpy.Image(path=self.config.image_LOGO)
         self.elements.append(img)
 
         # On génère la box des stats
@@ -167,11 +169,11 @@ class Gui:
             self.elements_stats[k].get_elements()[1].stick_to(self.elements_stats[k].get_elements()[0], target_side="bottom", self_side="top")
 
     def generate_sliders(self):
-        """ Génère des sliders à partir des paramètres déclarés dans parameters.default{}
+        """ Génère des sliders à partir des paramètres déclarés dans sliders.default{}
             Vérifie si l'argument SHOW est bien égal à True avant de créer le slider"""
         # Titre du Menu Paramètres
         thorpy.set_theme("classic")
-        menu_title = thorpy.make_text("Parameters")
+        menu_title = thorpy.make_text("sliders")
         thorpy.style.DEF_COLOR = (COLOR_ELECTRON_BLUE)
         menu_title_box = thorpy.Box(elements=[menu_title], size=[DIM_MENU_X-25, 25])
         menu_title_box.set_main_color(COLOR_ELECTRON_BLUE)
@@ -186,8 +188,8 @@ class Gui:
         # Tableau de la box de sliders (générés avec la méthode thorpy.OneLineText)
         box_sliders = []
 
-        # On parcourt tous les paramètres contenus dans parameters.default ayant l'argument SHOW=True (k[4])
-        for name,k in parameters.default.items():
+        # On parcourt tous les paramètres contenus dans sliders.default ayant l'argument SHOW=True (k[4])
+        for name,k in sliders.default.items():
             if k[4]: # Si l'argument SHOW est à TRUE
 
                 # On génère les titres des paramètres
@@ -256,7 +258,7 @@ class Gui:
         """update_values : met à jour les valeurs des paramètres dans parametres.actual
         avec la méthode parametres.set()"""
         for name, slider in self.sliders.items():
-            parameters.set(name, slider.get_value())
+            sliders.set(name, slider.get_value())
 
     def quit_button_pressed(self):
         """quit_button_pressed : appelée quand on clique sur le Bouton Quit"""

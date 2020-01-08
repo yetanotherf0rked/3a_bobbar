@@ -1,4 +1,3 @@
-from ressources.config import *
 import model.config
 
 class Pile():
