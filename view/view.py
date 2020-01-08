@@ -5,6 +5,7 @@ from ressources.config import *
 from .gui import *
 from model import *
 from view.gradient import Gradient
+from math import ceil
 
 class View:
 
@@ -17,13 +18,12 @@ class View:
         self.zoom = 0
 
     def initView(self):
-
         # Initialisation de pygame
         pygame.init()
-
         #Calcul de la taille de l'écran
         info = pygame.display.Info()
         self.width, self.height = info.current_w, info.current_h
+        print(self.height)
 
         self.dim_menu = (220 , int(self.height))
         simu_x, simu_y = self.width - self.dim_menu[0], int(self.height)
@@ -102,7 +102,7 @@ class View:
                 pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + cote_x + xdec * y+ self.depx, PosY_init + ydec * y+self.depy),(PosX_init + xdec * y+ self.depx, PosY_init + cote_y + ydec * y+self.depy),5)
             for x in range(TAILLE):
                 grille[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x, self.zoom)
-                n = min(5,int(grille[x][y].food // parameters.get("Food Energy")))
+                n = min(5,ceil(grille[x][y].food / parameters.get("Food Energy")))
                 if n:
                     Pos = Case(0,0).bobCase(n, x, y, xdec, ydec)
                     current_food += 1
