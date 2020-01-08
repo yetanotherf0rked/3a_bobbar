@@ -50,7 +50,7 @@ class Case:
                     couleur = (255,0,0)
                     break
             radius = int(x/2)
-            pygame.draw.circle(surface, couleur, (initx+self.x*x+radius,inity+self.y*x+radius), radius-1)
+            pygame.draw.circle(surface, couleur, (initx+self.x*x+radius+1,inity+self.y*x+radius+1), radius)
 
     def copie(self):
         case = Case(self.x,self.y)

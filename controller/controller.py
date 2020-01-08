@@ -125,6 +125,7 @@ class Controller:
                         self.view.gui.pause_button_pressed()
 
                     if event.type == VIDEORESIZE:
+                        print(event)
                         self.view.width,self.view.height = event.size
 
                     # Permet le déplacement dans la fenêtre

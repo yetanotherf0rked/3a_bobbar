@@ -1,6 +1,6 @@
 import pygame
 from random import randint
-from pygame.locals import RESIZABLE
+from pygame.locals import *
 from ressources.config import *
 from .gui import *
 from model import *
@@ -23,14 +23,17 @@ class View:
         #Calcul de la taille de l'écran
         info = pygame.display.Info()
         self.width, self.height = info.current_w, info.current_h
-        print(self.height)
 
-        self.dim_menu = (220 , int(self.height))
-        simu_x, simu_y = self.width - self.dim_menu[0], int(self.height)
+        self.dim_menu = (220 , int(self.height)-10)
+        simu_x, simu_y = self.width - self.dim_menu[0], int(self.height)-10
         self.dim_simu = (simu_x, simu_y)
 
         # Ouverture de la fenêtre Pygame
-        self.fenetre = pygame.display.set_mode((self.width, self.height),RESIZABLE)
+        self.fenetre = pygame.display.set_mode((0,0), pygame.RESIZABLE)
+        self.fenetre = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+        for event in pygame.event.get():
+            if event.type == VIDEORESIZE:
+                self.width, self.height = event.size
 
         # On distingue deux surfaces
         self.menu_surface = pygame.Surface(self.dim_menu)
@@ -156,7 +159,7 @@ class View:
 
         # Progress bar food
         beer_image = pygame.image.load(image_EMPTY_BEER).convert_alpha()
-        progress_beer = pygame.transform.scale(beer_image, (200, 200))
+        progress_beer = pygame.transform.scale(beer_image, (150, 150))
         pos_bar_food = (12, 5)
         size_bar_food = (progress_beer.get_width() - 67, progress_beer.get_height() - 12) # 67 and 12 are arbitrary to fit the image
         progress_food = current_food / NB_FOOD
@@ -166,7 +169,7 @@ class View:
 
         #  Draw the bar
         self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, beer_palette, vertical=True, reverse=True, round=True, radius=5)
-        self.simu_surface.blit(progress_beer, (1400, 50))
+        self.simu_surface.blit(progress_beer, (50, -150+self.dim_simu[1]))
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))
         self.fenetre.blit(self.menu_surface, (0, 0))
