@@ -42,6 +42,8 @@ FAMILY_AGGRESSION = False
 
 DIFF_AGE_FOR_REPRODUCTION = 500  # valeur en tick
 
+DISTANCE_TO_BE_IN_SAME_FAMILY = 3
+
 # Chargement des images
 image_BOB = "ressources/images/polar_bear_white2.png"
 image_FOOD = "ressources/images/biere.png"
