@@ -4,15 +4,12 @@ from time import sleep
 
 import pygame
 from pygame.locals import *
-from threading import Thread
-import gc
-from view.graphs import Graph
 
 import ressources.config
-from ressources.sliders import *
 from model import *
 from view import View
 from view.debug import *
+from view.graphs import Graph
 
 
 class Controller:
