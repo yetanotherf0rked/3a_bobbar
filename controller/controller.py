@@ -1,16 +1,13 @@
 from model import *
 from random import randint,choice
-from ressources.constantes import *
-from view import *
+from ressources.config import *
 from view.debug import *
+from view import View
 import pygame
 from pygame.locals import *
 from threading import Thread
-from time import sleep
-import os
-
-
-# AFFICHAGE = False
+import gc
+from view.graphs import Graph
 
 
 class Controller:
@@ -21,9 +18,11 @@ class Controller:
         self.grille = self.world.grid
         # Initialisation des Bobs
         self.listebob = self.initbob()
+        self.file = File()
+        self.graph = Graph()
         if mode == 'a':
             self.view = View()
-            self.run()
+            self.run(True,False)
         elif mode == 'd':
             self.run_debug()
         elif mode == 's':
@@ -51,69 +50,92 @@ class Controller:
             if bob.is_dead() :
                 self.grille[bob.x][bob.y].place.remove(bob)
                 self.listebob.remove(bob)
-                
 
         # on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
         self.listebob += new_bobs
 
-    def run(self):
+    def run(self,affichage,stats):
         tick = 0
         day = 0
         continuer = True
-        wait = False
+
         while continuer and self.listebob:
+            wait = self.view.gui.gui_pause
             if not wait:
                 # Comptage des ticks/Days
                 if tick % TICK_DAY == 0:
                     # Suppression de la nourriture restante
                     self.world.removefood()
                     day += 1
+
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
                     print(day, len(self.listebob))
                 tick += 1
                 #drawStats(self.grille, self.listebob, tick)
+                self.graph.launch_anim((tick/TICK_DAY,len(self.listebob)))
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
+                self.file.enfile(self.grille)
+                if stats:
+                    drawStats(self.grille, self.listebob, tick)
+                
 
-            # Update de la fenêtre
-            while self.view.run:
-                # Limitation de vitesse de la boucle
-                sleep(0.001)
-            self._thread = Thread(target=self.view.affichage, args=(self.grille, self.listebob))
-            self._thread.start()
+            if affichage:
+                # Update de la fenêtre
+                if not self.view.run:
+                    if not wait:
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.file.tick))
+                    else :
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(),self.file.tick))
+                    self._thread.start()
+                # print(len(self.file.file),len(self.file.historique.pile),TICK_DAY*10)
+                # Test de fin
+                for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
-            # Test de fin
-            for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
+                    # Stop
+                    if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
+                        continuer = False  # On arrête la boucle
 
-                # Stop
-                if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:  # Si un de ces événements est de type QUIT
-                    continuer = False  # On arrête la boucle
+                    # Pause
+                    if event.type == KEYDOWN and event.key == K_SPACE:
+                        self.view.gui.pause_button_pressed()
 
-                # Pause
-                if event.type == KEYDOWN and event.key == K_SPACE:
-                    wait = not wait
+                    if event.type == VIDEORESIZE:
+                        self.view.width,self.view.height = event.size
 
-                # Test si on a resize la fenêtre
-                if event.type == VIDEORESIZE:
-                    self.view.width,self.view.height = event.size
+                    # Permet le déplacement dans la fenêtre
+                    if event.type == KEYDOWN and (event.key == K_UP or event.key == K_z):
+                        self.view.depy -= DEP_STEP
+                    if event.type == KEYDOWN and (event.key == K_DOWN or event.key == K_s):
+                        self.view.depy += DEP_STEP
+                    if event.type == KEYDOWN and (event.key == K_LEFT or event.key == K_q):
+                        self.view.depx -= DEP_STEP
+                    if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
+                        self.view.depx += DEP_STEP
+                    if wait and event.type == KEYDOWN and event.key == K_KP4:
+                        self.file.precTick()
+                    if wait and event.type == KEYDOWN and event.key == K_KP6:
+                        self.file.nextTick()
+                    # Réagit si l'on bouge les sliders
+                    self.view.menu_surface.unlock()
+                    self.view.gui.menu.react(event)
 
-                # Permet le déplacement dans la fenêtre
-                if event.type == KEYDOWN and (event.key == K_UP or event.key == K_z):
-                    self.view.depy -= DEP_STEP
-                if event.type == KEYDOWN and (event.key == K_DOWN or event.key == K_s):
-                    self.view.depy += DEP_STEP
-                if event.type == KEYDOWN and (event.key == K_LEFT or event.key == K_q):
-                    self.view.depx -= DEP_STEP
-                if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
-                    self.view.depx += DEP_STEP
+                    if event.type == MOUSEBUTTONDOWN:
+                        x,y = pygame.mouse.get_pos()
+                        x-= self.view.dim_menu[0]
+                        if self.view.soleil.blit.collidepoint((x,y)):
+                            self.view.gui.pause_button_pressed()
+                        for bob in self.view.bobliste:
+                            if bob.blit.collidepoint((x,y)):
+                                bob.bobController.select = True
 
     def run_debug(self):
         tick = 0
         day = 0
         continuer = True
         while continuer and self.listebob:
-            
+
             # Comptage des ticks/Days
             if tick % TICK_DAY == 0:
             # Suppression de la nourritue restante

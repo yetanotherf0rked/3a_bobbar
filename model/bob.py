@@ -1,25 +1,46 @@
 from random import uniform, choice
 from model.case import *
-from ressources.constantes import *
+from ressources.config import *
 from model.utils import *
+import pygame
 
 
 class Bob:
     def __init__(self, pos):
-        self.x, self.y = pos      # Case où ce trouve le Bob
-        self.energy = ENERGY_SPAWN 
+        self.x, self.y = pos      #Case où ce trouve le Bob
+        self.energy = parameters.get("Spawn Energy")
         self.velocity = 1.0
         self.masse = 1.0
         self.perception = 0
         self.memory_points = 0
-        self.energy_move = self.velocity**2*self.masse 
+        self.energy_move = self.velocity**2*self.masse
         self.energy_brain = self.perception/5 + self.memory_points/5
         self.speed_buffer = 0.0
         self.mem_food = Memory(self.memory_points)
         self.place_historic = Memory(2*self.memory_points)
+        self.blit = None
+        self.select = False
+        self.bobController = self
         self.parents = set()
         self.childs = set()
         self.age = 0
+
+    def copie(self):
+        bob = Bob((self.x,self.y))
+        bob.energy = self.energy
+        bob.velocity = self.velocity
+        bob.masse = self.masse
+        bob.perception = self.perception
+        bob.memory_points = self.memory_points
+        bob.energy_move = self.energy_move
+        bob.speed_buffer = self.speed_buffer
+        bob.mem_food = self.mem_food
+        bob.place_historic = self.place_historic
+        bob.image = pygame.image.load(image_BOB).convert_alpha()
+        bob.redImage = pygame.image.load(image_REDBOB).convert_alpha()
+        bob.blit = self.blit
+        bob.bobController = self.bobController
+        return bob
 
     def update(self, grille):
         """update le bob : combats, manger, déplacement... 
@@ -35,7 +56,11 @@ class Bob:
         # Fight ?
         self.fight(current_case)
 
-        # boucle tant que le bob peut  faire une action (speedbuffer > 1)
+        # Mange la nourriture restante si possible
+        if current_case.food != 0:
+             current_case.food = self.eat(current_case.food)
+
+        #boucle tant que le bob peut  faire une action (speedbuffer > 1)
         self.speed_buffer += self.velocity
         while self.speed_buffer >= 1:
                 self.speed_buffer -= 1
@@ -46,8 +71,8 @@ class Bob:
 
                 # choix direction déplacement
                 dx, dy = self.move_preference(grille) #choice([(-1, 0), (1, 0), (0, -1), (0, 1)]
-                
-                # déplacement
+
+                #déplacement
                 is_moving = self.move(grille, dx, dy)
                 self.place_historic.add(current_case)  # ajoute la case qu'il vient de quitter a son historique des cases visités
                 current_case = grille[self.x][self.y]
@@ -107,10 +132,10 @@ class Bob:
         return food
 
     def parthenogenesis(self, case):
-        """naissance d'un nouveau bob si assez d'energie 
+        """naissance d'un nouveau bob si assez d'energie
         retourne une liste contenant le fils"""
         if self.energy == ENERGY_MAX:
-            self.energy = ENERGY_MOTHER
+            self.energy = parameters.get("Mother Energy")
 
             # Nouveau bob
             son = Bob([self.x, self.y])
@@ -161,7 +186,7 @@ class Bob:
                     self.energy -= ENERGY_REPRO
                     son = Bob([self.x, self.y])
                     son.energy = ENERGY_SON_REPRO
-                    
+
                     son.velocity = max(0, (self.velocity + other_bob.velocity)/2 + uniform(-MUT_VELOCITY, MUT_VELOCITY))
                     son.masse = max(1.0, (self.masse + other_bob.masse)/2 + uniform(-MUT_MASSE, MUT_MASSE))
                     son.perception = max(0, round((self.perception + other_bob.perception )/2) + choice([-MUT_PERCEPT, 0, MUT_PERCEPT]))
@@ -199,12 +224,12 @@ class Bob:
 
         for dx, dy in [(i, j) for i in range(-radius, radius+1) for j in range(abs(i)-radius, radius+1-abs(i))]:  # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
             if 0 <= self.x + dx < TAILLE and 0 <= self.y+dy < TAILLE:  # si la position qu'on regarde est bien dans la grille
-                
+
                 for other in grille[self.x+dx][self.y+dy].place:  # si il y a des bobs sur cette case
-                    if self.masse/other.masse < 2/3:  # si il y a un bob menaçant, on est en danger 
+                    if self.masse/other.masse < 2/3:  # si il y a un bob menaçant, on est en danger
                         danger = True
                         dangers.append(other)
-                    
+
                     if (not danger) and other.masse/self.masse < 2/3:  # si on est pas en danger, on cherche les proies possibles
                         preys.append(other)
 
@@ -212,6 +237,8 @@ class Bob:
                     foods.append(grille[self.x + dx][self.y + dy])
 
         return dangers, foods, preys
+
+
 
     def move_preference(self, grille):
         """récupere les informations sur les cases vues par le bob et choisit une direction en fonction
@@ -224,7 +251,7 @@ class Bob:
         """
 
         directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-        # voit les cases qu'il perçoit 
+        # voit les cases qu'il perçoit
         dangers, foods, prey = self.see(grille)
         
         for food in foods:
@@ -255,7 +282,7 @@ class Bob:
         foods = [case for case in set(foods) if case != grille[self.x][self.y]]
         if foods:
             for food in foods:
-                self.mem_food.add(food) 
+                self.mem_food.add(food)
 
             if len(foods) > 1: foods.sort(key=lambda case: case.food if case != grille[self.x][self.y] else -1, reverse=True)
             target = (foods[0].x, foods[0].y)  # case avec la meilleure food
