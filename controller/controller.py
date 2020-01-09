@@ -101,7 +101,7 @@ class Controller:
                     self.world.spawnfood()
                 tick += 1
                 #drawStats(self.grille, self.listebob, tick)
-                self.graph.launch_anim((tick/TICK_DAY,len(self.listebob)))
+                self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.listebob)))
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
                 self.file.enfile(self.grille)

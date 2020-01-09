@@ -154,6 +154,7 @@ class Config():
         self.ENERGY_REPRO = 150
 
         self.DIFF_AGE_FOR_REPRODUCTION = 500  # valeur en tick
+        self.DISTANCE_TO_BE_IN_SAME_FAMILY=2
 
         # Chargement des images
         self.image_BOB = "ressources/images/polar_bear_white2.png"

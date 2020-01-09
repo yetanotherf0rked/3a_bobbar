@@ -236,7 +236,7 @@ class Bob:
                     sons.append(son)
         return sons
 
-    def see(self, grille):
+    def see(self, grille,show=False):
         """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies
 
         Parametres:
@@ -360,7 +360,7 @@ class Bob:
         family = set()
         family.add(self)
 
-        for _ in range(DISTANCE_TO_BE_IN_SAME_FAMILY):  # recherche en largeur dans l'arbre généalogique
+        for _ in range(self.config.DISTANCE_TO_BE_IN_SAME_FAMILY):  # recherche en largeur dans l'arbre généalogique
             tmp = set()
             for bob in family:
                 tmp.update(bob.parents.union({bro for parent in bob.parents for bro in parent.childs if bro != self}))

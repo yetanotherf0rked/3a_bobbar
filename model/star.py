@@ -21,7 +21,7 @@ class Star():
         return a * (x - cx) ** 2 + 50
 
     def updateListeX(self, cx):
-        self.ListeX = np.linspace(80, 2 * cx - 80, self.config.TICK_DAY / 2)
+        self.ListeX = np.linspace(80, 2 * cx - 80, self.config.TICK_DAY // 2)
         self.ListeX = np.concatenate((self.ListeX, self.ListeX))
 
     def Pos(self, tick, cx, cy, PosX_init, PosY_init, depx, depy):
