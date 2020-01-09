@@ -1,13 +1,12 @@
-import thorpy
 import pygame
-from ressources.config import *
-from random import randint # for testing purposes
+import thorpy
+
+import ressources.config
+from ressources.sliders import *
 from view.debug import *
-from .gradient import Gradient
-import model.config
+
 
 class Gui:
-
     """ Gui : initialise l'interface utilisateur
         Les différents éléments sont stockés dans des objets thorpy.Box
 
@@ -33,7 +32,7 @@ class Gui:
     """
 
     def __init__(self, menu_surface):
-        self.config = model.config.para
+        self.config = ressources.config.para
         # Thème par défaut
         thorpy.set_theme("human")
 
@@ -83,8 +82,8 @@ class Gui:
 
         # Regroupement de tous les éléments dans une box
         thorpy.style.DEF_COLOR = BLACK
-        self.main_box = thorpy.Background(color=((0,0,0,100)),elements=self.elements)
-        thorpy.store(self.main_box,x=DIM_MENU_X/2,y=0,mode="v",align="center")
+        self.main_box = thorpy.Background(color=((0, 0, 0, 100)), elements=self.elements)
+        thorpy.store(self.main_box, x=DIM_MENU_X / 2, y=0, mode="v", align="center")
         self.main_box.add_lift(axis="vertical")
         self.main_box.refresh_lift()
 
@@ -93,7 +92,7 @@ class Gui:
 
     def update(self, stats):
         """update : met à jour les paramètres et les visuels à chaque tick"""
-        self.update_values() # pour les paramètres
+        self.update_values()  # pour les paramètres
         self.update_stats_box(stats)
         self.main_box.blit()
         self.main_box.update()
@@ -118,7 +117,7 @@ class Gui:
         for stat in init_stats():
             text = thorpy.make_text(stat)
             value = thorpy.make_text("")
-            stat_box = thorpy.Box(elements=[text, value],size=DIM_STAT_BOX)
+            stat_box = thorpy.Box(elements=[text, value], size=DIM_STAT_BOX)
             stat_box.set_main_color(BLACK)
             self.elements_stats.append(stat_box)
             # text.set_topleft(POS_STAT_TITLE)
@@ -127,9 +126,9 @@ class Gui:
         # On les regroupe horizontalement deux par deux en faisant attention au cas impair
         boxesH = []
         for i in range(0, len(self.elements_stats), 2):
-            if i+1 != len(self.elements_stats):
+            if i + 1 != len(self.elements_stats):
                 boxesH.append(thorpy.make_group(elements=[self.elements_stats[i],
-                                                          self.elements_stats[i+1]], mode="h"))
+                                                          self.elements_stats[i + 1]], mode="h"))
             else:
                 boxesH.append(self.elements_stats[i])
 
@@ -166,7 +165,8 @@ class Gui:
             self.elements_stats[k].get_elements()[1].set_text(new_value_text)
 
             # On le reset au-dessous du titre du stat
-            self.elements_stats[k].get_elements()[1].stick_to(self.elements_stats[k].get_elements()[0], target_side="bottom", self_side="top")
+            self.elements_stats[k].get_elements()[1].stick_to(self.elements_stats[k].get_elements()[0],
+                                                              target_side="bottom", self_side="top")
 
     def generate_sliders(self):
         """ Génère des sliders à partir des paramètres déclarés dans sliders_Config.default{}
@@ -175,7 +175,7 @@ class Gui:
         thorpy.set_theme("classic")
         menu_title = thorpy.make_text("sliders_Config")
         thorpy.style.DEF_COLOR = (COLOR_ELECTRON_BLUE)
-        menu_title_box = thorpy.Box(elements=[menu_title], size=[DIM_MENU_X-25, 25])
+        menu_title_box = thorpy.Box(elements=[menu_title], size=[DIM_MENU_X - 25, 25])
         menu_title_box.set_main_color(COLOR_ELECTRON_BLUE)
         self.elements.append(menu_title_box)
 
@@ -189,11 +189,14 @@ class Gui:
         box_sliders = []
 
         # On parcourt tous les paramètres contenus dans sliders_Config.default ayant l'argument SHOW=True (k[4])
-        for name,k in sliders_Config.default.items():
-            if k[4]: # Si l'argument SHOW est à TRUE
+        for name, k in sliders_Config.default.items():
+            if k[4]:  # Si l'argument SHOW est à TRUE
 
                 # On génère les titres des paramètres
-                box_sliders.append(thorpy.make_text(name))
+                if k[-1] != "":
+                    box_sliders.append(thorpy.make_text(k[-1]))
+                else:
+                    box_sliders.append(thorpy.make_text(name))
 
                 # On génère les sliders avec la méthode SliderX de Thorpy
                 min = k[0]
@@ -227,6 +230,10 @@ class Gui:
             slider.get_slider().set_size(DIM_SLIDER)
             self.set_font_style(slider._value_element, FONT_COLOR, FONT_SIZE, FONT)
 
+        # Obliger de redonner les valeurs ici sinon elles sont toute incrémentées d'un cran
+        for name, k in sliders_Config.default.items():
+            eval("self.sliders[name].set_value(self.config." + name + ")")
+
         # Boutton Quitter
         self.set_font_style(self.quit_button, FONT_COLOR, FONT_SIZE, FONT)
         self.quit_button.set_font_color_hover(WHITE)
@@ -258,7 +265,7 @@ class Gui:
         """update_values : met à jour les valeurs des paramètres dans parametres.actual
         avec la méthode parametres.set()"""
         for name, slider in self.sliders.items():
-            sliders_Config.set(name, slider.get_value())
+            exec("self.config." + name + "=" + str(slider.get_value()))
 
     def quit_button_pressed(self):
         """quit_button_pressed : appelée quand on clique sur le Bouton Quit"""
@@ -280,7 +287,8 @@ class Gui:
     def button_tick_minus_pressed(self):
         pass
 
-    def progress_bar(self, pos, size, progress, screen, bar_color, bg=False, bg_color=BLACK, vertical=False, reverse=False, round=False, radius=20):
+    def progress_bar(self, pos, size, progress, screen, bar_color, bg=False, bg_color=BLACK, vertical=False,
+                     reverse=False, round=False, radius=20):
         """
         Draws a progress bar /!/ This function works for the project but not all cases are treated
         pos sets position of progress bar
@@ -343,4 +351,3 @@ class Gui:
             pygame.draw.circle(image, color, getattr(corners, attribute), rad)
         image.fill(color, rect.inflate(-2 * rad, 0))
         image.fill(color, rect.inflate(0, -2 * rad))
-

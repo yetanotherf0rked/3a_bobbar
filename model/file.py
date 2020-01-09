@@ -1,28 +1,29 @@
+import ressources.config
 from model.case import *
 from model.pile import *
-import model.config
+
 
 class File():
 
     def __init__(self):
-        self.config = model.config.para
+        self.config = ressources.config.para
         self.file = []
         self.len = 0
         self.tick = 0
         self.historique = Pile()
         self.current = None
 
-    def enfile(self,new):
+    def enfile(self, new):
         copie = [[case.copie() for case in liste] for liste in new]
         self.file.append(copie)
-        self.len+=1
+        self.len += 1
 
     def defile(self):
         if not self.current == None:
             self.historique.empile(self.current)
         self.current = self.file.pop(0)
-        self.len-=1
-        self.tick+=1
+        self.len -= 1
+        self.tick += 1
         return self.current
 
     def get_Current(self):
@@ -32,11 +33,11 @@ class File():
         if self.config.historique:
             self.file = [self.current] + self.file
             self.current = self.historique.depile()
-            self.tick-=1
-            self.len+=1
+            self.tick -= 1
+            self.len += 1
 
     def nextTick(self):
-        if self.config.historique and self.len !=0:
+        if self.config.historique and self.len != 0:
             self.defile()
 
     def full(self):

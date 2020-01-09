@@ -1,12 +1,15 @@
-from model import *
 from random import randint
-import model.config
+
+import ressources.config
+from model import *
+
 
 class World:
     def __init__(self):
-        self.config = model.config.para
+        self.config = ressources.config.para
         self.grid = [[Case(x, y) for y in range(self.config.TAILLE)] for x in range(self.config.TAILLE)]
         self.foodpos = []
+
     def spawnfood(self):
         for _ in range(self.config.NB_FOOD):
             x, y = randint(0, self.config.TAILLE - 1), randint(0, self.config.TAILLE - 1)
@@ -14,7 +17,7 @@ class World:
             self.foodpos.append(self.grid[x][y])
 
     def removefood(self):
-        #Suppression de la food par suppression des cases d'une liste
+        # Suppression de la food par suppression des cases d'une liste
         for case in self.foodpos:
             case.food = 0
         self.foodpos = []

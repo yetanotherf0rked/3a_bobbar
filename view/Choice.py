@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -172,4 +173,3 @@ class Ui_MainWindow(object):
         self.fullscreen.setText(_translate("MainWindow", "FullScreen"))
         self.historique.setText(_translate("MainWindow", "Historique"))
         self.label_3.setText(_translate("MainWindow", "Taille"))
-

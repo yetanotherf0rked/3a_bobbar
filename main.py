@@ -1,10 +1,11 @@
 import os
+import sys
+
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
+import ressources.config
 from controller import *
 from view.Choice import *
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow
-import model.config
-
 
 # Affiche la fenêtre au centre
 os.environ["SDL_VIDEO_CENTERED"] = "1"
@@ -13,14 +14,13 @@ os.environ["SDL_VIDEO_CENTERED"] = "1"
 class Prems(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
-
         QMainWindow.__init__(self)
         self.setupUi(self)
-        self.config = model.config.para
+        self.config = ressources.config.para
 
     def normal(self):
         self.update_Config()
-        Controller(simul=self.Day_Box.value(), bar = self.progressBar)
+        Controller(simul=self.Day_Box.value(), bar=self.progressBar)
 
     def barMax(self):
         if self.progressBar.value() == 100:
@@ -36,7 +36,6 @@ class Prems(QMainWindow, Ui_MainWindow):
         self.config.family_Agression = self.family_Agression.isChecked()
         self.config.affichage = self.affichage.isChecked()
         self.config.taille = self.taille.intValue()
-        print(self.config.taille)
 
 
 app = QApplication(sys.argv)

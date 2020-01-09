@@ -1,21 +1,22 @@
-from model import *
-from random import randint,choice
-from ressources.config import *
-from view.debug import *
-from view import View
-import pygame
-from pygame.locals import *
+from random import randint
 from threading import Thread
 from time import sleep
-import gc
-import model.config
+
+import pygame
+from pygame.locals import *
+
+import ressources.config
+from ressources.sliders import *
+from model import *
+from view import View
+from view.debug import *
 
 
 class Controller:
 
-    def __init__(self, mode='a', simul=0,bar = None):
+    def __init__(self, mode='a', simul=0, bar=None):
         # Initialisation de la grille
-        self.config = model.config.para
+        self.config = ressources.config.para
         self.world = World()
         self.grille = self.world.grid
         # Initialisation des Bobs
@@ -26,7 +27,7 @@ class Controller:
         # #  s : simulation de n tour passsé à la suite pour stats
         if mode == 'a':
             self.simuBar = bar
-            self.run(self.config.affichage,False,simul)
+            self.run(self.config.affichage, False, simul)
         elif mode == 'd':
             self.run_debug()
         elif mode == 's':
@@ -37,31 +38,31 @@ class Controller:
         listebob = []
         for bob in range(self.config.NB_POP):
             # Position du Bob
-            x, y = randint(0, self.config.TAILLE-1), randint(0, self.config.TAILLE-1)
+            x, y = randint(0, self.config.TAILLE - 1), randint(0, self.config.TAILLE - 1)
             bob = Bob([x, y])
             self.grille[x][y].place.append(bob)
             listebob.append(bob)
         return listebob
 
     def update(self):
-        new_bobs=[]
+        new_bobs = []
         for bob in self.listebob:
             # update du bob
-            if not bob.is_dead() :
-                new_bobs+=bob.update(self.grille)
+            if not bob.is_dead():
+                new_bobs += bob.update(self.grille)
 
             # Si le bob est mort on le retire
-            if bob.is_dead() :
+            if bob.is_dead():
                 self.grille[bob.x][bob.y].place.remove(bob)
                 self.listebob.remove(bob)
 
         # on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
         self.listebob += new_bobs
 
-    def updateBar(self,tick,max):
-        self.simuBar.setValue(tick/max*100)
+    def updateBar(self, tick, max):
+        self.simuBar.setValue(tick / max * 100)
 
-    def run(self,affichage,stats,simul=0):
+    def run(self, affichage, stats, simul=0):
         tick = 0
         day = 0
         continuer = True
@@ -77,7 +78,7 @@ class Controller:
             # drawStats(self.grille, self.listebob, tick)
             self.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.update()
-            self.updateBar(tick,simul*self.config.TICK_DAY)
+            self.updateBar(tick, simul * self.config.TICK_DAY)
         self.view = View()
         while continuer and self.listebob:
             wait = self.view.gui.gui_pause
@@ -88,13 +89,14 @@ class Controller:
                     self.world.removefood()
                     day += 1
                     for s in self.view.gui.sliders:
-                        print(s,str(sliders_Config.actual.get(s)).rjust(40-len(s)))
+                        eval(
+                            "print(sliders_Config.get_info(s),str(self.config." + s + ").rjust(40-len(sliders_Config.get_info(s))))")
                     print()
 
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
                 tick += 1
-                #drawStats(self.grille, self.listebob, tick)
+                # drawStats(self.grille, self.listebob, tick)
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
                 self.file.enfile(self.grille)
@@ -108,9 +110,10 @@ class Controller:
                 # Update de la fenêtre
                 if not self.view.run:
                     if not wait:
-                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(),self.file.tick))
-                    else :
-                        self._thread = Thread(target=self.view.affichage, args=(self.file.get_Current(), self.file.tick))
+                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(), self.file.tick))
+                    else:
+                        self._thread = Thread(target=self.view.affichage,
+                                              args=(self.file.get_Current(), self.file.tick))
                     self._thread.start()
                 # print(len(self.file.file),len(self.file.historique.pile),self.config.TICK_DAY)
                 # Test de fin
@@ -119,7 +122,8 @@ class Controller:
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
                     # Stop
-                    if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
+                    if (
+                            event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
 
                     # Pause
@@ -127,17 +131,17 @@ class Controller:
                         self.view.gui.pause_button_pressed()
 
                     if event.type == VIDEORESIZE:
-                        self.view.width,self.view.height = event.size
+                        self.view.width, self.view.height = event.size
 
                     # Permet le déplacement dans la fenêtre
                     if event.type == KEYDOWN and (event.key == K_UP or event.key == K_z):
-                        self.view.depy -= DEP_STEP*(1+0.1*self.view.zoom)
+                        self.view.depy -= DEP_STEP * (1 + 0.1 * self.view.zoom)
                     if event.type == KEYDOWN and (event.key == K_DOWN or event.key == K_s):
-                        self.view.depy += DEP_STEP*(1+0.1*self.view.zoom)
+                        self.view.depy += DEP_STEP * (1 + 0.1 * self.view.zoom)
                     if event.type == KEYDOWN and (event.key == K_LEFT or event.key == K_q):
-                        self.view.depx -= DEP_STEP*(1+0.1*self.view.zoom)
+                        self.view.depx -= DEP_STEP * (1 + 0.1 * self.view.zoom)
                     if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
-                        self.view.depx += DEP_STEP*(1+0.1*self.view.zoom)
+                        self.view.depx += DEP_STEP * (1 + 0.1 * self.view.zoom)
                     # Permet d'avancer/reculer dans l'historique quand on est en pause
                     if wait and event.type == KEYDOWN and event.key == K_KP4:
                         self.file.precTick()
@@ -148,22 +152,22 @@ class Controller:
                     self.view.menu_surface.unlock()
                     self.view.gui.menu.react(event)
 
-                    #Permet la sélection d'un bob
+                    # Permet la sélection d'un bob
                     if event.type == MOUSEBUTTONDOWN:
-                        x,y = pygame.mouse.get_pos()
-                        x-= self.view.dim_menu[0]
-                        if self.view.soleil.blit.collidepoint((x,y)):
+                        x, y = pygame.mouse.get_pos()
+                        x -= self.view.dim_menu[0]
+                        if self.view.soleil.blit.collidepoint((x, y)):
                             self.view.gui.pause_button_pressed()
                         for bob in self.view.bobliste:
-                            if bob.blit.collidepoint((x,y)):
+                            if bob.blit.collidepoint((x, y)):
                                 bob.bobController.select = True
                                 bob.select = True
 
-                    #Permet le zoom
+                    # Permet le zoom
                     if event.type == KEYDOWN and event.key == K_KP_PLUS:
-                        self.view.zoom+=1
+                        self.view.zoom += 1
                     if event.type == KEYDOWN and event.key == K_KP_MINUS:
-                        self.view.zoom-=1
+                        self.view.zoom -= 1
 
     def run_debug(self):
         tick = 0
@@ -173,7 +177,7 @@ class Controller:
 
             # Comptage des ticks/Days
             if tick % self.config.TICK_DAY == 0:
-            # Suppression de la nourritue restante
+                # Suppression de la nourritue restante
                 self.world.removefood()
                 day += 1
                 # Spawn de la nouvelle food

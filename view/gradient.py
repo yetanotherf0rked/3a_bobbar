@@ -1,5 +1,6 @@
 class Gradient():
     """This class define a gradient of color"""
+
     def __init__(self, palette, maximum):
         self.COLORS = palette
         self.N = len(self.COLORS)
@@ -13,7 +14,7 @@ class Gradient():
         i = x // self.SECTION
         fraction = (x % self.SECTION) / self.SECTION
         c1 = self.COLORS[i % self.N]
-        c2 = self.COLORS[(i+1) % self.N]
+        c2 = self.COLORS[(i + 1) % self.N]
         col = [0, 0, 0]
         for k in range(3):
             col[k] = (c2[k] - c1[k]) * fraction + c1[k]
