@@ -5,6 +5,7 @@ from time import sleep
 import pygame
 from pygame.locals import *
 
+from ressources.sliders import *
 import ressources.config
 from model import *
 from view import View
