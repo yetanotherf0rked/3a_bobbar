@@ -81,19 +81,21 @@ class Controller:
             self.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.update()
             self.updateBar(tick, simul * self.config.TICK_DAY)
-        self.view = View()
+        if affichage:
+            self.view = View()
         while continuer and self.listebob:
-            wait = self.view.gui.gui_pause
+            wait = self.view.gui.gui_pause if affichage else False
             if not self.file.full():
                 # Comptage des ticks/Days
                 if tick % self.config.TICK_DAY == 0:
                     # Suppression de la nourriture restante
                     self.world.removefood()
                     day += 1
-                    for s in self.view.gui.sliders:
-                        eval(
-                            "print(sliders_Config.get_info(s),str(self.config." + s + ").rjust(40-len(sliders_Config.get_info(s))))")
-                    print()
+                    if affichage:
+                        for s in self.view.gui.sliders:
+                            eval(
+                                "print(sliders_Config.get_info(s),str(self.config." + s + ").rjust(40-len(sliders_Config.get_info(s))))")
+                        print()
 
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
@@ -102,7 +104,8 @@ class Controller:
                 self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.listebob)))
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
-                self.file.enfile(self.grille)
+                if affichage:
+                    self.file.enfile(self.grille)
 
                 if stats:
                     drawStats(self.grille, self.listebob, tick)
@@ -130,7 +133,7 @@ class Controller:
                         continuer = False  # On arrête la boucle
 
                     # Pause
-                    if event.type == KEYDOWN and event.key == K_SPACE:
+                    if affichage and event.type == KEYDOWN and event.key == K_SPACE:
                         self.view.gui.pause_button_pressed()
 
                     if event.type == VIDEORESIZE:
