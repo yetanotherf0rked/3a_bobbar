@@ -8,7 +8,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -155,6 +154,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.clicked.connect(MainWindow.close)
         self.progressBar.valueChanged['int'].connect(MainWindow.barMax)
         self.horizontalSlider.valueChanged['int'].connect(self.taille.display)
+        self.affichage.clicked.connect(MainWindow.activate_button)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -173,3 +173,4 @@ class Ui_MainWindow(object):
         self.fullscreen.setText(_translate("MainWindow", "FullScreen"))
         self.historique.setText(_translate("MainWindow", "Historique"))
         self.label_3.setText(_translate("MainWindow", "Taille"))
+

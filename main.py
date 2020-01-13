@@ -37,6 +37,14 @@ class Prems(QMainWindow, Ui_MainWindow):
         self.config.affichage = self.affichage.isChecked()
         self.config.taille = self.taille.intValue()
 
+    def activate_button(self):
+        self.show_Minimap.setEnabled(self.affichage.isChecked())
+        self.fullscreen.setEnabled(self.affichage.isChecked())
+        self.show_Perception.setEnabled(self.affichage.isChecked())
+        self.show_Bord_Case.setEnabled(self.affichage.isChecked())
+        self.historique.setEnabled(self.affichage.isChecked())
+
+
 
 app = QApplication(sys.argv)
 
