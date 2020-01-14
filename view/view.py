@@ -56,7 +56,7 @@ class View:
 
     # Fonction d'affichage
     def affichage(self, world, tick):
-        grille = world.grid
+        self.grid = world.grid
         self.listebob = world.listebob
         self.run = True
 
@@ -98,8 +98,8 @@ class View:
         caseliste = set()
         current_food = 0
         for bob in self.listebob:
-            bob.see(grille, True)
-            caseliste.add(grille[bob.x][bob.y])
+            bob.see(self.grid, show=True)
+            caseliste.add(self.grid[bob.x][bob.y])
 
         # Affichage du sol
         for y in range(self.config.TAILLE):
@@ -114,9 +114,9 @@ class View:
                                  (PosX_init + cote_x + xdec * y + self.depx, PosY_init + ydec * y + self.depy),
                                  (PosX_init + xdec * y + self.depx, PosY_init + cote_y + ydec * y + self.depy), 5)
             for x in range(self.config.TAILLE):
-                grille[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
+                self.grid[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
                                   self.zoom)
-                n = min(5, ceil(grille[x][y].food / self.config.ENERGY_FOOD))
+                n = min(5, ceil(self.grid[x][y].food / self.config.ENERGY_FOOD))
                 if n:
                     Pos = Case(0, 0).bobCase(n, x, y, xdec, ydec)
                     current_food += 1
@@ -159,7 +159,7 @@ class View:
             xdec /= (1 + 0.1 * self.zoom)
             for y in range(self.config.TAILLE):
                 for x in range(self.config.TAILLE):
-                    grille[x][y].drawMap(self.simu_surface, xdec, 50)
+                    self.grid[x][y].drawMap(self.simu_surface, xdec, 50)
 
         #### PROGRESS BARS ####
 
@@ -191,7 +191,7 @@ class View:
         self.fenetre.blit(self.menu_surface, (0, 0))
 
         # GUI update
-        self.gui.update(update_stats(grille, self.listebob, tick))
+        self.gui.update(update_stats(self.grid, self.listebob, tick))
 
         # Update
         pygame.display.flip()

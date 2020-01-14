@@ -139,7 +139,6 @@ class Controller:
                         for bob in self.view.listebob:
                             if bob.blit.collidepoint((x, y)):
                                 bob.bobController.select = not bob.bobController.select
-                                bob.select = not bob.select
 
                     # Permet le zoom
                     if event.type == KEYDOWN and event.key == K_KP_PLUS:

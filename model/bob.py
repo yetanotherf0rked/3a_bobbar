@@ -235,7 +235,7 @@ class Bob:
                     sons.append(son)
         return sons
 
-    def see(self, grille,show=False):
+    def see(self, grille,show=False,deselect=False):
         """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies
 
         Parametres:
@@ -256,7 +256,7 @@ class Bob:
                 i))]:  # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
             if 0 <= self.x + dx < self.config.TAILLE and 0 <= self.y + dy < self.config.TAILLE:  # si la position qu'on regarde est bien dans la grille
                 case = grille[self.x + dx][self.y + dy]
-                if show and (self.select or self.config.show_Perception):
+                if show and (self.bobController.select or self.config.show_Perception):
                     case.type = "Perception"
                     case.nbPerception += 1
                     continue

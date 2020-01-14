@@ -33,6 +33,7 @@ class Case:
                              (cx + Px_init + depx + xdec * (x - y), Py_init + depy + ydec * (x + y)),
                              (cx + Px_init + depx + xdec * (x - y + 1), Py_init + depy + ydec * (x + y + 1)))
         self.nbPerception = 0
+        self.type = "Normal"
 
     def drawMap(self, surface, xdec, Px_init):
         x = int(xdec / 2.5)
