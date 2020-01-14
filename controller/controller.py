@@ -93,7 +93,6 @@ class Controller:
                         self._thread = Thread(target=self.view.affichage,
                                               args=(self.file.get_Current(), self.file.tick))
                     self._thread.start()
-                # print(len(self.file.file),len(self.file.historique.pile),self.config.TICK_DAY)
                 # Test de fin
 
                 # Boucle sur les events

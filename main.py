@@ -2,6 +2,7 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QApplication, QMainWindow
+import qdarkstyle
 
 import ressources.config
 from controller import *
@@ -50,6 +51,7 @@ class Prems(QMainWindow, Ui_MainWindow):
 app = QApplication(sys.argv)
 
 window = Prems()
+app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 window.show()
 
 app.exec()
