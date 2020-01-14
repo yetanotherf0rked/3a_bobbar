@@ -94,19 +94,11 @@ class View:
                              (PosX_init + 2 * cote_x + self.depx, PosY_init + cote_y + 50 + self.depy)])
 
         """Obligé de séparaer cette boucle de l'affichage du sol car elle change les cases."""
-        caseliste = []
+        caseliste = set()
         current_food = 0
-
-        # Calcule de la perception de chaque bob et création liste des cases des bobs.
-        for y in range(self.config.TAILLE):
-            for x in range(self.config.TAILLE):
-                # Ajout de tout les bobs de la case à bobliste
-                if grille[x][y].place != []:
-                    l = [bob for bob in grille[x][y].place]
-                    for bob in l:
-                        bob.see(grille,True)
-                    l.sort(key=lambda x: x.masse, reverse=True)
-                    caseliste.append(l)
+        for bob in world.listebob:
+            bob.see(grille, True)
+            caseliste.add(grille[bob.x][bob.y])
 
         # Affichage du sol
         for y in range(self.config.TAILLE):
@@ -139,15 +131,14 @@ class View:
         pygame.draw.line(self.simu_surface, (255, 155, 65),
                          (PosX_init + 2 * cote_x + self.depx, PosY_init + cote_y + self.depy),
                          (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy), 5)
-
-        self.bobliste = []
         # Life progress bar
         pos_life_bar = (4, 0)
         size_life_bar = (25, 5)
         # Affichage des Bobs
         for case in caseliste:
-            n = min(5, len(case))
-            liste = case[0:n]
+            case.place.sort(key=lambda x: x.masse, reverse=True)
+            n = min(5, len(case.place))
+            liste = case.place[0:n]
             x, y = liste[0].x, liste[0].y
             Pos = Case(0, 0).bobCase(n, x, y, xdec, ydec)
             for i in range(n):
@@ -163,7 +154,6 @@ class View:
                                       radius=3)
                 bob.blit = self.simu_surface.blit(perso, (
                 PosX_init + cote_x - 16 + PosX + self.depx, PosY_init + 7 - size + PosY + self.depy))
-                self.bobliste.append(bob)
         if self.config.show_Minimap:
             xdec /= (1 + 0.1 * self.zoom)
             for y in range(self.config.TAILLE):
@@ -200,7 +190,7 @@ class View:
         self.fenetre.blit(self.menu_surface, (0, 0))
 
         # GUI update
-        self.gui.update(update_stats(grille, self.bobliste, tick))
+        self.gui.update(update_stats(grille, world.listebob, tick))
 
         # Update
         pygame.display.flip()
