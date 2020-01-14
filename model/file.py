@@ -14,8 +14,7 @@ class File():
         self.current = None
 
     def enfile(self, new):
-        copie = [[case.copie() for case in liste] for liste in new]
-        self.file.append(copie)
+        self.file.append(new.copie())
         self.len += 1
 
     def defile(self):

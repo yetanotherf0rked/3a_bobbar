@@ -77,7 +77,7 @@ class Controller:
                 self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.world.update_listebob()
                 if affichage:
-                    self.file.enfile(self.world.grid)
+                    self.file.enfile(self.world)
 
                 if stats:
                     drawStats(self.world.grid, self.world.listebob, tick)

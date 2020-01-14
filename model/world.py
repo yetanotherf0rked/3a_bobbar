@@ -11,6 +11,13 @@ class World:
         self.foodpos = []
         self.listebob = self.initbob()
 
+    def copie(self):
+        newWorld = World()
+        newWorld.grid = [[case.copie() for case in liste] for liste in self.grid]
+        newWorld.listebob = [bob.copie() for bob in self.listebob]
+        newWorld.foodpos = [case.copie() for case in self.foodpos]
+        return newWorld
+
     def spawnfood(self):
         for _ in range(self.config.NB_FOOD):
             x, y = randint(0, self.config.TAILLE - 1), randint(0, self.config.TAILLE - 1)

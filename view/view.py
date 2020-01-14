@@ -55,7 +55,8 @@ class View:
         self.soleil = Star()
 
     # Fonction d'affichage
-    def affichage(self, grille, tick):
+    def affichage(self, world, tick):
+        grille = world.grid
         self.run = True
 
         # Resize des surfaces:
