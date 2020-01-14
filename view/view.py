@@ -96,14 +96,14 @@ class View:
         caseliste = []
         current_food = 0
 
-        # Affichage du sol
+        # Calcule de la perception de chaque bob et création liste des cases des bobs.
         for y in range(self.config.TAILLE):
             for x in range(self.config.TAILLE):
                 # Ajout de tout les bobs de la case à bobliste
                 if grille[x][y].place != []:
                     l = [bob for bob in grille[x][y].place]
-                    l.sort(key=lambda x: x.perception)
-                    l[0].see(grille, True)
+                    for bob in l:
+                        bob.see(grille,True)
                     l.sort(key=lambda x: x.masse, reverse=True)
                     caseliste.append(l)
 
@@ -139,12 +139,11 @@ class View:
                          (PosX_init + 2 * cote_x + self.depx, PosY_init + cote_y + self.depy),
                          (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy), 5)
 
-        # Affichage des Bobs
         self.bobliste = []
         # Life progress bar
         pos_life_bar = (4, 0)
         size_life_bar = (25, 5)
-
+        # Affichage des Bobs
         for case in caseliste:
             n = min(5, len(case))
             liste = case[0:n]
