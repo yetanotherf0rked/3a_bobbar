@@ -23,7 +23,8 @@ class Controller:
         # Initialisation des Bobs
         self.listebob = self.initbob()
         self.file = File()
-        self.graph = Graph()
+        if self.config.show_graph:
+            self.graph = Graph()
         # #  a : affichage
         # #  d : debug
         # #  s : simulation de n tour passsé à la suite pour stats
@@ -77,6 +78,8 @@ class Controller:
                 # Spawn de la nouvelle food
                 self.world.spawnfood()
             tick += 1
+            # if self.config.show_graph:
+            #     self.graph.launch_anim((tick / self.config.TICK_DAY, len(self.listebob)))
             # drawStats(self.grille, self.listebob, tick)
             self.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.update()
@@ -101,7 +104,8 @@ class Controller:
                     self.world.spawnfood()
                 tick += 1
                 #drawStats(self.grille, self.listebob, tick)
-                self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.listebob)))
+                if self.config.show_graph:
+                    self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.listebob)))
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
                 if affichage:
