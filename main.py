@@ -35,7 +35,7 @@ class Prems(QMainWindow, Ui_MainWindow):
         self.config.family_Reproduction = self.family_Reproduction.isChecked()
         self.config.family_Agression = self.family_Agression.isChecked()
         self.config.affichage = self.affichage.isChecked()
-        self.config.taille = self.taille.intValue()
+        self.config.TAILLE = self.taille.intValue()
         self.config.show_graph = self.show_grpah.isChecked()
 
     def activate_button(self):
