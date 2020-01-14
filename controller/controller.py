@@ -19,9 +19,6 @@ class Controller:
         # Initialisation de la grille
         self.config = ressources.config.para
         self.world = World()
-        self.grille = self.world.grid
-        # Initialisation des Bobs
-        self.listebob = self.initbob()
         self.file = File()
         if self.config.show_graph:
             self.graph = Graph()
@@ -35,35 +32,6 @@ class Controller:
             self.run_debug()
         elif mode == 's':
             self.simul(simul)
-
-    # Initialisation des Bobs
-    def initbob(self):
-        listebob = []
-        for bob in range(self.config.NB_POP):
-            # Position du Bob
-            x, y = randint(0, self.config.TAILLE - 1), randint(0, self.config.TAILLE - 1)
-            bob = Bob([x, y])
-            self.grille[x][y].place.append(bob)
-            listebob.append(bob)
-        return listebob
-
-    def update(self):
-        new_bobs = []
-        for bob in self.listebob:
-            # update du bob
-            if not bob.is_dead():
-                new_bobs += bob.update(self.grille)
-
-            # Si le bob est mort on le retire
-            if bob.is_dead():
-                self.grille[bob.x][bob.y].place.remove(bob)
-                self.listebob.remove(bob)
-
-        # on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
-        self.listebob += new_bobs
-
-    def updateBar(self, tick, max):
-        self.simuBar.setValue(tick / max * 100)
 
     def run(self, affichage, stats, simul=0):
         tick = 0
@@ -79,14 +47,14 @@ class Controller:
                 self.world.spawnfood()
             tick += 1
             # if self.config.show_graph:
-            #     self.graph.launch_anim((tick / self.config.TICK_DAY, len(self.listebob)))
-            # drawStats(self.grille, self.listebob, tick)
-            self.listebob.sort(key=lambda x: x.velocity, reverse=True)
-            self.update()
-            self.updateBar(tick, simul * self.config.TICK_DAY)
+            #     self.graph.launch_anim((tick / self.config.TICK_DAY, len(self.world.listebob)))
+            # drawStats(self.world.grid, self.world.listebob, tick)
+            self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
+            self.world.update_listebob()
+            self.simuBar.setValue(tick/(simul * self.config.TICK_DAY) * 100)
         if affichage:
             self.view = View()
-        while continuer and self.listebob:
+        while continuer and self.world.listebob:
             wait = self.view.gui.gui_pause if affichage else False
             if not self.file.full():
                 # Comptage des ticks/Days
@@ -103,16 +71,16 @@ class Controller:
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
                 tick += 1
-                #drawStats(self.grille, self.listebob, tick)
+                #drawStats(self.world.grid, self.world.listebob, tick)
                 if self.config.show_graph:
-                    self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.listebob)))
-                self.listebob.sort(key=lambda x: x.velocity, reverse=True)
-                self.update()
+                    self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.world.listebob)))
+                self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
+                self.world.update_listebob()
                 if affichage:
-                    self.file.enfile(self.grille)
+                    self.file.enfile(self.world.grid)
 
                 if stats:
-                    drawStats(self.grille, self.listebob, tick)
+                    drawStats(self.world.grid, self.world.listebob, tick)
             else:
                 sleep(0.1)
 
@@ -183,7 +151,7 @@ class Controller:
         tick = 0
         day = 0
         continuer = True
-        while continuer and self.listebob:
+        while continuer and self.world.listebob:
 
             # Comptage des ticks/Days
             if tick % self.config.TICK_DAY == 0:
@@ -192,10 +160,10 @@ class Controller:
                 day += 1
                 # Spawn de la nouvelle food
                 self.world.spawnfood()
-                print(day, len(self.listebob))
+                print(day, len(self.world.listebob))
             tick += 1
-            drawStats(self.grille, self.listebob, tick)
-            self.listebob.sort(key=lambda x: x.velocity, reverse=True)
+            drawStats(self.world.grid, self.world.listebob, tick)
+            self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.update()
             sleep(0.01)
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -211,4 +179,4 @@ class Controller:
                 self.world.spawnfood()
             tick += 1
             self.update()
-        drawStats(self.grille, self.listebob, tick)
+        drawStats(self.world.grid, self.world.listebob, tick)
