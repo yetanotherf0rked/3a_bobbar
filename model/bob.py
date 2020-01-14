@@ -27,7 +27,6 @@ class Bob:
         self.parents = set()
         self.childs = set()
         self.age = 0
-
         # Life for progress bar
         self.life = (self.energy % self.config.ENERGY_MAX) / 100
 
@@ -51,7 +50,7 @@ class Bob:
         return bob
 
     def update(self, grille):
-        """update le bob : combats, manger, déplacement... 
+        """update le bob : combats, manger, déplacement...
         Si le bob se reproduit update retourne une liste contenant le nouveau fils sinon une liste vide"""
 
         self.age += 1
@@ -133,7 +132,7 @@ class Bob:
             grille[self.x][self.y].place.remove(self)
             self.x = nx
             self.y = ny
-            grille[self.x][self.y].place.append(self)   
+            grille[self.x][self.y].place.append(self)
             return True
         return False
 
@@ -201,7 +200,7 @@ class Bob:
         Return:
             sons [Bob]: une liste de Bob représentant les enfants nés de self et de other_bob pendant ce tick
         """
-      
+
         sons = []
         if self.energy > self.config.ENERGY_MIN_REPRO and len(case.place) > 1:
             for other_bob in case.place:
@@ -247,7 +246,7 @@ class Bob:
             foods [Case]: Une liste de Case avec de la nourriture
             preys [Bob]: Une liste de Bob plus petit de 2/3 selon la masse par rapport à self.masse
         """
-        radius = self.perception 
+        radius = self.perception
         danger = False
         dangers = []
         preys = []

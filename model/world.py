@@ -5,17 +5,29 @@ from model import *
 
 
 class World:
-    def __init__(self):
+    def __init__(self,init = True):
         self.config = ressources.config.para
+        self.grid=[]
+        self.listebob = []
+        self.foodpos =[]
+        if init:
+            self.initWorld()
+
+    def initWorld(self):
         self.grid = [[Case(x, y) for y in range(self.config.TAILLE)] for x in range(self.config.TAILLE)]
-        self.foodpos = []
-        self.listebob = self.initbob()
+        self.listebob = self.initBob()
 
     def copie(self):
-        newWorld = World()
-        newWorld.grid = [[case.copie() for case in liste] for liste in self.grid]
-        newWorld.listebob = [bob.copie() for bob in self.listebob]
-        newWorld.foodpos = [case.copie() for case in self.foodpos]
+        newWorld = World(False)
+        for liste in self.grid:
+            ligne = []
+            for case in liste:
+                newCase = case.copie()
+                newWorld.listebob += newCase.place
+                if newCase.food!=0:
+                    newWorld.foodpos.append(newCase)
+                ligne.append(newCase)
+            newWorld.grid.append(ligne)
         return newWorld
 
     def spawnfood(self):
@@ -31,7 +43,7 @@ class World:
         self.foodpos = []
 
     # Initialisation des Bobs
-    def initbob(self):
+    def initBob(self):
         listebob = []
         for bob in range(self.config.NB_POP):
             # Position du Bob

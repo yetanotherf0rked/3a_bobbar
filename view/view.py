@@ -57,6 +57,7 @@ class View:
     # Fonction d'affichage
     def affichage(self, world, tick):
         grille = world.grid
+        self.listebob = world.listebob
         self.run = True
 
         # Resize des surfaces:
@@ -96,7 +97,7 @@ class View:
         """Obligé de séparaer cette boucle de l'affichage du sol car elle change les cases."""
         caseliste = set()
         current_food = 0
-        for bob in world.listebob:
+        for bob in self.listebob:
             bob.see(grille, True)
             caseliste.add(grille[bob.x][bob.y])
 
@@ -190,7 +191,7 @@ class View:
         self.fenetre.blit(self.menu_surface, (0, 0))
 
         # GUI update
-        self.gui.update(update_stats(grille, world.listebob, tick))
+        self.gui.update(update_stats(grille, self.listebob, tick))
 
         # Update
         pygame.display.flip()
