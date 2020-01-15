@@ -2,21 +2,24 @@ import ressources.config
 
 
 def velocity_stat(pop):
-    return (sum(b.velocity for b in pop) / len(pop), max(b.velocity for b in pop), min(b.velocity for b in pop))
-
+    if len(pop):
+        return (sum(b.velocity for b in pop) / len(pop), max(b.velocity for b in pop), min(b.velocity for b in pop))
+    return (0, 0, 0)
 
 def mass_stat(pop):
-    return (sum(b.masse for b in pop) / len(pop), max(b.masse for b in pop), min(b.masse for b in pop))
-
+    if len(pop):
+        return (sum(b.masse for b in pop) / len(pop), max(b.masse for b in pop), min(b.masse for b in pop))
+    return (0, 0, 0)
 
 def perception_stat(pop):
-    return (sum(b.perception for b in pop) / len(pop), max(b.perception for b in pop), min(b.perception for b in pop))
-
+    if len(pop):
+        return (sum(b.perception for b in pop) / len(pop), max(b.perception for b in pop), min(b.perception for b in pop))
+    return (0, 0, 0)
 
 def memory_stat(pop):
-    return (
-    sum(b.memory_points for b in pop) / len(pop), max(b.memory_points for b in pop), min(b.memory_points for b in pop))
-
+    if len(pop):
+        return (sum(b.memory_points for b in pop) / len(pop), max(b.memory_points for b in pop), min(b.memory_points for b in pop))
+    return (0, 0, 0)
 
 def total_food(grille):
     s = 0
