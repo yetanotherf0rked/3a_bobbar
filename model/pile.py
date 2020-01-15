@@ -10,7 +10,7 @@ class Pile():
 
     def empile(self, new):
         if self.config.historique:
-            taille_max = HISTORIQUE_MAX * TICK_DAY
+            taille_max = self.config.HISTORIQUE_MAX * self.config.TICK_DAY
             if self.len == taille_max:
                 del self.pile[0]
                 self.len -= 1

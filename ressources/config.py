@@ -156,6 +156,8 @@ class Config():
         self.DIFF_AGE_FOR_REPRODUCTION = 500  # valeur en tick
         self.DISTANCE_TO_BE_IN_SAME_FAMILY=2
 
+        self.HISTORIQUE_MAX = 1  # nombre de jour stocker en historique si besoin
+
         # Chargement des images
         self.image_BOB = "ressources/images/polar_bear_white2.png"
         self.image_FOOD = "ressources/images/biere.png"
