@@ -146,6 +146,13 @@ class View:
                 size = int(32 * bob.masse ** 2 - 16 * bob.masse + 16)
                 if bob.bobController.select:
                     perso = pygame.transform.scale(bob.redImage, (32, size))
+                    font = pygame.font.Font('freesansbold.ttf', 16)
+                    stats = bob.stats()
+                    label = []
+                    for line in stats:
+                        label.append(font.render(line, True, (255,255,255)))
+                    for line in range(len(label)):
+                        self.simu_surface.blit(label[line], (1000, 100 + (line * 16) + (15 * line)))
                 else:
                     perso = pygame.transform.scale(bob.image, (32, size))
                 PosX, PosY = Pos[i]
