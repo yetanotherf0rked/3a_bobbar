@@ -31,11 +31,7 @@ class Controller:
         if mode == 'a':
             self.simuBar = bar
             self.run(self.config.affichage, False, simul)
-        elif mode == 'd':
-            self.run_debug()
-        elif mode == 's':
-            self.simul(simul)
-
+       
     # Initialisation des Bobs
     def initbob(self):
         listebob = []
@@ -132,8 +128,8 @@ class Controller:
                     if (
                             event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
-                        self.static_graph.set_parameter(x='days',Pop=False,Velocity=True)
-                        self.static_graph.show() # on créé un graph
+                        self.static_graph.set_parameter(x='days',pop=True,food=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
+                        self.static_graph.plot(size=(22,10)) # on créé un graph
 
                     # Pause
                     if affichage and event.type == KEYDOWN and event.key == K_SPACE:
@@ -180,36 +176,4 @@ class Controller:
                         self.view.zoom -= 1
                     
 
-    def run_debug(self):
-        tick = 0
-        day = 0
-        continuer = True
-        while continuer and self.listebob:
 
-            # Comptage des ticks/Days
-            if tick % self.config.TICK_DAY == 0:
-                # Suppression de la nourritue restante
-                self.world.removefood()
-                day += 1
-                # Spawn de la nouvelle food
-                self.world.spawnfood()
-                print(day, len(self.listebob))
-            tick += 1
-            drawStats(self.grille, self.listebob, tick)
-            self.listebob.sort(key=lambda x: x.velocity, reverse=True)
-            self.update()
-            sleep(0.01)
-            os.system('cls' if os.name == 'nt' else 'clear')
-
-    def simul(self, ticks):
-        """simule un nombre de tick donné et affiche l'etat de la simulation."""
-        tick = 0
-        day = 0
-        for _ in range(ticks):
-            if tick % self.config.TICK_DAY == 0:
-                self.world.removefood()
-                day += 1
-                self.world.spawnfood()
-            tick += 1
-            self.update()
-        drawStats(self.grille, self.listebob, tick)
