@@ -54,6 +54,17 @@ class View:
         # Création d'un soleil
         self.soleil = Star()
 
+    def draw_Stats(self,bob,xmax):
+        #Initialisation text
+        font = pygame.font.Font('freesansbold.ttf', 16)
+        stats = bob.stats()
+        label = []
+        for line in stats:
+            label.append(font.render(line, True, (255, 255, 255)))
+        n = len(label)
+        for line in range(n):
+            self.simu_surface.blit(label[line], (xmax - 200, 20 + (line * 16) + (15 * line)))
+
     # Fonction d'affichage
     def affichage(self, world, tick):
         self.grid = world.grid
@@ -145,14 +156,8 @@ class View:
                 bob = liste[i]
                 size = int(32 * bob.masse ** 2 - 16 * bob.masse + 16)
                 if bob.bobController.select:
+                    self.draw_Stats(bob,simu_x)
                     perso = pygame.transform.scale(bob.redImage, (32, size))
-                    font = pygame.font.Font('freesansbold.ttf', 16)
-                    stats = bob.stats()
-                    label = []
-                    for line in stats:
-                        label.append(font.render(line, True, (255,255,255)))
-                    for line in range(len(label)):
-                        self.simu_surface.blit(label[line], (1000, 100 + (line * 16) + (15 * line)))
                 else:
                     perso = pygame.transform.scale(bob.image, (32, size))
                 PosX, PosY = Pos[i]
@@ -202,6 +207,7 @@ class View:
         # Update
         pygame.display.flip()
         self.run = False
+
 
         ######### Backup branch progressbar ########
 

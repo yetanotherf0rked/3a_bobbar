@@ -61,6 +61,7 @@ class Bob:
         text.append("Velocity : " + str(round(self.velocity,2)))
         text.append("Masse : " + str(round(self.masse, 2)))
         text.append("Perception : " + str(round(self.perception, 2)))
+        text.append("Memory : " + str(round(self.memory_points,2)))
         text.append("Age : " + str(round(self.age//self.config.TICK_DAY, 2)))
         return text
 
