@@ -1,4 +1,4 @@
-from random import randint
+from random import randint,random
 
 import ressources.config
 from model import *
@@ -12,6 +12,9 @@ class World:
         self.foodpos =[]
         if init:
             self.initWorld()
+            if self.config.active_biome:
+                self.createBiome()
+
 
     def initWorld(self):
         self.grid = [[Case(x, y) for y in range(self.config.TAILLE)] for x in range(self.config.TAILLE)]
@@ -67,3 +70,51 @@ class World:
 
         # on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
         self.listebob += new_bobs
+
+    def createBiome(self):
+        cases = []
+        for _ in range(16):
+            x,y = int(random() * self.config.TAILLE), int(random() * self.config.TAILLE)
+            case = self.grid[x][y]
+            case.floor = "Grass"
+            cases.append(case)
+            x, y = int(random() * self.config.TAILLE), int(random() * self.config.TAILLE)
+            case = self.grid[x][y]
+            case.floor = "Sand"
+            cases.append(case)
+            x, y = int(random() * self.config.TAILLE), int(random() * self.config.TAILLE)
+            case = self.grid[x][y]
+            case.floor = "Water"
+            cases.append(case)
+            x, y = int(random() * self.config.TAILLE), int(random() * self.config.TAILLE)
+            case = self.grid[x][y]
+            case.floor = "Lava"
+            cases.append(case)
+        self.grow_biome(cases)
+
+    def grow_biome(self, cases):
+        newcases = []
+        for case in cases:
+            if case.x <= self.config.TAILLE-2:
+                nextCase = self.grid[case.x + 1][case.y]
+                if not nextCase.floor:
+                    nextCase.floor = case.floor
+                    newcases.append(nextCase)
+            if case.y <= self.config.TAILLE-2:
+                nextCase = self.grid[case.x][case.y + 1]
+                if not nextCase.floor:
+                    nextCase.floor = case.floor
+                    newcases.append(nextCase)
+            if case.y >= 1:
+                nextCase = self.grid[case.x][case.y - 1]
+                if not nextCase.floor:
+                    nextCase.floor = case.floor
+                    newcases.append(nextCase)
+            if case.x >= 1:
+                nextCase = self.grid[case.x - 1][case.y]
+                if not nextCase.floor:
+                    nextCase.floor = case.floor
+                    newcases.append(nextCase)
+
+        if newcases:
+            self.grow_biome(newcases)

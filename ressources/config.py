@@ -10,6 +10,7 @@ class Config():
         self.family_Agression = False
         self.affichage = False
         self.show_graph = False
+        self.active_biome = True
 
         # Tick par jour 100
         self.TICK_DAY = 100

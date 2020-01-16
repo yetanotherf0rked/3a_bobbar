@@ -94,12 +94,12 @@ class View:
         self.soleil.blit = self.simu_surface.blit(self.soleil.image, Pos)
 
         # Affichage du sol
-        pygame.draw.polygon(self.simu_surface, (159, 158, 159),
+        pygame.draw.polygon(self.simu_surface, (155, 118, 83),
                             [(PosX_init + self.depx, PosY_init + cote_y + self.depy),
                              (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy),
                              (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + 50 + self.depy),
                              (PosX_init + self.depx, PosY_init + cote_y + 50 + self.depy)])
-        pygame.draw.polygon(self.simu_surface, (159, 158, 159),
+        pygame.draw.polygon(self.simu_surface, (155, 118, 83),
                             [(2 * cote_x + PosX_init + self.depx, PosY_init + cote_y + self.depy),
                              (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy),
                              (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + 50 + self.depy),
@@ -115,15 +115,15 @@ class View:
         # Affichage du sol
         for y in range(self.config.TAILLE):
             xdec, ydec = cote_x / self.config.TAILLE, cote_y / self.config.TAILLE
-            if y == 0:
+            # if y == 0:
                 # Affichages des lignes extérieures du haut
-                pygame.draw.line(self.simu_surface, (255, 155, 65),
-                                 (PosX_init + cote_x - xdec * y + self.depx, PosY_init + ydec * y + self.depy), (
-                                 PosX_init + 2 * cote_x - xdec * y + self.depx,
-                                 PosY_init + cote_y + ydec * y + self.depy), 5)
-                pygame.draw.line(self.simu_surface, (255, 155, 65),
-                                 (PosX_init + cote_x + xdec * y + self.depx, PosY_init + ydec * y + self.depy),
-                                 (PosX_init + xdec * y + self.depx, PosY_init + cote_y + ydec * y + self.depy), 5)
+                # pygame.draw.line(self.simu_surface, (255, 155, 65),
+                #                  (PosX_init + cote_x - xdec * y + self.depx, PosY_init + ydec * y + self.depy), (
+                #                  PosX_init + 2 * cote_x - xdec * y + self.depx,
+                #                  PosY_init + cote_y + ydec * y + self.depy), 5)
+                # pygame.draw.line(self.simu_surface, (255, 155, 65),
+                #                  (PosX_init + cote_x + xdec * y + self.depx, PosY_init + ydec * y + self.depy),
+                #                  (PosX_init + xdec * y + self.depx, PosY_init + cote_y + ydec * y + self.depy), 5)
             for x in range(self.config.TAILLE):
                 self.grid[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,self.zoom)
                 n = min(5, ceil(self.grid[x][y].food / self.config.ENERGY_FOOD))
@@ -137,11 +137,11 @@ class View:
                         PosX_init + cote_x - 20 + PosX + self.depx, PosY_init - 30 + PosY + self.depy))
 
         # Affichages des lignes extérieures du bas
-        pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + self.depx, PosY_init + cote_y + self.depy),
-                         (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy), 5)
-        pygame.draw.line(self.simu_surface, (255, 155, 65),
-                         (PosX_init + 2 * cote_x + self.depx, PosY_init + cote_y + self.depy),
-                         (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy), 5)
+        # pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + self.depx, PosY_init + cote_y + self.depy),
+        #                  (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy), 5)
+        # pygame.draw.line(self.simu_surface, (255, 155, 65),
+        #                  (PosX_init + 2 * cote_x + self.depx, PosY_init + cote_y + self.depy),
+        #                  (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy), 5)
         # Life progress bar
         pos_life_bar = (4, 0)
         size_life_bar = (25, 5)

@@ -12,14 +12,24 @@ class Case:
         self.food = 0
         self.place = []  # Contenue de la Case
         self.type = "Normal"
+        self.floor = None
         self.nbPerception = 0
     # @profile
     def draw(self, surface, xdec, ydec, Px_init, Py_init, depx, depy, cx, zoom):
         x, y = self.x, self.y
-        if self.type == "Normal":
-            self.couleur = (38, 37, 42)
+        self.couleur = (38, 37, 42)
         if self.type == "Perception":
             self.couleur = (max(0, 173 - 20 * self.nbPerception), max(0, 205 - 20 * self.nbPerception), 226)
+        elif self.config.active_biome:
+            if self.floor == "Grass":
+                self.couleur = (58,157,35)
+            elif self.floor == "Sand":
+                self.couleur = (203,171,111)
+            elif self.floor == "Water":
+                self.couleur = (73,131,255)
+            elif self.floor == "Lava":
+                self.couleur = (227,101,23)
+
         pygame.draw.polygon(surface, self.couleur,
                             [(cx + Px_init + depx + xdec * (x - y - 1), Py_init + depy + ydec * (x + y + 1)),
                              (cx + Px_init + depx + xdec * (x - y), Py_init + depy + ydec * (x + y)),
@@ -63,6 +73,7 @@ class Case:
         case.food = self.food
         case.place = [bob.copie() for bob in self.place]
         case.type = self.type
+        case.floor = self.floor
         self.type = "Normal"
         return case
 
