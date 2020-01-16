@@ -38,7 +38,7 @@ class Config():
         # Taux de mutation de la masse
         self.MUT_MASSE = 0.1
         # taux de mutation de la perception
-        self.MUT_PERCEPT = 1
+        self.MUT_PERCEPT = 0
         # taux de mutation de la memoire
         self.MUT_MEMORY = 1
         # Deplacement step

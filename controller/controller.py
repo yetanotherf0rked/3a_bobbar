@@ -136,7 +136,7 @@ class Controller:
                         if self.view.soleil.blit.collidepoint((x, y)):
                             self.view.gui.pause_button_pressed()
                         for bob in self.view.listebob:
-                            if bob.blit.collidepoint((x, y)):
+                            if bob.blit and bob.blit.collidepoint((x, y)):
                                 bob.bobController.select = not bob.bobController.select
 
                     # Permet le zoom

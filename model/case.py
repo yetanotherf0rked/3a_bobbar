@@ -13,7 +13,7 @@ class Case:
         self.place = []  # Contenue de la Case
         self.type = "Normal"
         self.nbPerception = 0
-
+    # @profile
     def draw(self, surface, xdec, ydec, Px_init, Py_init, depx, depy, cx, zoom):
         x, y = self.x, self.y
         if self.type == "Normal":
