@@ -21,6 +21,11 @@ def memory_stat(pop):
         return (sum(b.memory_points for b in pop) / len(pop), max(b.memory_points for b in pop), min(b.memory_points for b in pop))
     return (0, 0, 0)
 
+def age_stat(pop):
+    if len(pop):
+        return (sum(b.age for b in pop) / len(pop), max(b.age for b in pop), min(b.age for b in pop))
+    return (0, 0, 0)
+
 def total_food(grille):
     s = 0
     for i in range(ressources.config.para.TAILLE):
@@ -68,5 +73,6 @@ def update_stats_graphs(grille, liste_bobs, tick):
             'mass': mass_stat(liste_bobs),
             'velocity': velocity_stat(liste_bobs),
             'perception': perception_stat(liste_bobs),
-            'memory': memory_stat(liste_bobs)
+            'memory': memory_stat(liste_bobs),
+            'age': age_stat(liste_bobs)
             }

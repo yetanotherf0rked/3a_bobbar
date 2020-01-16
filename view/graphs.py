@@ -58,10 +58,11 @@ class Static_graph_data():
             'mass': [],
             'velocity': [],
             'perception': [],
-            'memory': []
+            'memory': [],
+            'age':[]
             }
         self.dataTrue = dict()
-        self.parametres={'x':"ticks",'pop':True,'energy':False,'mass':False,'velocity':False,'memory':False,'perception':False,'food':False}
+        self.parametres={'x':"ticks",'pop':True,'energy':False,'mass':False,'velocity':False,'memory':False,'perception':False,'food':False,'age':False}
         self.rows = 1
         self.collumns = 1
         self.nbgraphs = 1
@@ -125,6 +126,8 @@ class Static_graph_data():
             sub+=1
     
         self.fig.savefig("GraphStatsBobbar")
+        self.fig.show()
+        plt.show()
 
  
 

@@ -128,7 +128,7 @@ class Controller:
                     if (
                             event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
-                        self.static_graph.set_parameter(x='days',pop=True,food=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
+                        self.static_graph.set_parameter(x='days',pop=True,age=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
                         self.static_graph.plot(size=(22,10)) # on créé un graph
 
                     # Pause
