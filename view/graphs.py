@@ -14,6 +14,11 @@ class Graph :
         self.line, = self.ax.plot(self.dataX,self.dataY)
         self.updated=False
 
+    def set_labels(self,xLabel="x",yLabel="y",title=" "):
+        self.ax.set_xlabel(xLabel)
+        self.ax.set_ylabel(yLabel)
+        #self.ax.title(title)
+
     def update(self,data) :
         x,y=data
         self.dataX.append(x)
