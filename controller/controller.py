@@ -10,7 +10,7 @@ import ressources.config
 from model import *
 from view import View
 from view.debug import *
-from view.graphs import Graph
+from view.graphs import Graph,Static_graph_data
 
 
 class Controller:
@@ -23,7 +23,8 @@ class Controller:
         # Initialisation des Bobs
         self.listebob = self.initbob()
         self.file = File()
-        self.graph = Graph()
+        # self.graph = Graph()
+        self.static_graph = Static_graph_data()
         # #  a : affichage
         # #  d : debug
         # #  s : simulation de n tour passsé à la suite pour stats
@@ -77,7 +78,9 @@ class Controller:
                 # Spawn de la nouvelle food
                 self.world.spawnfood()
             tick += 1
-            # drawStats(self.grille, self.listebob, tick)
+            
+            self.static_graph.update(self.grille,self.listebob,tick)
+            
             self.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.update()
             self.updateBar(tick, simul * self.config.TICK_DAY)
@@ -101,14 +104,12 @@ class Controller:
                     self.world.spawnfood()
                 tick += 1
                 #drawStats(self.grille, self.listebob, tick)
-                self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.listebob)))
+                self.static_graph.update(self.grille,self.listebob,tick)
+                #self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.listebob)))
                 self.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.update()
                 if affichage:
                     self.file.enfile(self.grille)
-
-                if stats:
-                    drawStats(self.grille, self.listebob, tick)
             else:
                 sleep(0.1)
 
@@ -131,10 +132,13 @@ class Controller:
                     if (
                             event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
+                        self.static_graph.set_parameter(x='days',Pop=False,Velocity=True)
+                        self.static_graph.show() # on créé un graph
 
                     # Pause
                     if affichage and event.type == KEYDOWN and event.key == K_SPACE:
                         self.view.gui.pause_button_pressed()
+                        
 
                     if event.type == VIDEORESIZE:
                         self.view.width, self.view.height = event.size
@@ -174,6 +178,7 @@ class Controller:
                         self.view.zoom += 1
                     if event.type == KEYDOWN and event.key == K_KP_MINUS:
                         self.view.zoom -= 1
+                    
 
     def run_debug(self):
         tick = 0
