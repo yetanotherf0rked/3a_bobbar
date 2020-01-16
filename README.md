@@ -14,3 +14,11 @@ Rules :
 
 Idées d'amélioration :
 - Mettre des routes/chemins de fer ou autre, quand les bobs passent dessus ils accélèrent
+
+Librairie nécessaire:
+- numpy
+- pygame
+- matplotlib
+- PyQt5
+- thorpy
+- QDarkStyle
