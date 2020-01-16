@@ -51,7 +51,7 @@ class Case:
         if self.place != []:
             couleur = (255, 255, 255)
             for bob in self.place:
-                if bob.select:
+                if bob.bobController.select:
                     couleur = (255, 0, 0)
                     break
             radius = int(x / 2)

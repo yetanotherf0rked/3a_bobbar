@@ -1,4 +1,4 @@
-from random import uniform, choice
+from random import uniform, random
 
 import pygame
 
@@ -15,7 +15,7 @@ class Bob:
         self.velocity = 1.0
         self.masse = 1.0
         self.perception = 0
-        self.perception_pos = []
+        self.perception_pos = [(0,0)]
         self.memory_points = 0
         self.energy_move = self.velocity ** 2 * self.masse
         self.energy_brain = self.perception / 5 + self.memory_points / 5
@@ -40,16 +40,29 @@ class Bob:
         bob.perception_pos = self.perception_pos
         bob.memory_points = self.memory_points
         bob.energy_move = self.energy_move
+        bob.energy_brain = self.energy_brain
         bob.speed_buffer = self.speed_buffer
         bob.mem_food = self.mem_food
         bob.place_historic = self.place_historic
         bob.image = pygame.image.load(self.config.image_BOB).convert_alpha()
         bob.redImage = pygame.image.load(self.config.image_REDBOB).convert_alpha()
         bob.blit = self.blit
-        bob.bobController = self.bobController
         bob.select = self.select
+        bob.bobController = self.bobController
+        bob.parents = self.parents
+        bob.childs = self.childs
+        bob.age = self.age
         bob.life = self.life
         return bob
+
+    def stats(self):
+        text=[]
+        text.append("Energy : " + str(round(self.energy,2)))
+        text.append("Velocity : " + str(round(self.velocity,2)))
+        text.append("Masse : " + str(round(self.masse, 2)))
+        text.append("Perception : " + str(round(self.perception, 2)))
+        text.append("Age : " + str(round(self.age, 2)))
+        return text
 
     def update(self, grille):
         """update le bob : combats, manger, déplacement...
@@ -165,6 +178,7 @@ class Bob:
             son.velocity = max(0, self.velocity + uniform(-self.config.MUT_VELOCITY, self.config.MUT_VELOCITY))
             son.masse = max(0, self.masse + uniform(-self.config.MUT_MASSE, self.config.MUT_MASSE))
             son.perception = max(0, self.perception + choice([-self.config.MUT_PERCEPT, 0, self.config.MUT_PERCEPT]))
+            son.perception_pos = [(i, j) for i in range(-son.perception, son.perception + 1) for j in range(abs(i) - son.perception, son.perception + 1 - abs(i))]
             son.memory_points = max(0,
                                     self.memory_points + choice([-self.config.MUT_MEMORY, 0, self.config.MUT_MEMORY]))
             son.energy_move = son.velocity ** 2 * son.masse
@@ -369,3 +383,6 @@ class Bob:
             if other_bob in family:
                 return True
         return False
+
+def choice(liste):
+    return liste[int(random()*len(liste))]
