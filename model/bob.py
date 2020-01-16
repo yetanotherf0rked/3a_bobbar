@@ -15,6 +15,7 @@ class Bob:
         self.velocity = 1.0
         self.masse = 1.0
         self.perception = 0
+        self.perception_pos = []
         self.memory_points = 0
         self.energy_move = self.velocity ** 2 * self.masse
         self.energy_brain = self.perception / 5 + self.memory_points / 5
@@ -36,6 +37,7 @@ class Bob:
         bob.velocity = self.velocity
         bob.masse = self.masse
         bob.perception = self.perception
+        bob.perception_pos = self.perception_pos
         bob.memory_points = self.memory_points
         bob.energy_move = self.energy_move
         bob.speed_buffer = self.speed_buffer
@@ -219,6 +221,7 @@ class Bob:
                                                                                       self.config.MUT_MASSE))
                     son.perception = max(0, round((self.perception + other_bob.perception) / 2) + choice(
                         [-self.config.MUT_PERCEPT, 0, self.config.MUT_PERCEPT]))
+                    son.perception_pos = [(i, j) for i in range(-son.perception, son.perception + 1) for j in range(abs(i) - son.perception, son.perception + 1 - abs(i))]
                     son.memory_points = max(0, round((self.memory_points + other_bob.memory_points) / 2) + choice(
                         [-self.config.MUT_MEMORY, 0, self.config.MUT_MEMORY]))
                     son.energy_move = son.velocity ** 2 * son.masse
@@ -246,14 +249,12 @@ class Bob:
             foods [Case]: Une liste de Case avec de la nourriture
             preys [Bob]: Une liste de Bob plus petit de 2/3 selon la masse par rapport à self.masse
         """
-        radius = self.perception
         danger = False
         dangers = []
         preys = []
         foods = []
-
-        for dx, dy in [(i, j) for i in range(-radius, radius + 1) for j in range(abs(i) - radius, radius + 1 - abs(
-                i))]:  # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
+        for dx, dy in self.perception_pos:
+            # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
             if 0 <= self.x + dx < self.config.TAILLE and 0 <= self.y + dy < self.config.TAILLE:  # si la position qu'on regarde est bien dans la grille
                 case = grille[self.x + dx][self.y + dy]
                 if show and (self.bobController.select or self.config.show_Perception):

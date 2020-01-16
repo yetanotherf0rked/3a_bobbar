@@ -46,8 +46,8 @@ class Controller:
                 # Spawn de la nouvelle food
                 self.world.spawnfood()
             tick += 1
-            # if self.config.show_graph:
-            #     self.graph.launch_anim((tick / self.config.TICK_DAY, len(self.world.listebob)))
+            if self.config.show_graph:
+                self.graph.update((tick / self.config.TICK_DAY, len(self.world.listebob)))
             # drawStats(self.world.grid, self.world.listebob, tick)
             self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.world.update_listebob()

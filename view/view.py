@@ -114,8 +114,7 @@ class View:
                                  (PosX_init + cote_x + xdec * y + self.depx, PosY_init + ydec * y + self.depy),
                                  (PosX_init + xdec * y + self.depx, PosY_init + cote_y + ydec * y + self.depy), 5)
             for x in range(self.config.TAILLE):
-                self.grid[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
-                                  self.zoom)
+                self.grid[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,self.zoom)
                 n = min(5, ceil(self.grid[x][y].food / self.config.ENERGY_FOOD))
                 if n:
                     Pos = Case(0, 0).bobCase(n, x, y, xdec, ydec)
