@@ -13,9 +13,11 @@ class Case:
         self.place = []  # Contenue de la Case
         self.type = "Normal"
         self.floor = None
+        self.deco = False
         self.nbPerception = 0
+
     # @profile
-    def draw(self, surface, xdec, ydec, Px_init, Py_init, depx, depy, cx, zoom):
+    def draw(self, surface, xdec, ydec, Px_init, Py_init, depx, depy, cx, deco):
         x, y = self.x, self.y
         self.couleur = (38, 37, 42)
         if self.type == "Perception":
@@ -23,6 +25,7 @@ class Case:
         elif self.config.active_biome:
             if self.floor == "Grass":
                 self.couleur = (58,157,35)
+                # if self.deco:
             elif self.floor == "Sand":
                 self.couleur = (203,171,111)
             elif self.floor == "Water":
@@ -42,6 +45,8 @@ class Case:
             pygame.draw.line(surface, (228, 226, 232),
                              (cx + Px_init + depx + xdec * (x - y), Py_init + depy + ydec * (x + y)),
                              (cx + Px_init + depx + xdec * (x - y + 1), Py_init + depy + ydec * (x + y + 1)))
+        if self.deco and self.floor == "Grass":
+            surface.blit(deco, (Px_init + cx - 16 - 3 + xdec * (x - y) + depx, Py_init + 7 - 45 + ydec * (x + y + 1) + depy))
         self.nbPerception = 0
         self.type = "Normal"
 
@@ -74,6 +79,7 @@ class Case:
         case.place = [bob.copie() for bob in self.place]
         case.type = self.type
         case.floor = self.floor
+        case.deco = self.deco
         self.type = "Normal"
         return case
 

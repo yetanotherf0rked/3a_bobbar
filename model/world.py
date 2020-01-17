@@ -1,5 +1,4 @@
 from random import randint,random
-
 import ressources.config
 from model import *
 
@@ -77,18 +76,26 @@ class World:
             x,y = int(random() * self.config.TAILLE), int(random() * self.config.TAILLE)
             case = self.grid[x][y]
             case.floor = "Grass"
+            if random() < 0.2:
+                case.deco = True
             cases.append(case)
             x, y = int(random() * self.config.TAILLE), int(random() * self.config.TAILLE)
             case = self.grid[x][y]
             case.floor = "Sand"
+            if random() < 0.2:
+                case.deco = True
             cases.append(case)
             x, y = int(random() * self.config.TAILLE), int(random() * self.config.TAILLE)
             case = self.grid[x][y]
             case.floor = "Water"
+            if random() < 0.2:
+                case.deco = True
             cases.append(case)
             x, y = int(random() * self.config.TAILLE), int(random() * self.config.TAILLE)
             case = self.grid[x][y]
             case.floor = "Lava"
+            if random() < 0.2:
+                case.deco = True
             cases.append(case)
         self.grow_biome(cases)
 
@@ -99,21 +106,29 @@ class World:
                 nextCase = self.grid[case.x + 1][case.y]
                 if not nextCase.floor:
                     nextCase.floor = case.floor
+                    if random() < 0.2:
+                        case.deco = True
                     newcases.append(nextCase)
             if case.y <= self.config.TAILLE-2:
                 nextCase = self.grid[case.x][case.y + 1]
                 if not nextCase.floor:
                     nextCase.floor = case.floor
+                    if random() < 0.2:
+                        case.deco = True
                     newcases.append(nextCase)
             if case.y >= 1:
                 nextCase = self.grid[case.x][case.y - 1]
                 if not nextCase.floor:
                     nextCase.floor = case.floor
+                    if random() < 0.2:
+                        case.deco = True
                     newcases.append(nextCase)
             if case.x >= 1:
                 nextCase = self.grid[case.x - 1][case.y]
                 if not nextCase.floor:
                     nextCase.floor = case.floor
+                    if random() < 0.2:
+                        case.deco = True
                     newcases.append(nextCase)
 
         if newcases:
