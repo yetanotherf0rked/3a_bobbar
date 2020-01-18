@@ -37,12 +37,13 @@ class Controller:
         tick = 0
         day = 0
         continuer = True
-        for _ in range(simul * self.config.TICK_DAY):
+        if simul == 1:
+            self.simuBar.setValue(100)
+        for _ in range((simul-1) * self.config.TICK_DAY):
             if tick % self.config.TICK_DAY == 0:
                 # Suppression de la nourriture restante
                 self.world.removefood()
                 day += 1
-
                 # Spawn de la nouvelle food
                 self.world.spawnfood()
             tick += 1
@@ -51,7 +52,8 @@ class Controller:
             # drawStats(self.world.grid, self.world.listebob, tick)
             self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.world.update_listebob()
-            self.simuBar.setValue(tick/(simul * self.config.TICK_DAY) * 100)
+            self.simuBar.setValue(tick/((simul-1) * self.config.TICK_DAY) * 100)
+            self.file.tick = tick
         if affichage:
             self.view = View()
         while continuer and self.world.listebob:
