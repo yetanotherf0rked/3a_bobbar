@@ -101,8 +101,7 @@ class Controller:
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
                     # Stop
-                    if (
-                            event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
+                    if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
 
                     # Pause

@@ -32,6 +32,7 @@ class Gui:
     """
 
     def __init__(self, menu_surface):
+        self.isupdate = False
         self.config = ressources.config.para
         # Thème par défaut
         thorpy.set_theme("human")
@@ -84,6 +85,11 @@ class Gui:
         thorpy.style.DEF_COLOR = BLACK
         self.main_box = thorpy.Background(color=((0, 0, 0, 100)), elements=self.elements)
         thorpy.store(self.main_box, x=DIM_MENU_X / 2, y=0, mode="v", align="center")
+        reaction1 = thorpy.Reaction(reacts_to=thorpy.constants.THORPY_EVENT,
+                                    reac_func=self.react_slider,
+                                    event_args={"id": thorpy.constants.EVENT_SLIDE},
+                                    reac_name="my reaction to slide event")
+        self.main_box.add_reaction(reaction1)
         self.main_box.add_lift(axis="vertical")
         self.main_box.refresh_lift()
 
@@ -92,7 +98,9 @@ class Gui:
 
     def update(self, stats):
         """update : met à jour les paramètres et les visuels à chaque tick"""
-        self.update_values()  # pour les paramètres
+        if self.isupdate:
+            self.update_values()  # pour les paramètres
+            self.isupdate = False
         self.update_stats_box(stats)
         self.main_box.blit()
         self.main_box.update()
@@ -351,3 +359,6 @@ class Gui:
             pygame.draw.circle(image, color, getattr(corners, attribute), rad)
         image.fill(color, rect.inflate(-2 * rad, 0))
         image.fill(color, rect.inflate(0, -2 * rad))
+
+    def react_slider(self,event):
+        self.isupdate = True
