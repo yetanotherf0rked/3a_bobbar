@@ -71,6 +71,7 @@ class Config():
         self.image_LUNE = "ressources/images/lune.png"
         self.image_EMPTY_BEER = "ressources/images/empty_beer_icon.png"
         self.image_TREE = "ressources/images/tree2.png"
+        self.image_GRASS = "ressources/images/grass.png"
 
 
 para = Config()

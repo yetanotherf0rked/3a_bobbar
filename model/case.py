@@ -24,12 +24,11 @@ class Case:
             self.couleur = (max(0, 173 - 20 * self.nbPerception), max(0, 205 - 20 * self.nbPerception), 226)
         elif self.config.active_biome:
             if self.floor == "Grass":
-                self.couleur = (58,157,35)
-                # if self.deco:
+                self.couleur = (120,143,1)
             elif self.floor == "Sand":
-                self.couleur = (203,171,111)
+                self.couleur = (249,198,133)
             elif self.floor == "Water":
-                self.couleur = (73,131,255)
+                self.couleur = (135,229,255)
             elif self.floor == "Lava":
                 self.couleur = (227,101,23)
 
@@ -45,8 +44,11 @@ class Case:
             pygame.draw.line(surface, (228, 226, 232),
                              (cx + Px_init + depx + xdec * (x - y), Py_init + depy + ydec * (x + y)),
                              (cx + Px_init + depx + xdec * (x - y + 1), Py_init + depy + ydec * (x + y + 1)))
-        if self.deco and self.floor == "Grass":
-            surface.blit(deco, (Px_init + cx - 16 - 3 + xdec * (x - y) + depx, Py_init + 7 - 45 + ydec * (x + y + 1) + depy))
+        if self.deco:
+            if self.floor == "Grass":
+                surface.blit(deco, (Px_init + cx - 16 - 3 + xdec * (x - y) + depx, Py_init + 7 - 45 + ydec * (x + y + 1) + depy))
+            if self.floor == "Water":
+                surface.blit(deco, (Px_init + cx - 20 + 16 + xdec * (x - y) + depx, Py_init - 30 + 10 + ydec * (x + y + 1) + depy))
         self.nbPerception = 0
         self.type = "Normal"
 

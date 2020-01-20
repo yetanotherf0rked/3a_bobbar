@@ -50,6 +50,8 @@ class View:
         self.food = pygame.transform.scale(food, (40, 40))
         tree = pygame.image.load(self.config.image_TREE).convert_alpha()
         self.tree = pygame.transform.scale(tree, (40, 40))
+        grass = pygame.image.load(self.config.image_GRASS).convert_alpha()
+        self.grass = pygame.transform.scale(grass, (20, 20))
         # # Chargement des Bob
         # self.perso = pygame.image.load(image_BOB).convert_alpha()
 
@@ -96,12 +98,12 @@ class View:
         self.soleil.blit = self.simu_surface.blit(self.soleil.image, Pos)
 
         # Affichage du sol
-        pygame.draw.polygon(self.simu_surface, (155, 118, 83),
+        pygame.draw.polygon(self.simu_surface, (123, 68, 48),
                             [(PosX_init + self.depx, PosY_init + cote_y + self.depy),
                              (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy),
                              (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + 50 + self.depy),
                              (PosX_init + self.depx, PosY_init + cote_y + 50 + self.depy)])
-        pygame.draw.polygon(self.simu_surface, (155, 118, 83),
+        pygame.draw.polygon(self.simu_surface, (97, 54, 38),
                             [(2 * cote_x + PosX_init + self.depx, PosY_init + cote_y + self.depy),
                              (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy),
                              (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + 50 + self.depy),
@@ -127,8 +129,21 @@ class View:
                 #                  (PosX_init + cote_x + xdec * y + self.depx, PosY_init + ydec * y + self.depy),
                 #                  (PosX_init + xdec * y + self.depx, PosY_init + cote_y + ydec * y + self.depy), 5)
             for x in range(self.config.TAILLE):
-                self.grid[x][y].draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,self.tree)
-                n = min(5, ceil(self.grid[x][y].food / self.config.ENERGY_FOOD))
+                case = self.grid[x][y]
+                if case.floor == "Grass":
+                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,self.tree)
+                elif case.floor == "Water":
+                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
+                              self.grass)
+                elif case.floor == "Sand":
+                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
+                              self.tree)
+                elif case.floor == "Lava":
+                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
+                              self.tree)
+                else:
+                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,None)
+                n = min(5, ceil(case.food / self.config.ENERGY_FOOD))
                 if n:
                     Pos = Case(0, 0).bobCase(n, x, y, xdec, ydec)
                     current_food += 1
@@ -209,7 +224,6 @@ class View:
         # Update
         pygame.display.flip()
         self.run = False
-
 
         ######### Backup branch progressbar ########
 
