@@ -2,6 +2,7 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QApplication, QMainWindow
+import qdarkstyle
 
 import ressources.config
 from controller import *
@@ -35,12 +36,22 @@ class Prems(QMainWindow, Ui_MainWindow):
         self.config.family_Reproduction = self.family_Reproduction.isChecked()
         self.config.family_Agression = self.family_Agression.isChecked()
         self.config.affichage = self.affichage.isChecked()
-        self.config.taille = self.taille.intValue()
+        self.config.TAILLE = self.taille.intValue()
+        self.config.show_graph = self.show_grpah.isChecked()
+
+    def activate_button(self):
+        self.show_Minimap.setEnabled(self.affichage.isChecked())
+        self.fullscreen.setEnabled(self.affichage.isChecked())
+        self.show_Perception.setEnabled(self.affichage.isChecked())
+        self.show_Bord_Case.setEnabled(self.affichage.isChecked())
+        self.historique.setEnabled(self.affichage.isChecked())
+
 
 
 app = QApplication(sys.argv)
 
 window = Prems()
+app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 window.show()
 
 app.exec()

@@ -8,7 +8,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -141,6 +140,13 @@ class Ui_MainWindow(object):
         self.label_3.setFont(font)
         self.label_3.setAlignment(QtCore.Qt.AlignCenter)
         self.label_3.setObjectName("label_3")
+        self.show_grpah = QtWidgets.QCheckBox(self.centralwidget)
+        self.show_grpah.setGeometry(QtCore.QRect(50, 480, 151, 21))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.show_grpah.setFont(font)
+        self.show_grpah.setChecked(False)
+        self.show_grpah.setObjectName("show_grpah")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -155,6 +161,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.clicked.connect(MainWindow.close)
         self.progressBar.valueChanged['int'].connect(MainWindow.barMax)
         self.horizontalSlider.valueChanged['int'].connect(self.taille.display)
+        self.affichage.clicked.connect(MainWindow.activate_button)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -173,3 +180,5 @@ class Ui_MainWindow(object):
         self.fullscreen.setText(_translate("MainWindow", "FullScreen"))
         self.historique.setText(_translate("MainWindow", "Historique"))
         self.label_3.setText(_translate("MainWindow", "Taille"))
+        self.show_grpah.setText(_translate("MainWindow", "Show Graph"))
+

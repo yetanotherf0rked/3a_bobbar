@@ -32,6 +32,7 @@ class Gui:
     """
 
     def __init__(self, menu_surface):
+        self.isupdate = False
         self.config = ressources.config.para
         # Thème par défaut
         thorpy.set_theme("human")
@@ -84,6 +85,11 @@ class Gui:
         thorpy.style.DEF_COLOR = BLACK
         self.main_box = thorpy.Background(color=((0, 0, 0, 100)), elements=self.elements)
         thorpy.store(self.main_box, x=DIM_MENU_X / 2, y=0, mode="v", align="center")
+        reaction1 = thorpy.Reaction(reacts_to=thorpy.constants.THORPY_EVENT,
+                                    reac_func=self.react_slider,
+                                    event_args={"id": thorpy.constants.EVENT_SLIDE},
+                                    reac_name="my reaction to slide event")
+        self.main_box.add_reaction(reaction1)
         self.main_box.add_lift(axis="vertical")
         self.main_box.refresh_lift()
 
@@ -92,7 +98,9 @@ class Gui:
 
     def update(self, stats):
         """update : met à jour les paramètres et les visuels à chaque tick"""
-        self.update_values()  # pour les paramètres
+        if self.isupdate:
+            self.update_values()  # pour les paramètres
+            self.isupdate = False
         self.update_stats_box(stats)
         self.main_box.blit()
         self.main_box.update()
@@ -232,7 +240,7 @@ class Gui:
 
         # Obliger de redonner les valeurs ici sinon elles sont toute incrémentées d'un cran
         for name, k in sliders_Config.default.items():
-            eval("self.sliders[name].set_value(self.config." + name + ")")
+            eval("self.sliders[name].set_value(self.config.%s)" % name)
 
         # Boutton Quitter
         self.set_font_style(self.quit_button, FONT_COLOR, FONT_SIZE, FONT)
@@ -265,7 +273,7 @@ class Gui:
         """update_values : met à jour les valeurs des paramètres dans parametres.actual
         avec la méthode parametres.set()"""
         for name, slider in self.sliders.items():
-            exec("self.config." + name + "=" + str(slider.get_value()))
+            exec("self.config.%s=%s" % (name, slider.get_value()))
 
     def quit_button_pressed(self):
         """quit_button_pressed : appelée quand on clique sur le Bouton Quit"""
@@ -351,3 +359,6 @@ class Gui:
             pygame.draw.circle(image, color, getattr(corners, attribute), rad)
         image.fill(color, rect.inflate(-2 * rad, 0))
         image.fill(color, rect.inflate(0, -2 * rad))
+
+    def react_slider(self,event):
+        self.isupdate = True

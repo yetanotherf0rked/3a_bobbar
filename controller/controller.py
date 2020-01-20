@@ -15,74 +15,42 @@ from view.graphs import Graph,Static_graph_data
 
 class Controller:
 
-    def __init__(self, mode='a', simul=0, bar=None):
+    def __init__(self, simul=0, bar=None):
         # Initialisation de la grille
         self.config = ressources.config.para
         self.world = World()
-        self.grille = self.world.grid
-        # Initialisation des Bobs
-        self.listebob = self.initbob()
         self.file = File()
-        # self.graph = Graph()
         self.static_graph = Static_graph_data()
-        # #  a : affichage
-        # #  d : debug
-        # #  s : simulation de n tour passsé à la suite pour stats
-        if mode == 'a':
-            self.simuBar = bar
-            self.run(self.config.affichage, False, simul)
-       
-    # Initialisation des Bobs
-    def initbob(self):
-        listebob = []
-        for bob in range(self.config.NB_POP):
-            # Position du Bob
-            x, y = randint(0, self.config.TAILLE - 1), randint(0, self.config.TAILLE - 1)
-            bob = Bob([x, y])
-            self.grille[x][y].place.append(bob)
-            listebob.append(bob)
-        return listebob
-
-    def update(self):
-        new_bobs = []
-        for bob in self.listebob:
-            # update du bob
-            if not bob.is_dead():
-                new_bobs += bob.update(self.grille)
-
-            # Si le bob est mort on le retire
-            if bob.is_dead():
-                self.grille[bob.x][bob.y].place.remove(bob)
-                self.listebob.remove(bob)
-
-        # on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
-        self.listebob += new_bobs
-
-    def updateBar(self, tick, max):
-        self.simuBar.setValue(tick / max * 100)
-
+        if self.config.show_graph:
+            self.graph = Graph()
+        self.simuBar = bar
+        self.run(self.config.affichage, False, simul)
+ 
     def run(self, affichage, stats, simul=0):
         tick = 0
         day = 0
         continuer = True
-        for _ in range(simul * self.config.TICK_DAY):
+        if simul == 1:
+            self.simuBar.setValue(100)
+        for _ in range((simul-1) * self.config.TICK_DAY):
             if tick % self.config.TICK_DAY == 0:
                 # Suppression de la nourriture restante
                 self.world.removefood()
                 day += 1
-
                 # Spawn de la nouvelle food
                 self.world.spawnfood()
             tick += 1
-            
-            self.static_graph.update(self.grille,self.listebob,tick)
-            
-            self.listebob.sort(key=lambda x: x.velocity, reverse=True)
-            self.update()
-            self.updateBar(tick, simul * self.config.TICK_DAY)
+            if self.config.show_graph:
+                self.graph.update((tick / self.config.TICK_DAY, len(self.world.listebob)))
+            self.static_graph.update(self.world.grid,self.world.listebob,tick)
+            self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
+            self.world.update_listebob()
+            self.simuBar.setValue(tick/((simul-1) * self.config.TICK_DAY) * 100)
+            self.file.tick = tick
         if affichage:
             self.view = View()
-        while continuer and self.listebob:
+            
+        while continuer and self.world.listebob:
             wait = self.view.gui.gui_pause if affichage else False
             if not self.file.full():
                 # Comptage des ticks/Days
@@ -93,19 +61,20 @@ class Controller:
                     if affichage:
                         for s in self.view.gui.sliders:
                             eval(
-                                "print(sliders_Config.get_info(s),str(self.config." + s + ").rjust(40-len(sliders_Config.get_info(s))))")
+                                "print(sliders_Config.get_info(s),str(self.config.%s).rjust(40-len(sliders_Config.get_info(s))))" % s)
                         print()
 
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
                 tick += 1
-                #drawStats(self.grille, self.listebob, tick)
-                self.static_graph.update(self.grille,self.listebob,tick)
-                #self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.listebob)))
-                self.listebob.sort(key=lambda x: x.velocity, reverse=True)
-                self.update()
+                #drawStats(self.world.grid, self.world.listebob, tick)
+                if self.config.show_graph:
+                    self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.world.listebob)))
+                self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
+                self.world.update_listebob()
                 if affichage:
-                    self.file.enfile(self.grille)
+                    self.file.enfile(self.world)
+                self.static_graph.update(self.world.grid,self.world.listebob,tick)
             else:
                 sleep(0.1)
 
@@ -118,15 +87,13 @@ class Controller:
                         self._thread = Thread(target=self.view.affichage,
                                               args=(self.file.get_Current(), self.file.tick))
                     self._thread.start()
-                # print(len(self.file.file),len(self.file.historique.pile),self.config.TICK_DAY)
                 # Test de fin
 
                 # Boucle sur les events
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
                     # Stop
-                    if (
-                            event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
+                    if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
                         self.static_graph.set_parameter(x='days',pop=True,age=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
                         self.static_graph.plot(size=(22,10)) # on créé un graph
@@ -164,10 +131,9 @@ class Controller:
                         x -= self.view.dim_menu[0]
                         if self.view.soleil.blit.collidepoint((x, y)):
                             self.view.gui.pause_button_pressed()
-                        for bob in self.view.bobliste:
-                            if bob.blit.collidepoint((x, y)):
-                                bob.bobController.select = True
-                                bob.select = True
+                        for bob in self.view.listebob:
+                            if bob.blit and bob.blit.collidepoint((x, y)):
+                                bob.bobController.select = not bob.bobController.select
 
                     # Permet le zoom
                     if event.type == KEYDOWN and event.key == K_KP_PLUS:
@@ -175,5 +141,4 @@ class Controller:
                     if event.type == KEYDOWN and event.key == K_KP_MINUS:
                         self.view.zoom -= 1
                     
-
 

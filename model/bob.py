@@ -1,4 +1,4 @@
-from random import uniform, choice
+from random import uniform, random
 
 import pygame
 
@@ -25,6 +25,7 @@ class Bob:
         self.velocity = 1.0
         self.masse = 1.0
         self.perception = 0
+        self.perception_pos = [(0,0)]
         self.memory_points = 0
         self.energy_move = self.velocity ** 2 * self.masse
         self.energy_brain = self.perception / 5 + self.memory_points / 5
@@ -37,7 +38,6 @@ class Bob:
         self.parents = set()
         self.childs = set()
         self.age = 0
-
         # Life for progress bar
         self.life = (self.energy % self.config.ENERGY_MAX) / 100
 
@@ -47,21 +47,36 @@ class Bob:
         bob.velocity = self.velocity
         bob.masse = self.masse
         bob.perception = self.perception
+        bob.perception_pos = self.perception_pos
         bob.memory_points = self.memory_points
         bob.energy_move = self.energy_move
+        bob.energy_brain = self.energy_brain
         bob.speed_buffer = self.speed_buffer
         bob.mem_food = self.mem_food
         bob.place_historic = self.place_historic
         bob.image = pygame.image.load(self.config.image_BOB).convert_alpha()
         bob.redImage = pygame.image.load(self.config.image_REDBOB).convert_alpha()
         bob.blit = self.blit
-        bob.bobController = self.bobController
         bob.select = self.select
+        bob.bobController = self.bobController
+        bob.parents = self.parents
+        bob.childs = self.childs
+        bob.age = self.age
         bob.life = self.life
         return bob
 
+    def stats(self):
+        text=[]
+        text.append("Energy : %s" % round(self.energy,2))
+        text.append("Velocity : %s" % round(self.velocity,2))
+        text.append("Masse : %s" % round(self.masse, 2))
+        text.append("Perception : %s" % round(self.perception, 2))
+        text.append("Memory : %s" % round(self.memory_points,2))
+        text.append("Age : %s" % round(self.age//self.config.TICK_DAY, 2))
+        return text
+
     def update(self, grille):
-        """update le bob : combats, manger, déplacement... 
+        """update le bob : combats, manger, déplacement...
         Si le bob se reproduit update retourne une liste contenant le nouveau fils sinon une liste vide"""
 
         self.age += 1
@@ -143,7 +158,7 @@ class Bob:
             grille[self.x][self.y].place.remove(self)
             self.x = nx
             self.y = ny
-            grille[self.x][self.y].place.append(self)   
+            grille[self.x][self.y].place.append(self)
             return True
         return False
 
@@ -174,6 +189,7 @@ class Bob:
             son.velocity = max(0, self.velocity + uniform(-self.config.MUT_VELOCITY, self.config.MUT_VELOCITY))
             son.masse = max(0, self.masse + uniform(-self.config.MUT_MASSE, self.config.MUT_MASSE))
             son.perception = max(0, self.perception + choice([-self.config.MUT_PERCEPT, 0, self.config.MUT_PERCEPT]))
+            son.perception_pos = [(i, j) for i in range(-son.perception, son.perception + 1) for j in range(abs(i) - son.perception, son.perception + 1 - abs(i))]
             son.memory_points = max(0,
                                     self.memory_points + choice([-self.config.MUT_MEMORY, 0, self.config.MUT_MEMORY]))
             son.energy_move = son.velocity ** 2 * son.masse
@@ -211,7 +227,7 @@ class Bob:
         Return:
             sons [Bob]: une liste de Bob représentant les enfants nés de self et de other_bob pendant ce tick
         """
-      
+
         sons = []
         if self.energy > self.config.ENERGY_MIN_REPRO and len(case.place) > 1:
             for other_bob in case.place:
@@ -230,6 +246,7 @@ class Bob:
                                                                                       self.config.MUT_MASSE))
                     son.perception = max(0, round((self.perception + other_bob.perception) / 2) + choice(
                         [-self.config.MUT_PERCEPT, 0, self.config.MUT_PERCEPT]))
+                    son.perception_pos = [(i, j) for i in range(-son.perception, son.perception + 1) for j in range(abs(i) - son.perception, son.perception + 1 - abs(i))]
                     son.memory_points = max(0, round((self.memory_points + other_bob.memory_points) / 2) + choice(
                         [-self.config.MUT_MEMORY, 0, self.config.MUT_MEMORY]))
                     son.energy_move = son.velocity ** 2 * son.masse
@@ -246,7 +263,7 @@ class Bob:
                     sons.append(son)
         return sons
 
-    def see(self, grille,show=False):
+    def see(self, grille,show=False,deselect=False):
         """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies
 
         Parametres:
@@ -257,17 +274,15 @@ class Bob:
             foods [Case]: Une liste de Case avec de la nourriture
             preys [Bob]: Une liste de Bob plus petit de 2/3 selon la masse par rapport à self.masse
         """
-        radius = self.perception 
         danger = False
         dangers = []
         preys = []
         foods = []
-
-        for dx, dy in [(i, j) for i in range(-radius, radius + 1) for j in range(abs(i) - radius, radius + 1 - abs(
-                i))]:  # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
+        for dx, dy in self.perception_pos:
+            # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
             if 0 <= self.x + dx < self.config.TAILLE and 0 <= self.y + dy < self.config.TAILLE:  # si la position qu'on regarde est bien dans la grille
                 case = grille[self.x + dx][self.y + dy]
-                if show and (self.select or self.config.show_Perception):
+                if show and (self.bobController.select or self.config.show_Perception):
                     case.type = "Perception"
                     case.nbPerception += 1
                     continue
@@ -379,3 +394,6 @@ class Bob:
             if other_bob in family:
                 return True
         return False
+
+def choice(liste):
+    return liste[int(random()*len(liste))]

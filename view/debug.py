@@ -22,8 +22,9 @@ def memory_stat(pop):
     return (0, 0, 0)
 
 def age_stat(pop):
+    ages = [b.age/ressources.config.para.TICK_DAY for b in pop]
     if len(pop):
-        return (sum(b.age for b in pop) / len(pop), max(b.age for b in pop), min(b.age for b in pop))
+        return (sum(a for a in ages ) / len(pop), max(a for a in ages), min(a for a in ages))
     return (0, 0, 0)
 
 def total_food(grille):
