@@ -11,6 +11,7 @@ class Config():
         self.affichage = False
         self.show_graph = False
         self.active_biome = True
+        self.settings = False
 
         # Tick par jour 100
         self.TICK_DAY = 100

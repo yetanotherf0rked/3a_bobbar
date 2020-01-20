@@ -69,17 +69,22 @@ class Gui:
         # On génère pour chaque paramètre son slider associé
         self.generate_sliders()
 
-        # Bouton Quitter
-        self.gui_quit = False
-        self.quit_button = thorpy.make_button("Quit", func=self.quit_button_pressed)
-        self.quit_button.set_main_color(BLACK)
-        self.elements.append(self.quit_button)
+        # Bouton Settings
+        self.settings_button = thorpy.make_button("Settings", func=self.settings_button_pressed)
+        self.settings_button.set_main_color(BLACK)
+        self.elements.append(self.settings_button)
 
         # Bouton Pause
         self.gui_pause = False
         self.pause_button = thorpy.make_button("Play/Pause", func=self.pause_button_pressed)
         self.pause_button.set_main_color(BLACK)
         self.elements.append(self.pause_button)
+
+        # Bouton Quitter
+        self.gui_quit = False
+        self.quit_button = thorpy.make_button("Quit", func=self.quit_button_pressed)
+        self.quit_button.set_main_color(BLACK)
+        self.elements.append(self.quit_button)
 
         # Regroupement de tous les éléments dans une box
         thorpy.style.DEF_COLOR = BLACK
@@ -278,6 +283,10 @@ class Gui:
     def quit_button_pressed(self):
         """quit_button_pressed : appelée quand on clique sur le Bouton Quit"""
         self.gui_quit = True
+
+    def settings_button_pressed(self):
+        """settings_button_pressed : appelée quand on clique sur le Bouton Settings"""
+        self.config.settings = True
 
     def pause_button_pressed(self):
         """pause_button_pressed : appelée quand on clique sur le Bouton Pause"""

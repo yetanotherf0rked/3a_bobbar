@@ -7,25 +7,33 @@ import qdarkstyle
 import ressources.config
 from controller import *
 from view.Choice import *
+from view.Settings import *
+from threading import Thread
 
 # Affiche la fenêtre au centre
 os.environ["SDL_VIDEO_CENTERED"] = "1"
 
 
-class Prems(QMainWindow, Ui_MainWindow):
+class MainWindow(QtWidgets.QWidget, Ui_Form):
 
     def __init__(self):
-        QMainWindow.__init__(self)
+        QtWidgets.QWidget.__init__(self)
         self.setupUi(self)
         self.config = ressources.config.para
+        self.settings = SettingsWindow()
 
     def normal(self):
         self.update_Config()
-        Controller(simul=self.Day_Box.value(), bar=self.progressBar)
+        self.settings.show()
+        # self.controller = Controller(self.Day_Box.value(), self.progressBar,settings = self.settings)
+        self._thread = Thread(target=Controller,
+                              args=(self.Day_Box.value(),self.progressBar,self.settings))
+        self._thread.start()
 
     def barMax(self):
         if self.progressBar.value() == 100:
             self.close()
+
 
     def update_Config(self):
         self.config.show_Minimap = self.show_Minimap.isChecked()
@@ -46,15 +54,18 @@ class Prems(QMainWindow, Ui_MainWindow):
         self.show_Bord_Case.setEnabled(self.affichage.isChecked())
         self.historique.setEnabled(self.affichage.isChecked())
 
+class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
 
+    def __init__(self):
+        QtWidgets.QWidget.__init__(self)
+        self.setupUi(self)
+        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
 
 app = QApplication(sys.argv)
-
-window = Prems()
+mainwindow = MainWindow()
 app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-window.show()
-
-app.exec()
+mainwindow.show()
+app.exec_()
 # Controller()
 
 # #execution sans argument -> affichage vue

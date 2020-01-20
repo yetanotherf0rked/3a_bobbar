@@ -15,7 +15,9 @@ from view.graphs import Graph
 
 class Controller:
 
-    def __init__(self, mode='a', simul=0, bar=None):
+    def __init__(self, simul=0, bar=None, settings = None, mode='a'):
+        self.settings = settings
+        self.first = True
         # Initialisation de la grille
         self.config = ressources.config.para
         self.world = World()
@@ -80,7 +82,6 @@ class Controller:
                 self.world.update_listebob()
                 if affichage:
                     self.file.enfile(self.world)
-
                 if stats:
                     drawStats(self.world.grid, self.world.listebob, tick)
             else:
@@ -97,12 +98,19 @@ class Controller:
                     self._thread.start()
                 # Test de fin
 
+                if self.config.settings:
+                    self.settings.show()
+                    self.config.settings = False
+                    if not wait : self.view.gui.pause_button_pressed()
+
+
                 # Boucle sur les events
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
                     # Stop
                     if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
+                        self.settings.close()
 
                     # Pause
                     if affichage and event.type == KEYDOWN and event.key == K_SPACE:
@@ -145,6 +153,10 @@ class Controller:
                         self.view.zoom += 1
                     if event.type == KEYDOWN and event.key == K_KP_MINUS:
                         self.view.zoom -= 1
+            #Permet de cacher la fenêtre de settings au départ.
+            if self.first:
+                self.settings.hide()
+                self.first = False
 
     def run_debug(self):
         tick = 0
