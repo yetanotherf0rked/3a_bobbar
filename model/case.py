@@ -16,7 +16,6 @@ class Case:
         self.deco = False
         self.nbPerception = 0
 
-    # @profile
     def draw(self, surface, xdec, ydec, Px_init, Py_init, depx, depy, cx, deco):
         x, y = self.x, self.y
         self.couleur = (38, 37, 42)

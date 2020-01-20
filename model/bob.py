@@ -57,12 +57,12 @@ class Bob:
 
     def stats(self):
         text=[]
-        text.append("Energy : " + str(round(self.energy,2)))
-        text.append("Velocity : " + str(round(self.velocity,2)))
-        text.append("Masse : " + str(round(self.masse, 2)))
-        text.append("Perception : " + str(round(self.perception, 2)))
-        text.append("Memory : " + str(round(self.memory_points,2)))
-        text.append("Age : " + str(round(self.age//self.config.TICK_DAY, 2)))
+        text.append("Energy : %s" % round(self.energy,2))
+        text.append("Velocity : %s" % round(self.velocity,2))
+        text.append("Masse : %s" % round(self.masse, 2))
+        text.append("Perception : %s" % round(self.perception, 2))
+        text.append("Memory : %s" % round(self.memory_points,2))
+        text.append("Age : %s" % round(self.age//self.config.TICK_DAY, 2))
         return text
 
     def update(self, grille):

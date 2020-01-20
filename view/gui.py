@@ -240,7 +240,7 @@ class Gui:
 
         # Obliger de redonner les valeurs ici sinon elles sont toute incrémentées d'un cran
         for name, k in sliders_Config.default.items():
-            eval("self.sliders[name].set_value(self.config." + name + ")")
+            eval("self.sliders[name].set_value(self.config.%s)" % name)
 
         # Boutton Quitter
         self.set_font_style(self.quit_button, FONT_COLOR, FONT_SIZE, FONT)
@@ -273,7 +273,7 @@ class Gui:
         """update_values : met à jour les valeurs des paramètres dans parametres.actual
         avec la méthode parametres.set()"""
         for name, slider in self.sliders.items():
-            exec("self.config." + name + "=" + str(slider.get_value()))
+            exec("self.config.%s=%s" % (name, slider.get_value()))
 
     def quit_button_pressed(self):
         """quit_button_pressed : appelée quand on clique sur le Bouton Quit"""

@@ -67,7 +67,7 @@ class Controller:
                     if affichage:
                         for s in self.view.gui.sliders:
                             eval(
-                                "print(sliders_Config.get_info(s),str(self.config." + s + ").rjust(40-len(sliders_Config.get_info(s))))")
+                                "print(sliders_Config.get_info(s),str(self.config.%s).rjust(40-len(sliders_Config.get_info(s))))" % s)
                         print()
 
                     # Spawn de la nouvelle food
