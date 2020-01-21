@@ -439,9 +439,42 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>affichage</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>activate_button()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>93</x>
+     <y>385</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>42</x>
+     <y>334</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>taille</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>517</x>
+     <y>494</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>590</x>
+     <y>437</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>normal()</slot>
   <slot>barMax()</slot>
+  <slot>activate_button()</slot>
  </slots>
 </ui>

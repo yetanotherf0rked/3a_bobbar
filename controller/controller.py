@@ -156,6 +156,7 @@ class Controller:
             #Permet de cacher la fenêtre de settings au départ.
             if self.first:
                 self.settings.hide()
+                self.settings.setEnabled(True)
                 self.first = False
 
     def run_debug(self):

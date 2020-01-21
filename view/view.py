@@ -23,6 +23,7 @@ class View:
     def initView(self):
         # Initialisation de pygame
         pygame.init()
+        pygame.display.set_caption("BobBar")
         # Calcul de la self.config.TAILLE de l'écran
         info = pygame.display.Info()
         self.width, self.height = info.current_w, info.current_h

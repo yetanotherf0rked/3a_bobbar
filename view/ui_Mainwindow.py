@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Choice.ui'
+# Form implementation generated from reading ui file 'Mainwindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
@@ -149,6 +149,8 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         self.pushButton.clicked.connect(Form.normal)
         self.progressBar.valueChanged['int'].connect(Form.barMax)
+        self.affichage.clicked.connect(Form.activate_button)
+        self.horizontalSlider.valueChanged['int'].connect(self.taille.display)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
