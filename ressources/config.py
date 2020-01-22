@@ -1,14 +1,14 @@
 class Config():
 
     def __init__(self):
-        self.show_Minimap = False
+        self.show_Minimap = True
         self.fullscreen = False
         self.show_Perception = False
         self.show_Bord_Case = False
         self.historique = False
         self.family_Reproduction = False
         self.family_Agression = False
-        self.affichage = False
+        self.affichage = True
         self.show_graph = False
         self.active_biome = True
         self.settings = False
@@ -16,11 +16,11 @@ class Config():
         # Tick par jour 100
         self.TICK_DAY = 100
         # Population initiale 200
-        self.NB_POP = 100
+        self.NB_POP = 50
         # Taille de la carte 100
-        self.TAILLE = 40
+        self.TAILLE = 25
         # Nourriture sur la carte 200
-        self.NB_FOOD = 200
+        self.NB_FOOD = 50
         # Energy par food 100
         self.ENERGY_FOOD = 100
         # Energy par spawn de Bob 100

@@ -16,10 +16,12 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.config = ressources.config.para
         self.settings = SettingsWindow()
         self.setWindowTitle("Projet BobBar")
+        self.initial_Config()
 
     def normal(self):
         self.update_Config()
         self.settings.show()
+        print(self.config.TAILLE)
         # self.controller = Controller(self.Day_Box.value(), self.progressBar,settings = self.settings)
         self._thread = Thread(target=Controller,
                               args=(self.Day_Box.value(),self.progressBar,self.settings))
@@ -48,3 +50,15 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.show_Perception.setEnabled(self.affichage.isChecked())
         self.show_Bord_Case.setEnabled(self.affichage.isChecked())
         self.historique.setEnabled(self.affichage.isChecked())
+
+    def initial_Config(self):
+        self.show_Minimap.setChecked(self.config.show_Minimap)
+        self.fullscreen.setChecked(self.config.fullscreen)
+        self.show_Perception.setChecked(self.config.show_Perception)
+        self.show_Bord_Case.setChecked(self.config.show_Bord_Case)
+        self.historique.setChecked(self.config.historique)
+        self.family_Reproduction.setChecked(self.config.family_Reproduction)
+        self.family_Agression.setChecked(self.config.family_Agression)
+        self.affichage.setChecked(self.config.affichage)
+        self.horizontalSlider.setValue(self.config.TAILLE)
+        self.show_grpah.setChecked(self.config.show_graph)
