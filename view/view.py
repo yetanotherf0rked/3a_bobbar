@@ -47,8 +47,7 @@ class View:
         self.gui = Gui(self.menu_surface)
 
         # Chargement de la food
-        food = pygame.image.load(self.config.image_FOOD).convert_alpha()
-        self.food = pygame.transform.scale(food, (40, 40))
+        self.foodImage = pygame.image.load(self.config.image_FOOD).convert_alpha()
         tree = pygame.image.load(self.config.image_TREE).convert_alpha()
         self.tree = pygame.transform.scale(tree, (40, 40))
         grass = pygame.image.load(self.config.image_GRASS).convert_alpha()
@@ -77,7 +76,7 @@ class View:
         self.run = True
 
         # Initialisation of the view
-        PosX_init, PosY_init, cote_x, cote_y, simu_x = self.init_view(tick)
+        PosX_init, PosY_init, cote_x, cote_y, simu_x, xdec, ydec = self.init_view(tick)
 
         # Update et affichage Soleil
         self.soleil.updateListeX(cote_x)
@@ -112,7 +111,6 @@ class View:
 
         # Affichage des Cases en partant de la case du Haut.
         # Première boucle pour afficher la moitié du terrain
-        xdec, ydec = cote_x / self.config.TAILLE, cote_y / self.config.TAILLE
         for step in range(self.config.TAILLE):
             for col in range(step + 1):
                 x, y = col, step - col
@@ -189,7 +187,13 @@ class View:
         # Affichage du fond
         rect = pygame.Rect(0, 0, self.width, self.height)
         pygame.draw.rect(self.simu_surface, (30, 200 - tick % 100, 255), rect)
-        return PosX_init, PosY_init, cote_x, cote_y, simu_x
+        xdec = cote_x / self.config.TAILLE
+        ydec = cote_y / self.config.TAILLE
+        #Resize food
+        size_X = int(0.75 * xdec)
+        size_Y = int(1.5 * size_X)
+        self.food = pygame.transform.scale(self.foodImage, (size_X, size_Y))
+        return PosX_init, PosY_init, cote_x, cote_y, simu_x, xdec, ydec
 
     def draw_ProgressBar(self, current_food):
         #### PROGRESS BARS ####
@@ -232,18 +236,18 @@ class View:
         Pos = Case(0, 0).bobCase(n, x, y, xdec, ydec)
         for i in range(n):
             bob = liste[i]
-            size = int(32 * bob.masse ** 2 - 16 * bob.masse + 16)
+            size_X = int(1.5 * xdec - 7.5)
+            size_Y = int(size_X*bob.masse**2 + size_X/2 *(1- bob.masse))
             if bob.bobController.select:
                 self.draw_Stats(bob, simu_x)
-                perso = pygame.transform.scale(bob.redImage, (32, size))
+                perso = pygame.transform.scale(bob.redImage, (size_X,size_Y))
             else:
-                perso = pygame.transform.scale(bob.image, (32, size))
+                perso = pygame.transform.scale(bob.image, (size_X,size_Y))
             PosX, PosY = Pos[i]
-            # print(bob.life) stays at 1 (?)
             self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True,
                                   radius=3)
             bob.blit = self.simu_surface.blit(perso, (
-                PosX_init + cote_x - 16 + PosX + self.depx, PosY_init + 7 - size + PosY + self.depy))
+                PosX_init + cote_x - 0.5 * size_X + PosX + self.depx, PosY_init + 5 - size_Y + PosY + self.depy))
 
     def draw_Food(self, PosX_init, PosY_init, case, cote_x, current_food, x, xdec, y, ydec):
         n = min(5, ceil(case.food / self.config.ENERGY_FOOD))
@@ -253,8 +257,10 @@ class View:
             for i in range(n):
                 PosX, PosY = Pos[i]
                 # Affichage de la food
+                size_X,size_Y = self.food.get_size()
+                print(size_X, size_Y)
                 self.simu_surface.blit(self.food, (
-                    PosX_init + cote_x - 20 + PosX + self.depx, PosY_init - 30 + PosY + self.depy))
+                    PosX_init + cote_x - 0.5 *size_X + 10 + PosX + self.depx, PosY_init - size_Y + PosY + self.depy))
         return current_food
 
     def draw_Cases(self, PosX_init, PosY_init, case, cote_x, xdec, ydec):
