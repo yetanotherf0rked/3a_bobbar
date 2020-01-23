@@ -1,16 +1,19 @@
 class Config():
 
     def __init__(self):
-        self.show_Minimap = False
+        self.show_Minimap = True
         self.fullscreen = False
         self.show_Perception = False
         self.show_Bord_Case = False
         self.historique = False
         self.family_Reproduction = False
         self.family_Agression = False
-        self.affichage = False
+        self.affichage = True
         self.show_graph = False
         self.active_biome = True
+        self.settings = False
+        self.show_Nature = True
+        self.show_Food_ProgressBar = True
 
         # Tick par jour 100
         self.TICK_DAY = 100

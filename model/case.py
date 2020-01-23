@@ -43,7 +43,7 @@ class Case:
             pygame.draw.line(surface, (228, 226, 232),
                              (cx + Px_init + depx + xdec * (x - y), Py_init + depy + ydec * (x + y)),
                              (cx + Px_init + depx + xdec * (x - y + 1), Py_init + depy + ydec * (x + y + 1)))
-        if self.deco:
+        if self.deco and self.config.show_Nature:
             if self.floor == "Grass":
                 surface.blit(deco, (Px_init + cx - 16 - 3 + xdec * (x - y) + depx, Py_init + 7 - 45 + ydec * (x + y + 1) + depy))
             if self.floor == "Water":
