@@ -35,8 +35,10 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.config.family_Reproduction = self.family_Reproduction.isChecked()
         self.config.family_Agression = self.family_Agression.isChecked()
         self.config.affichage = self.affichage.isChecked()
-        self.config.TAILLE = self.taille.intValue()
+        self.config.TAILLE = self.TAILLE.value()
         self.config.show_graph = self.show_grpah.isChecked()
+        self.config.NB_POP = self.NB_POP.value()
+        self.config.NB_FOOD = self.NB_FOOD.value()
 
     def activate_button(self):
         self.historique.setEnabled(self.affichage.isChecked())
@@ -48,5 +50,7 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
             self.historique.setChecked(self.config.historique)
         self.family_Reproduction.setChecked(self.config.family_Reproduction)
         self.family_Agression.setChecked(self.config.family_Agression)
-        self.horizontalSlider.setValue(self.config.TAILLE)
+        self.TAILLE.setValue(self.config.TAILLE)
         self.show_grpah.setChecked(self.config.show_graph)
+        self.NB_POP.setValue(self.config.NB_POP)
+        self.NB_FOOD.setValue(self.config.NB_FOOD)
