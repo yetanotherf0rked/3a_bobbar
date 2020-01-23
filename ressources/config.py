@@ -16,11 +16,11 @@ class Config():
         # Tick par jour 100
         self.TICK_DAY = 100
         # Population initiale 200
-        self.NB_POP = 50
+        self.NB_POP = 100
         # Taille de la carte 100
-        self.TAILLE = 25
+        self.TAILLE = 40
         # Nourriture sur la carte 200
-        self.NB_FOOD = 50
+        self.NB_FOOD = 200
         # Energy par food 100
         self.ENERGY_FOOD = 100
         # Energy par spawn de Bob 100

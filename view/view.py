@@ -59,8 +59,8 @@ class View:
         # Création d'un soleil
         self.soleil = Star()
 
-    def draw_Stats(self,bob,xmax):
-        #Initialisation text
+    def draw_Stats(self, bob, xmax):
+        # Initialisation text
         font = pygame.font.Font('freesansbold.ttf', 16)
         stats = bob.stats()
         label = []
@@ -117,49 +117,44 @@ class View:
             bob.see(self.grid, show=True)
             caseliste.add(self.grid[bob.x][bob.y])
 
-        # Affichage du sol
-        for y in range(self.config.TAILLE):
-            xdec, ydec = cote_x / self.config.TAILLE, cote_y / self.config.TAILLE
-            # if y == 0:
-                # Affichages des lignes extérieures du haut
-                # pygame.draw.line(self.simu_surface, (255, 155, 65),
-                #                  (PosX_init + cote_x - xdec * y + self.depx, PosY_init + ydec * y + self.depy), (
-                #                  PosX_init + 2 * cote_x - xdec * y + self.depx,
-                #                  PosY_init + cote_y + ydec * y + self.depy), 5)
-                # pygame.draw.line(self.simu_surface, (255, 155, 65),
-                #                  (PosX_init + cote_x + xdec * y + self.depx, PosY_init + ydec * y + self.depy),
-                #                  (PosX_init + xdec * y + self.depx, PosY_init + cote_y + ydec * y + self.depy), 5)
-            for x in range(self.config.TAILLE):
-                case = self.grid[x][y]
-                if case.floor == "Grass":
-                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,self.tree)
-                elif case.floor == "Water":
-                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
-                              self.grass)
-                elif case.floor == "Sand":
-                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
-                              self.tree)
-                elif case.floor == "Lava":
-                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
-                              self.tree)
-                else:
-                    case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,None)
-                n = min(5, ceil(case.food / self.config.ENERGY_FOOD))
-                if n:
-                    Pos = Case(0, 0).bobCase(n, x, y, xdec, ydec)
-                    current_food += 1
-                    for i in range(n):
-                        PosX, PosY = Pos[i]
-                        # Affichage de la food
-                        self.simu_surface.blit(self.food, (
-                        PosX_init + cote_x - 20 + PosX + self.depx, PosY_init - 30 + PosY + self.depy))
+        # # Affichages des lignes extérieures du haut
+        # pygame.draw.line(self.simu_surface, (255, 155, 65),
+        #                  (PosX_init + cote_x + self.depx, PosY_init + self.depy), (
+        #                      PosX_init + 2 * cote_x + self.depx,
+        #                      PosY_init + cote_y + self.depy), 5)
+        # pygame.draw.line(self.simu_surface, (255, 155, 65),
+        #                  (PosX_init + cote_x + self.depx, PosY_init + self.depy),
+        #                  (PosX_init + self.depx, PosY_init + cote_y + self.depy), 5)
 
-        # Affichages des lignes extérieures du bas
+        # Affichage du sol en partant de la case du Haut.
+        xdec, ydec = cote_x / self.config.TAILLE, cote_y / self.config.TAILLE
+        for step in range(self.config.TAILLE):
+            for col in range(step + 1):
+                x, y = col, step - col
+                case = self.grid[x][y]
+                # Affichage de chaques cases
+                self.draw_Cases(PosX_init, PosY_init, case, cote_x, xdec, ydec)
+                # Affichages de chaques Food.
+                current_food = self.draw_Food(PosX_init, PosY_init, case, cote_x, current_food, x, xdec, y, ydec)
+        i = 1
+        for step in range(self.config.TAILLE, 2*self.config.TAILLE-1):
+            for col in range(i, self.config.TAILLE):
+                x, y = col, step - col
+                case = self.grid[x][y]
+                # Affichage de chaques cases
+                self.draw_Cases(PosX_init, PosY_init, case, cote_x, xdec, ydec)
+                # Affichages de chaques Food.
+                current_food = self.draw_Food(PosX_init, PosY_init, case, cote_x, current_food, x, xdec, y, ydec)
+            i += 1
+
+        # # Affichages des lignes extérieures du bas
         # pygame.draw.line(self.simu_surface, (255, 155, 65), (PosX_init + self.depx, PosY_init + cote_y + self.depy),
         #                  (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy), 5)
         # pygame.draw.line(self.simu_surface, (255, 155, 65),
         #                  (PosX_init + 2 * cote_x + self.depx, PosY_init + cote_y + self.depy),
         #                  (PosX_init + cote_x + self.depx, PosY_init + 2 * cote_y + self.depy), 5)
+
+
         # Life progress bar
         pos_life_bar = (4, 0)
         size_life_bar = (25, 5)
@@ -174,7 +169,7 @@ class View:
                 bob = liste[i]
                 size = int(32 * bob.masse ** 2 - 16 * bob.masse + 16)
                 if bob.bobController.select:
-                    self.draw_Stats(bob,simu_x)
+                    self.draw_Stats(bob, simu_x)
                     perso = pygame.transform.scale(bob.redImage, (32, size))
                 else:
                     perso = pygame.transform.scale(bob.image, (32, size))
@@ -183,11 +178,11 @@ class View:
                 self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True,
                                       radius=3)
                 bob.blit = self.simu_surface.blit(perso, (
-                PosX_init + cote_x - 16 + PosX + self.depx, PosY_init + 7 - size + PosY + self.depy))
+                    PosX_init + cote_x - 16 + PosX + self.depx, PosY_init + 7 - size + PosY + self.depy))
         if self.config.show_Minimap:
             xdec /= (1 + 0.1 * self.zoom)
-            for y in range(self.config.TAILLE):
-                for x in range(self.config.TAILLE):
+            for x in range(self.config.TAILLE):
+                for y in range(self.config.TAILLE):
                     self.grid[x][y].drawMap(self.simu_surface, xdec, 50)
 
         #### PROGRESS BARS ####
@@ -205,7 +200,7 @@ class View:
         progress_beer = pygame.transform.scale(beer_image, (150, 150))
         pos_bar_food = (12, 5)
         size_bar_food = (
-        progress_beer.get_width() - 67, progress_beer.get_height() - 12)  # 67 and 12 are arbitrary to fit the image
+            progress_beer.get_width() - 67, progress_beer.get_height() - 12)  # 67 and 12 are arbitrary to fit the image
         progress_food = current_food / self.config.NB_FOOD if self.config.NB_FOOD != 0 else 0
 
         #  Get color palette
@@ -234,3 +229,41 @@ class View:
         #     # bob_surf.set_alpha(0)
         #     perso = pygame.transform.scale(self.perso, (32,int(32*bob.masse**2 -16*bob.masse+16)))
         #     # bob_surf.blit(perso,(32,int(32*bob.masse**2 -16*bob.masse+16) + 20))
+
+    def draw_Food(self, PosX_init, PosY_init, case, cote_x, current_food, x, xdec, y, ydec):
+        n = min(5, ceil(case.food / self.config.ENERGY_FOOD))
+        if n:
+            Pos = Case(0, 0).bobCase(n, x, y, xdec, ydec)
+            current_food += 1
+            for i in range(n):
+                PosX, PosY = Pos[i]
+                # Affichage de la food
+                self.simu_surface.blit(self.food, (
+                    PosX_init + cote_x - 20 + PosX + self.depx, PosY_init - 30 + PosY + self.depy))
+        return current_food
+
+    def draw_Cases(self, PosX_init, PosY_init, case, cote_x, xdec, ydec):
+        if case.floor == "Grass":
+            case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
+                      self.tree)
+        elif case.floor == "Water":
+            case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
+                      self.grass)
+        elif case.floor == "Sand":
+            case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
+                      self.tree)
+        elif case.floor == "Lava":
+            case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x,
+                      self.tree)
+        else:
+            case.draw(self.simu_surface, xdec, ydec, PosX_init, PosY_init, self.depx, self.depy, cote_x, None)
+
+# for x in range(4):
+#    ...:    for k in range(x+1):
+#    ...:        print(k,x-k)
+#    ...:i = 1
+#    ...:print("Next")
+#    ...:for x in range(4,7):
+#    ...:    for k in range(i,4):
+#    ...:        print(k,x-k)
+#    ...:    i+=1
