@@ -151,7 +151,8 @@ class View:
             self.draw_Minimap(xdec)
 
         # Draw ProgressBar
-        self.draw_ProgressBar(current_food)
+        if self.config.show_Food_ProgressBar:
+            self.draw_ProgressBar(current_food)
 
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))

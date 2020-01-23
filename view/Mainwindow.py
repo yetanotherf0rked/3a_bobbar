@@ -21,8 +21,6 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
     def normal(self):
         self.update_Config()
         self.settings.show()
-        print(self.config.TAILLE)
-        # self.controller = Controller(self.Day_Box.value(), self.progressBar,settings = self.settings)
         self._thread = Thread(target=Controller,
                               args=(self.Day_Box.value(),self.progressBar,self.settings))
         self._thread.start()
@@ -33,10 +31,6 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
 
 
     def update_Config(self):
-        self.config.show_Minimap = self.show_Minimap.isChecked()
-        self.config.fullscreen = self.fullscreen.isChecked()
-        self.config.show_Perception = self.show_Perception.isChecked()
-        self.config.show_Bord_Case = self.show_Bord_Case.isChecked()
         self.config.historique = self.historique.isChecked()
         self.config.family_Reproduction = self.family_Reproduction.isChecked()
         self.config.family_Agression = self.family_Agression.isChecked()
@@ -45,21 +39,13 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.config.show_graph = self.show_grpah.isChecked()
 
     def activate_button(self):
-        self.show_Minimap.setEnabled(self.affichage.isChecked())
-        self.fullscreen.setEnabled(self.affichage.isChecked())
-        self.show_Perception.setEnabled(self.affichage.isChecked())
-        self.show_Bord_Case.setEnabled(self.affichage.isChecked())
         self.historique.setEnabled(self.affichage.isChecked())
 
     def initial_Config(self):
         self.affichage.setChecked(self.config.affichage)
         self.activate_button()
         if self.affichage.isChecked():
-            self.show_Minimap.setChecked(self.config.show_Minimap)
-            self.fullscreen.setChecked(self.config.fullscreen)
-            self.show_Perception.setChecked(self.config.show_Perception)
-            self.show_Bord_Case.setChecked(self.config.show_Bord_Case)
-        self.historique.setChecked(self.config.historique)
+            self.historique.setChecked(self.config.historique)
         self.family_Reproduction.setChecked(self.config.family_Reproduction)
         self.family_Agression.setChecked(self.config.family_Agression)
         self.horizontalSlider.setValue(self.config.TAILLE)
