@@ -1,4 +1,4 @@
-from random import randint
+
 from threading import Thread
 from time import sleep
 

@@ -58,7 +58,7 @@ class Config():
         self.DISTANCE_TO_BE_IN_SAME_FAMILY=2
 
         # Chargement des images
-        self.image_BOB = "ressources/images/polar_bear_white2.png"
+        self.image_BOB = "ressources/images/polar_bear_white.png"
         self.image_FOOD = "ressources/images/biere.png"
         self.image_LOGO = "ressources/images/logo_round_210.png"
         self.image_EARTH1 = "ressources/images/terre1 clair.png"

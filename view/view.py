@@ -258,7 +258,6 @@ class View:
                 PosX, PosY = Pos[i]
                 # Affichage de la food
                 size_X,size_Y = self.food.get_size()
-                print(size_X, size_Y)
                 self.simu_surface.blit(self.food, (
                     PosX_init + cote_x - 0.5 *size_X + 10 + PosX + self.depx, PosY_init - size_Y + PosY + self.depy))
         return current_food

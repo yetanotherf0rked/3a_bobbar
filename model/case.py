@@ -73,7 +73,6 @@ class Case:
             radius = int(x / 2)
             pygame.draw.circle(surface, couleur, (initx + self.x * x + radius + 1, inity + self.y * x + radius + 1),
                                radius)
-
     def copie(self):
         case = Case(self.x, self.y)
         case.food = self.food
