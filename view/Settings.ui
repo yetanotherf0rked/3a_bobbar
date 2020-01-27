@@ -6,18 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>533</width>
-    <height>406</height>
+    <width>556</width>
+    <height>386</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -135,9 +135,160 @@
        <layout class="QVBoxLayout" name="verticalLayout_2"/>
       </widget>
      </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>Figures</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>mode</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QRadioButton" name="animationY">
+            <property name="text">
+             <string>Animated</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Update rate</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDoubleSpinBox" name="update_rate"/>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="animationN">
+            <property name="text">
+             <string>Static</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="text">
+             <string>Show</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QScrollArea" name="scrollArea_2">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>524</width>
+            <height>263</height>
+           </rect>
+          </property>
+          <layout class="QFormLayout" name="formLayout">
+           <item row="0" column="0">
+            <widget class="QGroupBox" name="groupBox_3">
+             <property name="title">
+              <string>Abscissa</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QRadioButton" name="abcissa_tick">
+                <property name="text">
+                 <string>Ticks</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="absyssa_days">
+                <property name="text">
+                 <string>Days</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="gfood">
+             <property name="text">
+              <string>Food</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QCheckBox" name="gpop">
+             <property name="text">
+              <string>Population</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QCheckBox" name="mass_av">
+             <property name="text">
+              <string>Mass</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QCheckBox" name="velo_av">
+             <property name="text">
+              <string>Velocity</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QCheckBox" name="memory_av">
+             <property name="text">
+              <string>Memory</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QCheckBox" name="perc_av">
+             <property name="text">
+              <string>Perception</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QCheckBox" name="age_av">
+             <property name="text">
+              <string>Age</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_10"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
@@ -153,29 +304,13 @@
  <connections>
   <connection>
    <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>Settings</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>47</x>
-     <y>373</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>244</x>
-     <y>350</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>Settings</receiver>
    <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>169</x>
-     <y>373</y>
+     <x>121</x>
+     <y>372</y>
     </hint>
     <hint type="destinationlabel">
      <x>468</x>
@@ -190,8 +325,8 @@
    <slot>update_Config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>306</x>
-     <y>392</y>
+     <x>121</x>
+     <y>365</y>
     </hint>
     <hint type="destinationlabel">
      <x>531</x>
@@ -199,8 +334,73 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Settings</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>372</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>244</x>
+     <y>350</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>animationN</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>update_rate</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>358</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>225</x>
+     <y>55</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>animationY</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pushButton_2</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>49</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>441</x>
+     <y>57</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>gshow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>459</x>
+     <y>65</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>448</x>
+     <y>5</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>update_Config()</slot>
+  <slot>gshow()</slot>
  </slots>
 </ui>
