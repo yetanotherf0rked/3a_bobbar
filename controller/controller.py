@@ -1,4 +1,4 @@
-
+from random import randint
 from threading import Thread
 from time import sleep
 
@@ -15,7 +15,7 @@ from view.graphs import Graph
 
 class Controller:
 
-    def __init__(self, simul=0, bar=None, settings = None, mode='a'):
+    def __init__(self, simul=0, bar=None, settings = None):
         self.settings = settings
         self.first = True
         # Initialisation de la grille
@@ -23,17 +23,10 @@ class Controller:
         self.world = World()
         self.file = File()
         if self.config.show_graph:
-            self.graph = Graph()
-        # #  a : affichage
-        # #  d : debug
-        # #  s : simulation de n tour passsé à la suite pour stats
-        if mode == 'a':
-            self.simuBar = bar
-            self.run(self.config.affichage, False, simul)
-        elif mode == 'd':
-            self.run_debug()
-        elif mode == 's':
-            self.simul(simul)
+            self.animated_graph = Graph(animation=True)
+            self.animated_graph.set_parameter(x='days',pop=True,age=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
+        self.simuBar = bar
+        self.run(self.config.affichage, False, simul)
 
     def run(self, affichage, stats, simul=0):
         tick = 0
@@ -50,8 +43,9 @@ class Controller:
                 self.world.spawnfood()
             tick += 1
             if self.config.show_graph:
-                self.graph.update((tick / self.config.TICK_DAY, len(self.world.listebob)))
-            # drawStats(self.world.grid, self.world.listebob, tick)
+                self.animated_graph.update(self.world.grid,self.world.listebob,tick)
+                self.animated_graph.draw()
+            #self.static_graph.update(self.world.grid,self.world.listebob,tick)
             self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.world.update_listebob()
             self.simuBar.setValue(tick/((simul-1) * self.config.TICK_DAY) * 100)
@@ -76,14 +70,16 @@ class Controller:
                     self.world.spawnfood()
                 tick += 1
                 #drawStats(self.world.grid, self.world.listebob, tick)
-                if self.config.show_graph:
-                    self.graph.launch_anim((tick/self.config.TICK_DAY,len(self.world.listebob)))
+                if self.config.show_graph and tick%25==0:
+                    self.animated_graph.update(self.world.grid,self.world.listebob,tick)
+                    self.animated_graph.draw()
+                #self.static_graph.update(self.world.grid,self.world.listebob,tick)
+
                 self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
                 self.world.update_listebob()
                 if affichage:
                     self.file.enfile(self.world)
-                if stats:
-                    drawStats(self.world.grid, self.world.listebob, tick)
+
             else:
                 sleep(0.1)
 
@@ -110,6 +106,8 @@ class Controller:
                     # Stop
                     if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
+                        #self.static_graph.set_parameter(x='days',pop=True,age=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
+                        #self.static_graph.plot(size=(22,10)) # on créé un graph
                         self.settings.close()
 
                     # Pause
@@ -159,36 +157,3 @@ class Controller:
                 self.settings.setEnabled(True)
                 self.first = False
 
-    def run_debug(self):
-        tick = 0
-        day = 0
-        continuer = True
-        while continuer and self.world.listebob:
-
-            # Comptage des ticks/Days
-            if tick % self.config.TICK_DAY == 0:
-                # Suppression de la nourritue restante
-                self.world.removefood()
-                day += 1
-                # Spawn de la nouvelle food
-                self.world.spawnfood()
-                print(day, len(self.world.listebob))
-            tick += 1
-            drawStats(self.world.grid, self.world.listebob, tick)
-            self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
-            self.update()
-            sleep(0.01)
-            os.system('cls' if os.name == 'nt' else 'clear')
-
-    def simul(self, ticks):
-        """simule un nombre de tick donné et affiche l'etat de la simulation."""
-        tick = 0
-        day = 0
-        for _ in range(ticks):
-            if tick % self.config.TICK_DAY == 0:
-                self.world.removefood()
-                day += 1
-                self.world.spawnfood()
-            tick += 1
-            self.update()
-        drawStats(self.world.grid, self.world.listebob, tick)

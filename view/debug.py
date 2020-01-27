@@ -2,21 +2,30 @@ import ressources.config
 
 
 def velocity_stat(pop):
-    return (sum(b.velocity for b in pop) / len(pop), max(b.velocity for b in pop), min(b.velocity for b in pop))
-
+    if len(pop):
+        return (sum(b.velocity for b in pop) / len(pop), max(b.velocity for b in pop), min(b.velocity for b in pop))
+    return (0, 0, 0)
 
 def mass_stat(pop):
-    return (sum(b.masse for b in pop) / len(pop), max(b.masse for b in pop), min(b.masse for b in pop))
-
+    if len(pop):
+        return (sum(b.masse for b in pop) / len(pop), max(b.masse for b in pop), min(b.masse for b in pop))
+    return (0, 0, 0)
 
 def perception_stat(pop):
-    return (sum(b.perception for b in pop) / len(pop), max(b.perception for b in pop), min(b.perception for b in pop))
-
+    if len(pop):
+        return (sum(b.perception for b in pop) / len(pop), max(b.perception for b in pop), min(b.perception for b in pop))
+    return (0, 0, 0)
 
 def memory_stat(pop):
-    return (
-    sum(b.memory_points for b in pop) / len(pop), max(b.memory_points for b in pop), min(b.memory_points for b in pop))
+    if len(pop):
+        return (sum(b.memory_points for b in pop) / len(pop), max(b.memory_points for b in pop), min(b.memory_points for b in pop))
+    return (0, 0, 0)
 
+def age_stat(pop):
+    ages = [b.age/ressources.config.para.TICK_DAY for b in pop]
+    if len(pop):
+        return (sum(a for a in ages ) / len(pop), max(a for a in ages), min(a for a in ages))
+    return (0, 0, 0)
 
 def total_food(grille):
     s = 0
@@ -24,31 +33,6 @@ def total_food(grille):
         for j in range(ressources.config.para.TAILLE):
             s += grille[i][j].food
     return s
-
-
-def print_bar(maxd, dat, size=50):
-    length = int(dat) * size // maxd
-    for _ in range(length):
-        print('█', end='')
-    for _ in range(size - length):
-        print(' ', end='')
-    print(f'{dat}/{maxd}')
-
-
-def drawStats(grille, liste_bobs, tick):
-    print(f'Jour : {tick // self.config.TICK_DAY}')
-    print_bar(self.config.TICK_DAY, tick % self.config.TICK_DAY)
-    print(f'population : {len(liste_bobs)}')
-    mstat = mass_stat(liste_bobs)
-    print(f'masse moyenne : {mstat[0]:.3f} masse max : {mstat[1]:.3f} masse min : {mstat[2]:.3f}')
-    vstat = velocity_stat(liste_bobs)
-    print(f'vitesse moyenne : {vstat[0]:.3f} vitesse max : {vstat[1]:.3f} vitesse min : {vstat[2]:.3f}')
-    pstat = perception_stat(liste_bobs)
-    print(f'perception moyenne : {pstat[0]:.3f} perception max : {pstat[1]:.3f} perception min : {pstat[2]:.3f}')
-    memstat = memory_stat(liste_bobs)
-    print(f'mémoire moyenne : {memstat[0]:.3f} mémoire max : {memstat[1]:.3f} mémoire min : {memstat[2]:.3f}')
-    print('food :')
-    print_bar(parameters.get("Food Number") * parameters.get("Food Energy"), total_food(grille))
 
 
 def init_stats():
@@ -80,3 +64,16 @@ def update_stats(grille, liste_bobs, tick):
             perception_stat(liste_bobs),
             memory_stat(liste_bobs)
             ]
+
+def update_stats_graphs(grille, liste_bobs, tick):
+    """ retourne un dictionaire avec les statistiques pour l'affichage en Graph"""
+    return {'ticks':tick,
+            'days': tick / ressources.config.para.TICK_DAY,
+            'pop': len(liste_bobs),
+            'food': int(total_food(grille) / ressources.config.para.ENERGY_FOOD),
+            'mass': mass_stat(liste_bobs),
+            'velocity': velocity_stat(liste_bobs),
+            'perception': perception_stat(liste_bobs),
+            'memory': memory_stat(liste_bobs),
+            'age': age_stat(liste_bobs)
+            }
