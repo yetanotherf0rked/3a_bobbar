@@ -29,3 +29,9 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         self.config.show_Bord_Case = self.show_Bord_Case.isChecked()
         self.config.show_Nature = self.show_Nature.isChecked()
         self.config.show_Food_ProgressBar = self.show_Food_ProgressBar.isChecked()
+
+    def gshow(self):
+        pass
+
+    def gshow(self):
+        pass
