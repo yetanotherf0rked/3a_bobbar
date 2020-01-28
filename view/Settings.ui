@@ -14,10 +14,20 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -126,13 +136,190 @@
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>152</width>
-         <height>104</height>
+         <x>0</x>
+         <y>33</y>
+         <width>521</width>
+         <height>171</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2"/>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="brain_label">
+          <property name="text">
+           <string>Brain function</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="brain_consommation_layout">
+          <item>
+           <widget class="QSpinBox" name="brain_coeff0"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="brain_function0">
+            <item>
+             <property name="text">
+              <string>Exponentielle</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Logarithme</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Polynôme</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="brain_coeff1"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="brain_function1">
+            <item>
+             <property name="text">
+              <string>+</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>-</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>x</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>/</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="brain_coeff2"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="brain_function2">
+            <item>
+             <property name="text">
+              <string>Exponentielle</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Logarithme</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Polynôme</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="brain_coeff3"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="move_label">
+          <property name="text">
+           <string>Move function</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="move_consommation_layout">
+          <item>
+           <widget class="QSpinBox" name="move_coeff0"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="move_function0">
+            <item>
+             <property name="text">
+              <string>Exponentielle</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Logarithme</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Polynôme</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="move_coeff1"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="move_function1">
+            <item>
+             <property name="text">
+              <string>+</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>-</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>x</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>/</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="move_coeff2"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="move_function2">
+            <item>
+             <property name="text">
+              <string>Exponentielle</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Logarithme</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Polynôme</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="move_coeff3"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </widget>
      <widget class="QWidget" name="tab_4">
@@ -200,8 +387,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>500</width>
-            <height>270</height>
+            <width>495</width>
+            <height>229</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
@@ -286,16 +473,6 @@
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-     <property name="centerButtons">
-      <bool>true</bool>
-     </property>
     </widget>
    </item>
   </layout>
