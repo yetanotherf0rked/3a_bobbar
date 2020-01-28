@@ -86,6 +86,11 @@ class Gui:
         self.quit_button.set_main_color(BLACK)
         self.elements.append(self.quit_button)
 
+        #  Color palette to show velocity
+        thorpy.set_theme("human")
+        self.color_palette = thorpy.ColorSetter.make()
+        self.elements.append(self.color_palette)
+
         # Regroupement de tous les éléments dans une box
         thorpy.style.DEF_COLOR = BLACK
         self.main_box = thorpy.Background(color=((0, 0, 0, 100)), elements=self.elements)

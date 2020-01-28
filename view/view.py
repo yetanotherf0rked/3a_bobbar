@@ -55,6 +55,8 @@ class View:
         # # Chargement des Bob
         # self.perso = pygame.image.load(image_BOB).convert_alpha()
 
+        self.beer_image = pygame.image.load(self.config.image_EMPTY_BEER).convert_alpha()
+
         # Création d'un soleil
         self.soleil = Star()
 
@@ -205,18 +207,19 @@ class View:
         # self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER, round=True,
         #                       radius=3)
         # Progress bar food
-        beer_image = pygame.image.load(self.config.image_EMPTY_BEER).convert_alpha()
-        progress_beer = pygame.transform.scale(beer_image, (150, 150))
-        pos_bar_food = (12, 5)
-        size_bar_food = (
-            progress_beer.get_width() - 67, progress_beer.get_height() - 12)  # 67 and 12 are arbitrary to fit the image
+        progress_beer = pygame.transform.scale(self.beer_image, (150, 150))
+        pos_bar_food = (27, 40)
+        size_bar_food = (progress_beer.get_width() * 0.55, progress_beer.get_height() * 0.7)
         progress_food = current_food / self.config.NB_FOOD if self.config.NB_FOOD != 0 else 0
         #  Get color palette
         beer_palette = Gradient(BEER_PALETTE, progress_beer.get_width()).gradient(int(progress_food * 100))
         #  Draw the bar
         self.gui.progress_bar(pos_bar_food, size_bar_food, progress_food, progress_beer, beer_palette, vertical=True,
                               reverse=True, round=True, radius=5)
-        self.simu_surface.blit(progress_beer, (50, -150 + self.dim_simu[1]))
+        # Re blit image to get in front of the bar
+        progress_beer.blit(pygame.transform.scale(self.beer_image, (150, 150)), (0, 0))
+
+        self.simu_surface.blit(progress_beer, (50, -170 + self.dim_simu[1]))
 
     def draw_Minimap(self, xdec):
         xdec /= (1 + 0.1 * self.zoom)
@@ -228,6 +231,11 @@ class View:
         # Life progress bar
         pos_life_bar = (4, 0)
         size_life_bar = (25, 5)
+
+        # Show velocity through color
+        velocity_max = -1
+        velocity_color = self.gui.color_palette.get_value()
+
         # Affichage des Bobs
         case.place.sort(key=lambda x: x.masse, reverse=True)
         n = min(5, len(case.place))
@@ -238,12 +246,24 @@ class View:
             bob = liste[i]
             size_X = int(1.5 * xdec - 7.5)
             size_Y = int(size_X*bob.masse**2 + size_X/2 *(1- bob.masse))
+
+            #  Get max velocity for showing it
+            if bob.velocity > velocity_max:
+                velocity_max = bob.velocity
+
             if bob.bobController.select:
                 self.draw_Stats(bob, simu_x)
                 perso = pygame.transform.scale(bob.redImage, (size_X,size_Y))
             else:
                 perso = pygame.transform.scale(bob.image, (size_X,size_Y))
             PosX, PosY = Pos[i]
+
+            velocity_percentage = bob.velocity / velocity_max
+            bob_velocity_color = (velocity_percentage * velocity_color[0],
+                                  velocity_percentage * velocity_color[1],
+                                  velocity_percentage * velocity_color[2])
+            perso.fill(bob_velocity_color, special_flags=BLEND_RGB_ADD)
+
             self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True,
                                   radius=3)
             bob.blit = self.simu_surface.blit(perso, (
