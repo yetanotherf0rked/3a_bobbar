@@ -321,6 +321,32 @@
         </item>
        </layout>
       </widget>
+      <widget class="QPushButton" name="pushButton">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>230</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Brain Refresh</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>260</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Move Refresh</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
@@ -534,12 +560,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>358</x>
-     <y>56</y>
+     <x>119</x>
+     <y>69</y>
     </hint>
     <hint type="destinationlabel">
-     <x>225</x>
-     <y>55</y>
+     <x>119</x>
+     <y>69</y>
     </hint>
    </hints>
   </connection>
@@ -554,8 +580,8 @@
      <y>63</y>
     </hint>
     <hint type="destinationlabel">
-     <x>441</x>
-     <y>57</y>
+     <x>119</x>
+     <y>69</y>
     </hint>
    </hints>
   </connection>
@@ -566,8 +592,8 @@
    <slot>gshow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>459</x>
-     <y>65</y>
+     <x>119</x>
+     <y>69</y>
     </hint>
     <hint type="destinationlabel">
      <x>448</x>
@@ -575,9 +601,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>update_consommation_label()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>268</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>411</x>
+     <y>389</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>update_Config()</slot>
   <slot>gshow()</slot>
+  <slot>update_consommation_label()</slot>
  </slots>
 </ui>

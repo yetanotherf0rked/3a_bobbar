@@ -25,13 +25,8 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         self.show_Nature.setChecked(self.config.show_Nature)
         self.show_Food_ProgressBar.setChecked(self.config.show_Food_ProgressBar)
 
-    def update_Config(self):
-        self.config.show_Minimap = self.show_Minimap.isChecked()
-        self.config.show_Perception = self.show_Perception.isChecked()
-        self.config.show_Bord_Case = self.show_Bord_Case.isChecked()
-        self.config.show_Nature = self.show_Nature.isChecked()
-        self.config.show_Food_ProgressBar = self.show_Food_ProgressBar.isChecked()
 
+    def update_consommation_label(self):
         add = lambda x, y: x+y
         sou = lambda x, y: x-y
         mul = lambda x, y: x*y
@@ -60,6 +55,19 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         memory_points_transform = lambda x: self.brain_coeff2.value()*memory_points_function(x, self.brain_coeff3.value())
 
         self.config.brain_consommation = lambda perception, memory_points: brain_main_operation(perception_transform(perception), memory_points_transform(memory_points))
+
+        self.brain_label.setText("mettre la bonne formule (brain)")
+
+        self.move_label.setText("mettre la bonne formule (move)")
+
+    def update_Config(self):
+        self.config.show_Minimap = self.show_Minimap.isChecked()
+        self.config.show_Perception = self.show_Perception.isChecked()
+        self.config.show_Bord_Case = self.show_Bord_Case.isChecked()
+        self.config.show_Nature = self.show_Nature.isChecked()
+        self.config.show_Food_ProgressBar = self.show_Food_ProgressBar.isChecked()
+
+        
 
     def gshow(self):
         pass
