@@ -32,43 +32,34 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         self.config.show_Nature = self.show_Nature.isChecked()
         self.config.show_Food_ProgressBar = self.show_Food_ProgressBar.isChecked()
 
-
-        """
-        MOVE = 0
-        BRAIN = 1
-
-        add=lambda x,y: x+y
-        sou=lambda x,y: x-y
-        mul=lambda x,y: x+y
-        div=lambda x,y: x/y
-
-        def formule_consommation(type):
-            #data = [principale, formule0, c1, c2, c3, formule1, d1, d2, d3]
-            # c1 * f0(c2*b) ^ c3 {+, -, x, / en fonction de principale} d1 * f0(d2*b) ^ d3 
-            
-            if type == MOVE:
-                p0, f0, c1, c2, c3, f1, d1, d2, d3 = config.
-            elif type == BRAIN:
-                p0, f0, c1, c2, c3, f1, d1, d2, d3 = config.
-            else:
-                print("formule_consommation: error type")
-                return lambda x, y:0
-
-            return lambda x, y:p0((c1*f0(c2*x))**c3, (d1*f1(d2*y))**d3)"""
         add = lambda x, y: x+y
         sou = lambda x, y: x-y
         mul = lambda x, y: x*y
         div = lambda x, y: x/y
 
+        # Update de la fonction de consommation de l'énergie lors du mouvement
+
         velocity_function = [lambda x,y: exp(x*y), lambda x,y:log(abs(x*y) + 1), pow][self.move_function0.currentIndex()]
         velocity_transform = lambda x: self.move_coeff0.value()*velocity_function(x, self.move_coeff1.value())
 
-        main_operation = [add, sou, mul, div][self.move_function1.currentIndex()]
+        move_main_operation = [add, sou, mul, div][self.move_function1.currentIndex()]
 
         mass_function = [lambda x,y: exp(x*y), lambda x,y:log(abs(x*y) + 1), pow][self.move_function2.currentIndex()]
         mass_transform = lambda x: self.move_coeff2.value()*mass_function(x, self.move_coeff3.value())
 
-        self.config.move_consommation = lambda velocity, mass: main_operation(velocity_transform(velocity), mass_transform(mass))
+        self.config.move_consommation = lambda velocity, mass: move_main_operation(velocity_transform(velocity), mass_transform(mass))
+
+        # Update de la fonction de consommation de l'énergie lors de l'utilisation du cerveau
+
+        perception_function = [lambda x,y: exp(x*y), lambda x,y:log(abs(x*y) + 1), pow][self.brain_function0.currentIndex()]
+        perception_transform = lambda x: self.brain_coeff0.value()*perception_function(x, self.brain_coeff1.value())
+
+        brain_main_operation = [add, sou, mul, div][self.brain_function1.currentIndex()]
+
+        memory_points_function = [lambda x,y: exp(x*y), lambda x,y:log(abs(x*y) + 1), pow][self.brain_function2.currentIndex()]
+        memory_points_transform = lambda x: self.brain_coeff2.value()*memory_points_function(x, self.brain_coeff3.value())
+
+        self.config.brain_consommation = lambda perception, memory_points: brain_main_operation(perception_transform(perception), memory_points_transform(memory_points))
 
     def gshow(self):
         pass
