@@ -24,10 +24,9 @@ class Controller:
         self.config = ressources.config.para
         self.world = World()
         self.file = File()
-        #self.static_graph = Graph()
-        if self.config.show_graph:
-            self.animated_graph = Graph(animation=True)
-            self.animated_graph.set_parameter(x='days',pop=True,age=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
+
+        self.graph = Graph(animation=False)
+            
         self.simuBar = bar
         self.run(self.config.affichage, False, simul)
  
@@ -45,14 +44,22 @@ class Controller:
                 # Spawn de la nouvelle food
                 self.world.spawnfood()
             tick += 1
-            if self.config.show_graph:
-                self.animated_graph.update(self.world.grid,self.world.listebob,tick)
-                self.animated_graph.draw()
-            #self.static_graph.update(self.world.grid,self.world.listebob,tick)
+
+            #update du graph TODO regroupé dans une seule fonction de Graph 
+            self.graph.update_data(self.world.grid,self.world.listebob,tick)
+            if self.config.g_animation :
+                self.graph.anim()
+            if self.config.g_updated :
+                self.config.g_updated =False
+                self.graph.update_parameter(self.config.g_animation,self.config.g_parameters)
+                
+            
+            
             self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.world.update_listebob()
             self.simuBar.setValue(tick/((simul-1) * self.config.TICK_DAY) * 100)
             self.file.tick = tick
+        
         if affichage:
             self.view = View()
             
@@ -73,25 +80,40 @@ class Controller:
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
                 tick += 1
-                #drawStats(self.world.grid, self.world.listebob, tick)
-                if self.config.show_graph and tick%25==0:
-                    self.animated_graph.update(self.world.grid,self.world.listebob,tick)
-                    self.animated_graph.draw()
-                #self.static_graph.update(self.world.grid,self.world.listebob,tick)
+        
+            if self.config.g_updated :
+                self.config.g_updated =False
+                self.graph.update_parameter(self.config.g_animation,self.config.g_parameters)
+            if self.config.g_animation :
+                self.graph.anim()
+            if self.config.show_graph :
+                #self.graph.set_animation(False)
+                self.graph.update_parameter(False,self.config.g_parameters)
+                self.graph.plot()
+               
+                self.config.show_graph=False
+            
 
-                self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
-                self.world.update_listebob()
-                if affichage:
-                    self.file.enfile(self.world)
+            self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
+            self.world.update_listebob()
+            if affichage:
+                self.file.enfile(self.world)
                 
             else:
                 sleep(0.1)
 
             if affichage:
+                
+                
+                
+
                 # Update de la fenêtre
                 if not self.view.run:
                     if not wait:
-                        self._thread = Thread(target=self.view.affichage, args=(self.file.defile(), self.file.tick))
+                        aff_world = self.file.defile()
+                        self._thread = Thread(target=self.view.affichage, args=(aff_world, self.file.tick))
+                        self.graph.update_data(aff_world.grid,aff_world.listebob,self.file.tick)
+                        
                     else:
                         self._thread = Thread(target=self.view.affichage,
                                               args=(self.file.get_Current(), self.file.tick))
@@ -110,9 +132,14 @@ class Controller:
                     # Stop
                     if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
-                        #self.static_graph.set_parameter(x='days',pop=True,age=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
-                        #self.static_graph.plot(size=(22,10)) # on créé un graph
+                       
+                        self.graph.hide()
+                        self.graph.animation=False
+                        self.graph.set_parameter(x='days',pop=True,age=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
+                        self.graph.plot()
                         self.settings.close()
+                        self.view.gui.gui_quit=False
+                       
 
                     # Pause
                     if affichage and event.type == KEYDOWN and event.key == K_SPACE:
@@ -161,4 +188,6 @@ class Controller:
                 self.settings.hide()
                 self.settings.setEnabled(True)
                 self.first = False
+
+
 

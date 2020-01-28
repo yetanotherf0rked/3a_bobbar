@@ -71,7 +71,7 @@ class Config():
                             'food':False,
                             'age':False}
         self.g_update_rate = 1
-        self.g_test =False
+        self.g_updated =False
 
         # Chargement des images
         self.image_BOB = "ressources/images/polar_bear_white2.png"
