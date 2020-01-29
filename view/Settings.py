@@ -56,9 +56,36 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
 
         self.config.brain_consommation = lambda perception, memory_points: brain_main_operation(perception_transform(perception), memory_points_transform(memory_points))
 
-        self.brain_label.setText("mettre la bonne formule (brain)")
+
+        c0 = str(self.brain_coeff0.value())
+        c1 = str(self.brain_coeff1.value())
+        c2 = str(self.brain_coeff2.value())
+        c3 = str(self.brain_coeff3.value())
+
+        brain_main = ["+", "-", "*", "/"][self.brain_function1.currentIndex()]
+
+        f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.brain_function0.currentIndex()].format("perception", c1)
+
+        f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.brain_function2.currentIndex()].format("memory_points", c3)
+
+        self.brain_label.setText("bob.energy_brain = {}*{} {} {}*{}".format(c0, f0, brain_main, c2, f2))
 
         self.move_label.setText("mettre la bonne formule (move)")
+
+
+        c0 = str(self.move_coeff0.value())
+        c1 = str(self.move_coeff1.value())
+        c2 = str(self.move_coeff2.value())
+        c3 = str(self.move_coeff3.value())
+
+        move_main = ["+", "-", "*", "/"][self.move_function1.currentIndex()]
+
+        f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function0.currentIndex()].format("perception", c1)
+
+        f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function2.currentIndex()].format("memory_points", c3)
+
+        self.move_label.setText("bob.energy_move = {}*{} {} {}*{}".format(c0, f0, move_main, c2, f2))
+
 
     def update_Config(self):
         self.config.show_Minimap = self.show_Minimap.isChecked()
