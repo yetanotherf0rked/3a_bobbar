@@ -236,7 +236,7 @@ class View:
         Pos = Case(0, 0).bobCase(n, x, y, xdec, ydec)
         for i in range(n):
             bob = liste[i]
-            size_X = int(1.5 * xdec - 7.5)
+            size_X = max(1,int(1.5 * xdec - 7.5))
             size_Y = int(size_X*bob.masse**2 + size_X/2 *(1- bob.masse))
             if bob.bobController.select:
                 self.draw_Stats(bob, simu_x)

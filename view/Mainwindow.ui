@@ -477,12 +477,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>625</x>
-     <y>260</y>
+     <x>626</x>
+     <y>305</y>
     </hint>
     <hint type="destinationlabel">
-     <x>676</x>
-     <y>221</y>
+     <x>718</x>
+     <y>258</y>
     </hint>
    </hints>
   </connection>
@@ -493,12 +493,76 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>629</x>
-     <y>221</y>
+     <x>718</x>
+     <y>258</y>
     </hint>
     <hint type="destinationlabel">
-     <x>568</x>
-     <y>250</y>
+     <x>569</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>NB_POP</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>593</x>
+     <y>408</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>657</x>
+     <y>370</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>NB_POP</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>694</x>
+     <y>360</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>628</x>
+     <y>417</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_3</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>NB_FOOD</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>555</x>
+     <y>505</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>703</x>
+     <y>468</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>NB_FOOD</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_3</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>714</x>
+     <y>477</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>680</x>
+     <y>505</y>
     </hint>
    </hints>
   </connection>

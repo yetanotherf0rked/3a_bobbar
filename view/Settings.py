@@ -71,6 +71,3 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
 
     def gshow(self):
         pass
-
-    def gshow(self):
-        pass

@@ -198,6 +198,10 @@ class Ui_Form(object):
         self.affichage.clicked.connect(Form.activate_button)
         self.horizontalSlider.valueChanged['int'].connect(self.TAILLE.setValue)
         self.TAILLE.valueChanged['int'].connect(self.horizontalSlider.setValue)
+        self.horizontalSlider_2.valueChanged['int'].connect(self.NB_POP.setValue)
+        self.NB_POP.valueChanged['int'].connect(self.horizontalSlider_2.setValue)
+        self.horizontalSlider_3.valueChanged['int'].connect(self.NB_FOOD.setValue)
+        self.NB_FOOD.valueChanged['int'].connect(self.horizontalSlider_3.setValue)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
