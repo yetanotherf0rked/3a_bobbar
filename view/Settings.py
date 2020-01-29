@@ -17,6 +17,7 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         self.setEnabled(False)
         self.initial_Config()
         self.setWindowTitle("Settings")
+        self.update_consommation_label()
 
     def initial_Config(self):
         self.show_Minimap.setChecked(self.config.show_Minimap)
@@ -69,9 +70,6 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.brain_function2.currentIndex()].format("memory_points", c3)
 
         self.brain_label.setText("bob.energy_brain = {}*{} {} {}*{}".format(c0, f0, brain_main, c2, f2))
-
-        self.move_label.setText("mettre la bonne formule (move)")
-
 
         c0 = str(self.move_coeff0.value())
         c1 = str(self.move_coeff1.value())
