@@ -81,7 +81,7 @@ class Controller:
             if self.config.g_updated :
                 self.config.g_updated =False
                 self.graph.update_parameter(self.config.g_animation,self.config.g_parameters)
-            if self.config.g_animation :
+            if self.config.g_animation and tick%self.config.g_update_rate==0:
                 self.graph.anim()
             if self.config.show_graph :
                 #self.graph.set_animation(False)

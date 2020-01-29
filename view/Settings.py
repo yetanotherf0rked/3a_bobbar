@@ -28,6 +28,8 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         self.animationN.setChecked(not self.config.g_animation)
         self.abcissa_tick.setChecked(True)
         self.gpop.setChecked(True)
+        self.update_rate.setRange(1,200)
+        self.update_rate.setValue(self.config.g_update_rate)
 
 
     def update_consommation_label(self):
@@ -64,6 +66,7 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
 
         self.move_label.setText("mettre la bonne formule (move)")
 
+
     def update_Config(self):
         self.config.show_Minimap = self.show_Minimap.isChecked()
         self.config.show_Perception = self.show_Perception.isChecked()
@@ -89,7 +92,7 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
                             'perception':self.perc_av.isChecked(),
                             'food':self.gfood.isChecked(),
                             'age':self.age_av.isChecked()}
-        
+        self.config.g_update_rate = self.update_rate.value()
         self.config.g_animation=self.animationY.isChecked()
         
 

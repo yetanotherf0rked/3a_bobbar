@@ -292,7 +292,7 @@ class Ui_Settings(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("Settings", "Bobs"))
         self.groupBox.setTitle(_translate("Settings", "mode"))
         self.animationY.setText(_translate("Settings", "Animated"))
-        self.label.setText(_translate("Settings", "Update rate"))
+        self.label.setText(_translate("Settings", "Update delay (ticks)"))
         self.animationN.setText(_translate("Settings", "Static"))
         self.pushButton_2.setText(_translate("Settings", "Show"))
         self.groupBox_3.setTitle(_translate("Settings", "Abscissa"))
