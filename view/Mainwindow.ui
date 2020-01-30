@@ -478,27 +478,31 @@
         <widget class="QDoubleSpinBox" name="mut_perception"/>
        </item>
       </layout>
-  <widget class="QWidget" name="">
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>220</y>
+     <x>30</x>
+     <y>260</y>
      <width>208</width>
      <height>23</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QRadioButton" name="step_Continue">
+     <widget class="QRadioButton" name="step_Tick_By_Tick">
       <property name="text">
-       <string>Continue</string>
+       <string>Tick by Tick</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="step_Tick_By_Tick">
+     <widget class="QRadioButton" name="step_Continue">
       <property name="text">
-       <string>Tick by Tick</string>
+       <string>Continue</string>
       </property>
      </widget>
     </item>
