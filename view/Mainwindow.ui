@@ -475,7 +475,7 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QDoubleSpinBox" name="mut_perception"/>
+        <widget class="QSpinBox" name="mut_perception"/>
        </item>
       </layout>
      </widget>

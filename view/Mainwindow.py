@@ -71,6 +71,6 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.mut_memory.setSingleStep(0.1)
         self.mut_memory.setRange(0,2)
         self.mut_perception.setValue(self.config.MUT_PERCEPT)
-        self.mut_perception.setSingleStep(0.1)
-        self.mut_perception.setRange(0,2)
+        self.mut_perception.setSingleStep(1)
+        self.mut_perception.setRange(0,5)
 
