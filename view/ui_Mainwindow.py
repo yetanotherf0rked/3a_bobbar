@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Mainwindow.ui'
+# Form implementation generated from reading ui file 'view\MainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(800, 600)
         self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setGeometry(QtCore.QRect(330, 100, 161, 51))
+        self.label_2.setGeometry(QtCore.QRect(300, 88, 161, 51))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -26,10 +28,10 @@ class Ui_Form(object):
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(120, 272, 161, 71))
+        self.pushButton.setGeometry(QtCore.QRect(300, 230, 161, 71))
         self.pushButton.setObjectName("pushButton")
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(310, 40, 191, 51))
+        self.label.setGeometry(QtCore.QRect(280, 28, 191, 51))
         font = QtGui.QFont()
         font.setPointSize(20)
         font.setBold(True)
@@ -38,12 +40,12 @@ class Ui_Form(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.Day_Box = QtWidgets.QSpinBox(Form)
-        self.Day_Box.setGeometry(QtCore.QRect(360, 150, 101, 31))
+        self.Day_Box.setGeometry(QtCore.QRect(330, 138, 101, 31))
         self.Day_Box.setMinimum(1)
         self.Day_Box.setMaximum(100000)
         self.Day_Box.setObjectName("Day_Box")
         self.layoutWidget = QtWidgets.QWidget(Form)
-        self.layoutWidget.setGeometry(QtCore.QRect(60, 380, 351, 146))
+        self.layoutWidget.setGeometry(QtCore.QRect(60, 330, 351, 146))
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -191,6 +193,43 @@ class Ui_Form(object):
         self.horizontalSlider_3.setTickInterval(25)
         self.horizontalSlider_3.setObjectName("horizontalSlider_3")
         self.verticalLayout_3.addWidget(self.horizontalSlider_3)
+        self.groupBox = QtWidgets.QGroupBox(Form)
+        self.groupBox.setGeometry(QtCore.QRect(450, 90, 351, 131))
+        self.groupBox.setObjectName("groupBox")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.groupBox)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.groupBox_2 = QtWidgets.QGroupBox(self.groupBox)
+        self.groupBox_2.setObjectName("groupBox_2")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_2)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.mut_mass = QtWidgets.QDoubleSpinBox(self.groupBox_2)
+        self.mut_mass.setObjectName("mut_mass")
+        self.verticalLayout_4.addWidget(self.mut_mass)
+        self.horizontalLayout.addWidget(self.groupBox_2)
+        self.groupBox_3 = QtWidgets.QGroupBox(self.groupBox)
+        self.groupBox_3.setObjectName("groupBox_3")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_3)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.mut_velocity = QtWidgets.QDoubleSpinBox(self.groupBox_3)
+        self.mut_velocity.setObjectName("mut_velocity")
+        self.verticalLayout_5.addWidget(self.mut_velocity)
+        self.horizontalLayout.addWidget(self.groupBox_3)
+        self.groupBox_5 = QtWidgets.QGroupBox(self.groupBox)
+        self.groupBox_5.setObjectName("groupBox_5")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.groupBox_5)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.mut_memory = QtWidgets.QDoubleSpinBox(self.groupBox_5)
+        self.mut_memory.setObjectName("mut_memory")
+        self.verticalLayout_7.addWidget(self.mut_memory)
+        self.horizontalLayout.addWidget(self.groupBox_5)
+        self.groupBox_4 = QtWidgets.QGroupBox(self.groupBox)
+        self.groupBox_4.setObjectName("groupBox_4")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_4)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.mut_perception = QtWidgets.QDoubleSpinBox(self.groupBox_4)
+        self.mut_perception.setObjectName("mut_perception")
+        self.verticalLayout_6.addWidget(self.mut_perception)
+        self.horizontalLayout.addWidget(self.groupBox_4)
 
         self.retranslateUi(Form)
         self.pushButton.clicked.connect(Form.normal)
@@ -208,7 +247,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_2.setText(_translate("Form", "Jour de départ"))
-        self.pushButton.setText(_translate("Form", "Normal"))
+        self.pushButton.setText(_translate("Form", "Lancer"))
         self.label.setText(_translate("Form", "BOB BAR"))
         self.affichage.setText(_translate("Form", "Affichage"))
         self.family_Reproduction.setText(_translate("Form", "Family Reproduction"))
@@ -218,4 +257,8 @@ class Ui_Form(object):
         self.label_3.setText(_translate("Form", "Taille"))
         self.label_4.setText(_translate("Form", "Population"))
         self.label_5.setText(_translate("Form", "Food"))
-
+        self.groupBox.setTitle(_translate("Form", "Mutation Rate"))
+        self.groupBox_2.setTitle(_translate("Form", "Mass"))
+        self.groupBox_3.setTitle(_translate("Form", "Velocity"))
+        self.groupBox_5.setTitle(_translate("Form", "Memory"))
+        self.groupBox_4.setTitle(_translate("Form", "Perception"))

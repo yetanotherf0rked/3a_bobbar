@@ -40,6 +40,12 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.config.NB_POP = self.NB_POP.value()
         self.config.NB_FOOD = self.NB_FOOD.value()
 
+        self.config.MUT_MASSE=self.mut_mass.value()
+        self.config.MUT_VELOCITY=self.mut_velocity.value()
+        self.config.MUT_MEMORY=self.mut_memory.value()
+        self.config.MUT_PERCEPT=self.mut_perception.value()
+
+
     def activate_button(self):
         self.historique.setEnabled(self.affichage.isChecked())
 
@@ -54,3 +60,17 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.show_grpah.setChecked(self.config.show_graph)
         self.NB_POP.setValue(self.config.NB_POP)
         self.NB_FOOD.setValue(self.config.NB_FOOD)
+
+        self.mut_mass.setValue(self.config.MUT_MASSE)
+        self.mut_mass.setRange(0,5)
+        self.mut_mass.setSingleStep(0.1)
+        self.mut_velocity.setValue(self.config.MUT_VELOCITY)
+        self.mut_velocity.setSingleStep(0.1)
+        self.mut_velocity.setRange(0,2)
+        self.mut_memory.setValue(self.config.MUT_MEMORY)
+        self.mut_memory.setSingleStep(0.1)
+        self.mut_memory.setRange(0,2)
+        self.mut_perception.setValue(self.config.MUT_PERCEPT)
+        self.mut_perception.setSingleStep(0.1)
+        self.mut_perception.setRange(0,2)
+

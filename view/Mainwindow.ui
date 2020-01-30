@@ -16,8 +16,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>330</x>
-     <y>100</y>
+     <x>300</x>
+     <y>88</y>
      <width>161</width>
      <height>51</height>
     </rect>
@@ -52,21 +52,21 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>272</y>
+     <x>300</x>
+     <y>230</y>
      <width>161</width>
      <height>71</height>
     </rect>
    </property>
    <property name="text">
-    <string>Normal</string>
+    <string>Lancer</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>40</y>
+     <x>280</x>
+     <y>28</y>
      <width>191</width>
      <height>51</height>
     </rect>
@@ -88,8 +88,8 @@
   <widget class="QSpinBox" name="Day_Box">
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>150</y>
+     <x>330</x>
+     <y>138</y>
      <width>101</width>
      <height>31</height>
     </rect>
@@ -105,7 +105,7 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>380</y>
+     <y>330</y>
      <width>351</width>
      <height>146</height>
     </rect>
@@ -419,6 +419,69 @@
     </item>
    </layout>
   </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>90</y>
+     <width>351</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Mutation Rate</string>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="title">
+       <string>Mass</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QDoubleSpinBox" name="mut_mass"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="title">
+       <string>Velocity</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QDoubleSpinBox" name="mut_velocity"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_5">
+      <property name="title">
+       <string>Memory</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
+        <widget class="QDoubleSpinBox" name="mut_memory"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_4">
+      <property name="title">
+       <string>Perception</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QDoubleSpinBox" name="mut_perception"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources/>
  <connections>
@@ -482,7 +545,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>718</x>
-     <y>258</y>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
@@ -494,11 +557,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>718</x>
-     <y>258</y>
+     <y>271</y>
     </hint>
     <hint type="destinationlabel">
-     <x>569</x>
-     <y>295</y>
+     <x>570</x>
+     <y>319</y>
     </hint>
    </hints>
   </connection>
@@ -525,8 +588,8 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>694</x>
-     <y>360</y>
+     <x>718</x>
+     <y>373</y>
     </hint>
     <hint type="destinationlabel">
      <x>628</x>
