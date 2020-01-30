@@ -187,7 +187,7 @@ class Bob:
             son.energy = self.config.ENERGY_SON
             # Fonction max pour eviter qu'un bob est une vitesse < 1
             son.velocity = max(0, self.velocity + uniform(-self.config.MUT_VELOCITY, self.config.MUT_VELOCITY))
-            son.masse = max(0, self.masse + uniform(-self.config.MUT_MASSE, self.config.MUT_MASSE))
+            son.masse = max(1, self.masse + uniform(-self.config.MUT_MASSE, self.config.MUT_MASSE))
             son.perception = max(0, self.perception + choice([-self.config.MUT_PERCEPT, 0, self.config.MUT_PERCEPT]))
             son.perception_pos = [(i, j) for i in range(-son.perception, son.perception + 1) for j in range(abs(i) - son.perception, son.perception + 1 - abs(i))]
             son.memory_points = max(0,
