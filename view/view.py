@@ -229,9 +229,9 @@ class View:
 
     def draw_Bob(self, PosX_init, PosY_init, case, cote_x, simu_x, xdec, ydec):
         # Life progress bar
-        pos_life_bar = (4, 0)
-        size_life_bar = (25, 5)
-
+        pos_life_bar = (7, 0)
+        # size_life_bar = (25, 5)
+        size_life_bar = (1.1 * xdec, 0.3 * ydec)
         # Show velocity through color
         velocity_max = -1
         velocity_color = self.gui.color_palette.get_value()
