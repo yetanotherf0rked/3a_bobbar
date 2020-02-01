@@ -2,18 +2,16 @@
 
 # Form implementation generated from reading ui file 'Settings.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.2
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName("Settings")
-        Settings.resize(556, 386)
+        Settings.resize(556, 382)
         self.gridLayout = QtWidgets.QGridLayout(Settings)
         self.gridLayout.setObjectName("gridLayout")
         self.buttonBox = QtWidgets.QDialogButtonBox(Settings)
@@ -61,12 +59,9 @@ class Ui_Settings(object):
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
-        self.layoutWidget_2 = QtWidgets.QWidget(self.tab_2)
-        self.layoutWidget_2.setGeometry(QtCore.QRect(10, 10, 152, 104))
-        self.layoutWidget_2.setObjectName("layoutWidget_2")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.layoutWidget_2)
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.pushButton_4 = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_4.setGeometry(QtCore.QRect(220, 240, 80, 23))
+        self.pushButton_4.setObjectName("pushButton_4")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
@@ -193,7 +188,7 @@ class Ui_Settings(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 524, 263))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 165, 270))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.formLayout = QtWidgets.QFormLayout(self.scrollAreaWidgetContents_2)
         self.formLayout.setObjectName("formLayout")
@@ -236,14 +231,9 @@ class Ui_Settings(object):
         self.verticalLayout_7.addLayout(self.horizontalLayout_10)
         self.tabWidget.addTab(self.tab_4, "")
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
-        self.buttonBox = QtWidgets.QDialogButtonBox(Settings)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
-        self.buttonBox.setCenterButtons(True)
-        self.buttonBox.setObjectName("buttonBox")
-        self.gridLayout.addWidget(self.buttonBox, 1, 0, 1, 1)
 
         self.retranslateUi(Settings)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.buttonBox.accepted.connect(Settings.hide)
         self.buttonBox.accepted.connect(Settings.update_Config)
         self.buttonBox.rejected.connect(Settings.hide)
@@ -251,6 +241,7 @@ class Ui_Settings(object):
         self.animationY.toggled['bool'].connect(self.pushButton_2.setDisabled)
         self.pushButton_2.clicked.connect(Settings.gshow)
         self.pushButton.clicked.connect(Settings.update_consommation_label)
+        self.pushButton_4.clicked.connect(Settings.restart)
         QtCore.QMetaObject.connectSlotsByName(Settings)
 
     def retranslateUi(self, Settings):
@@ -264,6 +255,7 @@ class Ui_Settings(object):
         self.show_Minimap.setText(_translate("Settings", "Minimap"))
         self.show_Food_ProgressBar.setText(_translate("Settings", "Food ProgressBar"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Settings", "Show"))
+        self.pushButton_4.setText(_translate("Settings", "Restart"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Settings", "Controler"))
         self.brain_label.setText(_translate("Settings", "Brain function"))
         self.brain_function0.setItemText(0, _translate("Settings", "Exponentielle"))
@@ -292,7 +284,7 @@ class Ui_Settings(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("Settings", "Bobs"))
         self.groupBox.setTitle(_translate("Settings", "mode"))
         self.animationY.setText(_translate("Settings", "Animated"))
-        self.label.setText(_translate("Settings", "Update delay (ticks)"))
+        self.label.setText(_translate("Settings", "Update rate"))
         self.animationN.setText(_translate("Settings", "Static"))
         self.pushButton_2.setText(_translate("Settings", "Show"))
         self.groupBox_3.setTitle(_translate("Settings", "Abscissa"))
@@ -306,3 +298,4 @@ class Ui_Settings(object):
         self.perc_av.setText(_translate("Settings", "Perception"))
         self.age_av.setText(_translate("Settings", "Age"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("Settings", "Figures"))
+

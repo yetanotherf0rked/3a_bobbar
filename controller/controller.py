@@ -22,13 +22,13 @@ class Controller:
         self.config = ressources.config.para
         self.world = World()
         self.file = File()
-
+        self.viewSize = None
         self.graph = Graph(animation=False)
-            
+        self.simul = simul
         self.simuBar = bar
-        self.run(self.config.affichage, False, simul)
+        self.run(self.config.affichage, self.simul)
 
-    def run(self, affichage, stats, simul=0):
+    def run(self, affichage, simul=0):
         tick = 0
         day = 0
         continuer = True
@@ -60,6 +60,8 @@ class Controller:
         
         if affichage:
             self.view = View()
+            if self.viewSize:
+                self.view.width, self.view.height = self.viewSize
         while continuer and self.world.listebob:
             wait = self.view.gui.gui_pause if affichage else False
             if not self.file.full():
@@ -100,10 +102,6 @@ class Controller:
                 sleep(0.1)
 
             if affichage:
-                
-                
-                
-
                 # Update de la fenêtre
                 if not self.view.run:
                     if not wait:
@@ -116,13 +114,15 @@ class Controller:
                                               args=(self.file.get_Current(), self.file.tick))
                     self._thread.start()
                 # Test de fin
+                if self.config.restart:
+                    continuer = False
+                    self.viewSize = self.view.width, self.view.height
 
                 if self.config.settings:
                     self.settings.show()
                     self.config.settings = False
-                    if not wait : self.view.gui.pause_button_pressed()
-
-
+                    if not wait :
+                        self.view.gui.pause_button_pressed()
                 # Boucle sur les events
                 for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
 
@@ -144,6 +144,7 @@ class Controller:
 
                     if event.type == VIDEORESIZE:
                         self.view.width, self.view.height = event.size
+                        self.viewSize = event.size
 
                     # Permet le déplacement dans la fenêtre
                     if event.type == KEYDOWN and (event.key == K_UP or event.key == K_z):
@@ -185,5 +186,11 @@ class Controller:
                 self.settings.setEnabled(True)
                 self.first = False
 
-
-
+        if self.config.restart:
+            self._thread.join()
+            pygame.display.quit()
+            self.settings.hide()
+            self.config.restart = False
+            self.world = World()
+            self.file = File()
+            self.run(self.config.affichage, self.simul)

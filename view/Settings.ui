@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>556</width>
-    <height>386</height>
+    <height>382</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -117,16 +117,18 @@
       <attribute name="title">
        <string>Controler</string>
       </attribute>
-      <widget class="QWidget" name="layoutWidget_2">
+      <widget class="QPushButton" name="pushButton_4">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>152</width>
-         <height>104</height>
+         <x>220</x>
+         <y>240</y>
+         <width>80</width>
+         <height>23</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3"/>
+       <property name="text">
+        <string>Restart</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="tab_3">
@@ -413,8 +415,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>495</width>
-            <height>229</height>
+            <width>165</width>
+            <height>270</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
@@ -513,11 +515,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>121</x>
-     <y>372</y>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel">
      <x>468</x>
-     <y>350</y>
+     <y>336</y>
     </hint>
    </hints>
   </connection>
@@ -529,11 +531,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>121</x>
-     <y>365</y>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel">
      <x>531</x>
-     <y>367</y>
+     <y>336</y>
     </hint>
    </hints>
   </connection>
@@ -545,11 +547,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>53</x>
-     <y>372</y>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel">
      <x>244</x>
-     <y>350</y>
+     <y>336</y>
     </hint>
    </hints>
   </connection>
@@ -613,7 +615,23 @@
     </hint>
     <hint type="destinationlabel">
      <x>411</x>
-     <y>389</y>
+     <y>336</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>restart()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>261</x>
+     <y>293</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>403</x>
+     <y>374</y>
     </hint>
    </hints>
   </connection>
@@ -622,5 +640,6 @@
   <slot>update_Config()</slot>
   <slot>gshow()</slot>
   <slot>update_consommation_label()</slot>
+  <slot>restart()</slot>
  </slots>
 </ui>

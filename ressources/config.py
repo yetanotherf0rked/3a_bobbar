@@ -13,6 +13,7 @@ class Config():
         self.settings = False
         self.show_Nature = True
         self.show_Food_ProgressBar = True
+        self.restart = False
 
         # Tick par jour 100
         self.TICK_DAY = 100

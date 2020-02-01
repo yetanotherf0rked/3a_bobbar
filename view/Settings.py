@@ -18,6 +18,9 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         self.initial_Config()
         self.setWindowTitle("Settings")
 
+    def restart(self):
+        self.config.restart = True
+
     def initial_Config(self):
         self.show_Minimap.setChecked(self.config.show_Minimap)
         self.show_Perception.setChecked(self.config.show_Perception)
