@@ -48,6 +48,7 @@ class View:
 
         # Chargement de la food
         self.bobImage = pygame.image.load(self.config.image_BOB).convert_alpha()
+        self.beer_image = pygame.image.load(self.config.image_EMPTY_BEER).convert_alpha()
         self.bobRedImage = pygame.image.load(self.config.image_REDBOB).convert_alpha()
         self.foodImage = pygame.image.load(self.config.image_FOOD).convert_alpha()
         tree = pygame.image.load(self.config.image_TREE).convert_alpha()
@@ -179,7 +180,6 @@ class View:
         self.dim_menu = (240, int(self.height))
         simu_x, simu_y = int((self.width - self.dim_menu[0])), int(self.height)
         self.dim_simu = (simu_x, simu_y)
-        pygame.transform.scale(self.menu_surface, self.dim_menu)
         pygame.transform.scale(self.simu_surface, self.dim_simu)
         # Simu Update
         cote_x = (simu_x / 2 - 50) * (1 + 0.1 * self.zoom)
@@ -207,8 +207,7 @@ class View:
         # self.gui.progress_bar(pos_bar_day, size_bar_day, progress_day, self.simu_surface, BEER, round=True,
         #                       radius=3)
         # Progress bar food
-        beer_image = pygame.image.load(self.config.image_EMPTY_BEER).convert_alpha()
-        progress_beer = pygame.transform.scale(beer_image, (150, 150))
+        progress_beer = pygame.transform.scale(self.beer_image, (150, 150))
         pos_bar_food = (12, 5)
         size_bar_food = (
             progress_beer.get_width() - 67, progress_beer.get_height() - 12)  # 67 and 12 are arbitrary to fit the image

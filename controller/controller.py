@@ -96,10 +96,7 @@ class Controller:
             self.world.update_listebob()
             if affichage:
                 self.file.enfile(self.world)
-                
-            else:
-                sleep(0.1)
-
+            sleep(0.001)
             if affichage:
                 # Update de la fenêtre
                 if not self.view.run:
