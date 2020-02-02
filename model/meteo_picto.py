@@ -14,5 +14,5 @@ class Meteo_picto():
         self.image_pluie = pygame.transform.scale(pluie, (100, 100))
         self.image_fog = pygame.transform.scale(fog, (100, 100))
         self.image_hail = pygame.transform.scale(grele, (100, 100))
-        self.image_sandstorm = pygame.transform.scale(sandstorm, (100, 100))
+        self.image_sandstorm = pygame.transform.scale(sandstorm, (200, 100))
         self.blit = None
