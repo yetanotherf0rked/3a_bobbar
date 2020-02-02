@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'view\MainWindow.ui'
+# Form implementation generated from reading ui file 'Mainwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -230,18 +228,6 @@ class Ui_Form(object):
         self.mut_perception.setObjectName("mut_perception")
         self.verticalLayout_6.addWidget(self.mut_perception)
         self.horizontalLayout.addWidget(self.groupBox_4)
-        self.layoutWidget2 = QtWidgets.QWidget(Form)
-        self.layoutWidget2.setGeometry(QtCore.QRect(30, 260, 208, 23))
-        self.layoutWidget2.setObjectName("layoutWidget2")
-        self.horizontalLayout1 = QtWidgets.QHBoxLayout(self.layoutWidget2)
-        self.horizontalLayout1.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout1.setObjectName("horizontalLayout1")
-        self.step_Tick_By_Tick = QtWidgets.QRadioButton(self.layoutWidget2)
-        self.step_Tick_By_Tick.setObjectName("step_Tick_By_Tick")
-        self.horizontalLayout1.addWidget(self.step_Tick_By_Tick)
-        self.step_Continue = QtWidgets.QRadioButton(self.layoutWidget2)
-        self.step_Continue.setObjectName("step_Continue")
-        self.horizontalLayout1.addWidget(self.step_Continue)
 
         self.retranslateUi(Form)
         self.pushButton.clicked.connect(Form.normal)
@@ -274,5 +260,4 @@ class Ui_Form(object):
         self.groupBox_3.setTitle(_translate("Form", "Velocity"))
         self.groupBox_5.setTitle(_translate("Form", "Memory"))
         self.groupBox_4.setTitle(_translate("Form", "Perception"))
-        self.step_Tick_By_Tick.setText(_translate("Form", "Tick by Tick"))
-        self.step_Continue.setText(_translate("Form", "Continue"))
+
