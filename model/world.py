@@ -1,6 +1,7 @@
 from random import randint,random
 import ressources.config
 from model import *
+from model.Weather import Weather
 
 
 class World:
@@ -9,6 +10,7 @@ class World:
         self.grid=[]
         self.listebob = []
         self.foodpos =[]
+        self.weather = Weather()
         if init:
             self.initWorld()
             if self.config.active_biome:

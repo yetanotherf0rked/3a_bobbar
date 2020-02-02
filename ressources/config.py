@@ -14,6 +14,7 @@ class Config():
         self.show_Nature = True
         self.show_Food_ProgressBar = True
         self.restart = False
+        self.weather = "Sun"
 
         # Tick par jour 100
         self.TICK_DAY = 100
@@ -58,6 +59,10 @@ class Config():
         self.DISTANCE_TO_BE_IN_SAME_FAMILY=2
 
         self.HISTORIQUE_MAX = 1  # nombre de jour stocker en historique si besoin
+
+        # self.WEATHER_ENERGY_COEFF = self.ENERGY_MAX * 1/(16 * self.TICK_DAY)
+        # self.WEATHER_PERCEPTION_COEFF = 1/2
+        # self.WEATHER_VELOCITY_COEFF = 2
 
         #parametres des graphiques
         self.show_graph = False
