@@ -146,6 +146,11 @@ class Controller:
                             if bob.blit and bob.blit.collidepoint((x, y)):
                                 bob.bobController.select = not bob.bobController.select
 
+
+                        if self.view.gui.zoom_position.blit.collidepoint((x,y)):
+                            self.view.gui.zoom_position.mouse_click()
+                            self.view.depx = self.view.depy = self.view.zoom = 0
+
                     # Permet le zoom
                     if event.type == KEYDOWN and event.key == K_KP_PLUS:
                         self.view.zoom += 1

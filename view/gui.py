@@ -37,8 +37,14 @@ class Gui:
         self.config = ressources.config.para
 
         #  For zoom and position
-        self.show_reset = False
-
+        self.zoom_position = Button("Reset zoom and position",
+                                    (1500,
+                                     600),
+                                    self,
+                                    COLOR_ELECTRON_BLUE,
+                                    BLACK,
+                                    (180, 40),
+                                    font_size=14)
         # Thème par défaut
         thorpy.set_theme("human")
 
@@ -368,7 +374,7 @@ class Gui:
         image = pygame.Surface(rect.size).convert_alpha()
         image.fill((0, 0, 0, 0))
         self._render_region(image, zeroed_rect, color, rad)
-        surface.blit(image, rect)
+        return surface.blit(image, rect)
 
     def _render_region(self, image, rect, color, rad):
         """Helper function for round_rect."""
@@ -382,9 +388,13 @@ class Gui:
         self.isupdate = True
 
     def draw_reset_button(self, screen):
-        self.zoom_position = Button("Reset", (screen.get_width() * 0.91, screen.get_height()*0.45),
-                                    self.reset_pressed, BEER, BLACK, (150,70), font_size=20)
+        self.zoom_position = Button("Reset zoom and position",
+                                    (screen.get_width() * 0.85,
+                                     screen.get_height() * 0.45),
+                                    self,
+                                    GREEN,
+                                    BLACK,
+                                    (180, 40),
+                                    font_size=14)
         self.zoom_position.draw(screen)
 
-    def reset_pressed(self):
-        self.reset = True

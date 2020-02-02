@@ -156,7 +156,8 @@ class View:
         if self.config.show_Food_ProgressBar:
             self.draw_ProgressBar(current_food)
 
-        if(ydec != 0 or xdec != 0 or self.zoom != 0):
+
+        if(self.depx != 0 or self.depy != 0 or self.zoom != 0):
             self.gui.draw_reset_button(self.simu_surface)
 
         # Affichage des surfaces dans la fenêtre
