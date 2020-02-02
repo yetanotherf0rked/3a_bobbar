@@ -146,10 +146,12 @@ class Controller:
                             if bob.blit and bob.blit.collidepoint((x, y)):
                                 bob.bobController.select = not bob.bobController.select
 
-
-                        if self.view.gui.zoom_position.blit.collidepoint((x,y)):
-                            self.view.gui.zoom_position.mouse_click()
-                            self.view.depx = self.view.depy = self.view.zoom = 0
+                        if(self.view.depx or self.view.depy or self.view.zoom):
+                            #  Cannot make an if c1 and c2 because zoom_position does not exist
+                            #  unless user moves or zoom the map
+                            if self.view.gui.zoom_position.blit.collidepoint((x, y)):
+                                self.view.gui.zoom_position.mouse_click()
+                                self.view.depx = self.view.depy = self.view.zoom = 0
 
                     # Permet le zoom
                     if event.type == KEYDOWN and event.key == K_KP_PLUS:
