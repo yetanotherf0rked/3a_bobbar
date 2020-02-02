@@ -16,7 +16,7 @@ class Weather:
             self.config.WEATHER_PERCEPTION_COEFF = 0
             self.config.WEATHER_VELOCITY_COEFF = 0
             self.config.weather = weather
-        if weather == "Fogue":
+        if weather == "Fog":
             self.config.WEATHER_ENERGY_COEFF = 0
             self.config.WEATHER_PERCEPTION_COEFF = 1/2
             self.config.WEATHER_VELOCITY_COEFF = 0
