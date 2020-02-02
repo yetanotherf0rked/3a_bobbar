@@ -80,14 +80,12 @@ class View:
         self.grid = world.grid
         self.listebob = world.listebob
         self.run = True
-
-
         # Initialisation of the view
         PosX_init, PosY_init, cote_x, cote_y, simu_x, xdec, ydec = self.init_view(tick)
-        if self.config.weather=="Sun":
-            print("bonjour")
+        #Affichage du picto meteo
 
-            self.sun.blit = self.simu_surface.blit(self.sun.image_sun,(self.dim_simu[0]/2,0) )
+        if self.config.weather=="Sun":
+            self.sun.blit = self.simu_surface.blit(self.sun.image,(self.dim_simu[0]/2,0) )
 
         # Update et affichage Soleil
         self.soleil.updateListeX(cote_x)
