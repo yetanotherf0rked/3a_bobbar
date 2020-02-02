@@ -62,24 +62,27 @@ class Controller:
             self.view = View()
             if self.viewSize:
                 self.view.width, self.view.height = self.viewSize
+        else:
+            self.settings.close()
+            continuer = False
         while continuer and self.world.listebob:
             wait = self.view.gui.gui_pause if affichage else False
-            if not self.file.full():
-                # Comptage des ticks/Days
-                if tick % self.config.TICK_DAY == 0:
-                    # Suppression de la nourriture restante
-                    self.world.removefood()
-                    day += 1
-                    if affichage:
-                        for s in self.view.gui.sliders:
-                            eval(
-                                "print(sliders_Config.get_info(s),str(self.config.%s).rjust(40-len(sliders_Config.get_info(s))))" % s)
-                        print()
+            if self.file.full():
+                self._thread.join()
+            # Comptage des ticks/Days
+            if tick % self.config.TICK_DAY == 0:
+                # Suppression de la nourriture restante
+                self.world.removefood()
+                day += 1
+                if affichage:
+                    for s in self.view.gui.sliders:
+                        eval(
+                            "print(sliders_Config.get_info(s),str(self.config.%s).rjust(40-len(sliders_Config.get_info(s))))" % s)
+                    print()
 
-                    # Spawn de la nouvelle food
-                    self.world.spawnfood()
-                tick += 1
-        
+                # Spawn de la nouvelle food
+                self.world.spawnfood()
+            tick += 1
             if self.config.g_updated :
                 self.config.g_updated =False
                 self.graph.update_parameter(self.config.g_animation,self.config.g_parameters)
@@ -89,7 +92,7 @@ class Controller:
                 #self.graph.set_animation(False)
                 self.graph.update_parameter(False,self.config.g_parameters)
                 self.graph.plot()
-               
+
                 self.config.show_graph=False
 
             self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
@@ -181,7 +184,13 @@ class Controller:
                 self.settings.hide()
                 self.settings.setEnabled(True)
                 self.first = False
-
+        if self.config.affichage:
+            pygame.display.quit()
+        self.graph.hide()
+        self.graph.animation = False
+        self.graph.set_parameter(x='days', pop=True, age=True, velocity=True, perception=True, memory=True, mass=True,
+                                 rows=2, collumns=3)
+        self.graph.plot()
         if self.config.restart:
             self._thread.join()
             pygame.display.quit()

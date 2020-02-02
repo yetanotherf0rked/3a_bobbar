@@ -18,10 +18,10 @@ class Config():
 
         # Tick par jour 100
         self.TICK_DAY = 100
-        # Population initiale 200
+        # Population initiale 100
         self.NB_POP = 100
         # Taille de la carte 100
-        self.TAILLE = 40
+        self.TAILLE = 100
         # Nourriture sur la carte 200
         self.NB_FOOD = 200
         # Energy par food 100
