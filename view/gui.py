@@ -4,6 +4,7 @@ import thorpy
 import ressources.config
 from ressources.sliders import *
 from view.debug import *
+from view.button import Button
 
 
 class Gui:
@@ -34,6 +35,10 @@ class Gui:
     def __init__(self, menu_surface):
         self.isupdate = False
         self.config = ressources.config.para
+
+        #  For zoom and position
+        self.show_reset = False
+
         # Thème par défaut
         thorpy.set_theme("human")
 
@@ -312,16 +317,16 @@ class Gui:
     def progress_bar(self, pos, size, progress, screen, bar_color, bg=False, bg_color=BLACK, vertical=False,
                      reverse=False, round=False, radius=20):
         """
-        Draws a progress bar /!/ This function works for the project but not all cases are treated
-        pos sets position of progress bar
-        size sets size of progress bar
-        progress is the current progress, between 0 and 1
-        screen is the screen where the bar should be drawn
-        bg is background, if is necessary
-        vertical is wether you want vertical or horizontal bar
-        reverse make the bar drawing backward (100% -> 0%)
-        round sets if you want round rectangles or not
-        radius is the radius of angles if round is True
+        Draws a progress bar /!\ This function works for the project but not all cases are treated
+        :param pos sets position of progress bar
+        :param size sets size of progress bar
+        :param progress is the current progress, between 0 and 1
+        :param screen is the screen where the bar should be drawn
+        :param bg is background, if is necessary
+        :param vertical is wether you want vertical or horizontal bar
+        :param reverse make the bar drawing backward (100% -> 0%)
+        :param round sets if you want round rectangles or not
+        :param radius is the radius of angles if round is True
         """
         if progress < 0:
             progress = 0
@@ -349,7 +354,6 @@ class Gui:
             pygame.draw.rect(screen, bar_color, pygame.Rect(inner_pos, inner_size))
 
     # The 2 functions below come from an existing project
-
     def round_rect(self, surface, rect, color, rad=20):
         """
         Draw a rect with rounded corners to surface.  Argument rad can be specified
@@ -376,3 +380,11 @@ class Gui:
 
     def react_slider(self,event):
         self.isupdate = True
+
+    def draw_reset_button(self, screen):
+        self.zoom_position = Button("Reset", (screen.get_width() * 0.91, screen.get_height()*0.45),
+                                    self.reset_pressed, BEER, BLACK, (150,70), font_size=20)
+        self.zoom_position.draw(screen)
+
+    def reset_pressed(self):
+        self.reset = True

@@ -18,7 +18,9 @@ class View:
         # 2 Attributs permettant de se déplacer dans la fenêtre
         self.depx = 0
         self.depy = 0
+
         self.zoom = 0
+        self.velocity_max = -1
 
     def initView(self):
         # Initialisation de pygame
@@ -154,6 +156,9 @@ class View:
         if self.config.show_Food_ProgressBar:
             self.draw_ProgressBar(current_food)
 
+        if(ydec != 0 or xdec != 0 or self.zoom != 0):
+            self.gui.draw_reset_button(self.simu_surface)
+
         # Affichage des surfaces dans la fenêtre
         self.fenetre.blit(self.simu_surface, (self.dim_menu[0], 0))
         self.fenetre.blit(self.menu_surface, (0, 0))
@@ -233,7 +238,6 @@ class View:
         # size_life_bar = (25, 5)
         size_life_bar = (1.1 * xdec, 0.3 * ydec)
         # Show velocity through color
-        velocity_max = -1
         velocity_color = self.gui.color_palette.get_value()
 
         # Affichage des Bobs
@@ -248,8 +252,8 @@ class View:
             size_Y = int(size_X*bob.masse**2 + size_X/2 *(1- bob.masse))
 
             #  Get max velocity for showing it
-            if bob.velocity > velocity_max:
-                velocity_max = bob.velocity
+            if bob.velocity > self.velocity_max:
+                self.velocity_max = bob.velocity
 
             if bob.bobController.select:
                 self.draw_Stats(bob, simu_x)
@@ -258,7 +262,7 @@ class View:
                 perso = pygame.transform.scale(bob.image, (size_X,size_Y))
             PosX, PosY = Pos[i]
 
-            velocity_percentage = bob.velocity / velocity_max
+            velocity_percentage = (bob.velocity / self.velocity_max)
             bob_velocity_color = (velocity_percentage * velocity_color[0],
                                   velocity_percentage * velocity_color[1],
                                   velocity_percentage * velocity_color[2])
