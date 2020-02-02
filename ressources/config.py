@@ -58,6 +58,9 @@ class Config():
 
         self.HISTORIQUE_MAX = 1  # nombre de jour stocker en historique si besoin
 
+        self.move_consommation = lambda velocity, masse: velocity ** 2 * masse
+        self.brain_consommation = lambda perception, memory_points: perception / 5 + memory_points / 5
+
         #parametres des graphiques
         self.show_graph = False
         self.g_animation = False

@@ -58,31 +58,31 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         self.config.brain_consommation = lambda perception, memory_points: brain_main_operation(perception_transform(perception), memory_points_transform(memory_points))
 
 
-        c0 = str(self.brain_coeff0.value())
-        c1 = str(self.brain_coeff1.value())
-        c2 = str(self.brain_coeff2.value())
-        c3 = str(self.brain_coeff3.value())
+        brain_c0 = str(self.brain_coeff0.value())
+        brain_c1 = str(self.brain_coeff1.value())
+        brain_c2 = str(self.brain_coeff2.value())
+        brain_c3 = str(self.brain_coeff3.value())
 
         brain_main = ["+", "-", "*", "/"][self.brain_function1.currentIndex()]
 
-        f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.brain_function0.currentIndex()].format("perception", c1)
+        brain_f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.brain_function0.currentIndex()].format("perception", brain_c1)
 
-        f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.brain_function2.currentIndex()].format("memory_points", c3)
+        brain_f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.brain_function2.currentIndex()].format("memory_points", brain_c3)
 
-        self.brain_label.setText("bob.energy_brain = {}*{} {} {}*{}".format(c0, f0, brain_main, c2, f2))
+        self.brain_label.setText("bob.energy_brain = {}*{} {} {}*{}".format(brain_c0, brain_f0, brain_main, brain_c2, brain_f2))
 
-        c0 = str(self.move_coeff0.value())
-        c1 = str(self.move_coeff1.value())
-        c2 = str(self.move_coeff2.value())
-        c3 = str(self.move_coeff3.value())
+        move_c0 = str(self.move_coeff0.value())
+        move_c1 = str(self.move_coeff1.value())
+        move_c2 = str(self.move_coeff2.value())
+        move_c3 = str(self.move_coeff3.value())
 
         move_main = ["+", "-", "*", "/"][self.move_function1.currentIndex()]
 
-        f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function0.currentIndex()].format("perception", c1)
+        move_f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function0.currentIndex()].format("perception", move_c1)
 
-        f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function2.currentIndex()].format("memory_points", c3)
+        move_f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function2.currentIndex()].format("memory_points", move_c3)
 
-        self.move_label.setText("bob.energy_move = {}*{} {} {}*{}".format(c0, f0, move_main, c2, f2))
+        self.move_label.setText("bob.energy_move = {}*{} {} {}*{}".format(move_c0, move_f0, move_main, move_c2, move_f2))
 
 
     def update_Config(self):
