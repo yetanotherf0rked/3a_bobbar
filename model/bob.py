@@ -7,19 +7,9 @@ from model.case import *
 from model.utils import *
 
 
-def new_id_generator():
-    i = 0
-    while 1:
-        yield i
-        i+=1
-
-new_id = new_id_generator()
-
-
 class Bob:
     def __init__(self, pos):
         self.config = ressources.config.para
-        self.id = next(new_id)
         self.x, self.y = pos  # Case où se trouve le Bob
         self.energy = self.config.ENERGY_SPAWN
         self.velocity = 1.0
