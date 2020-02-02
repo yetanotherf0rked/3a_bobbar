@@ -97,6 +97,9 @@ class Config():
         self.image_EMPTY_BEER = "ressources/images/empty_beer_icon.png"
         self.image_TREE = "ressources/images/tree2.png"
         self.image_GRASS = "ressources/images/grass.png"
-
-
+        self.image_GRELE = "ressources/images/grele.png"
+        self.image_SANDSTORM = "ressources/images/tempête.png"
+        self.image_SUN = "ressources/images/soleil.png"
+        self.image_PLUIE = "ressources/images/meteopluie.jpg"
+        self.image_FOG = "ressources/images/fog.png"
 para = Config()

@@ -1,9 +1,11 @@
-import ressources.config
+import pygame
 
+import ressources.config
 class Weather:
 
     def __init__(self):
         self.config = ressources.config.para
+
 
     def update(self, weather):
         if weather == "Sandstorm":

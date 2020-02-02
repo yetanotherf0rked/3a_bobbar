@@ -58,6 +58,12 @@ class View:
         # Création d'un soleil
         self.soleil = Star()
 
+        # Création des météos
+        self.sun = Meteo_picto()
+        self.pluie = Meteo_picto()
+        self.fog = Meteo_picto()
+        self.sandstorm = Meteo_picto()
+        self.hail = Meteo_picto()
     def draw_Stats(self, bob, xmax):
         # Initialisation text
         font = pygame.font.Font('freesansbold.ttf', 16)
@@ -74,6 +80,10 @@ class View:
         self.grid = world.grid
         self.listebob = world.listebob
         self.run = True
+        if world.weather=="Sun":
+
+            self.sun.blit = self.simu_surface.blit(self.sun.image,(self.dim_simu[0]/2,0) )
+
 
         # Initialisation of the view
         PosX_init, PosY_init, cote_x, cote_y, simu_x, xdec, ydec = self.init_view(tick)
