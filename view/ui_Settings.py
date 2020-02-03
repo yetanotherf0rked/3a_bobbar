@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'Settings.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Settings(object):
     def setupUi(self, Settings):
@@ -183,7 +185,7 @@ class Ui_Settings(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 165, 270))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 503, 284))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.formLayout = QtWidgets.QFormLayout(self.scrollAreaWidgetContents_2)
         self.formLayout.setObjectName("formLayout")
@@ -334,6 +336,5 @@ class Ui_Settings(object):
         self.Sun.setText(_translate("Settings", "Sun"))
         self.Hail.setText(_translate("Settings", "Hail"))
         self.Rain.setText(_translate("Settings", "Rain"))
-        self.Fogue.setText(_translate("Settings", "Fogue"))
+        self.Fogue.setText(_translate("Settings", "Fog"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("Settings", "Biome/Meteo"))
-

@@ -89,7 +89,7 @@ class View:
             self.meteo.blit = self.simu_surface.blit(self.meteo.image_sandstorm, (self.dim_simu[0] / 2.5, 0))
         if self.config.weather == "Rain":
             self.meteo.blit = self.simu_surface.blit(self.meteo.image_rain, (self.dim_simu[0] / 2.3, 0))
-        if self.config.weather == "Fog":
+        if self.config.weather == "Fogue":
             self.meteo.blit = self.simu_surface.blit(self.meteo.image_fog, (self.dim_simu[0] / 2.3, 0))
         # Update et affichage Soleil
         self.soleil.updateListeX(cote_x)
