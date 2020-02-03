@@ -78,9 +78,9 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
 
         move_main = ["+", "-", "*", "/"][self.move_function1.currentIndex()]
 
-        move_f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function0.currentIndex()].format("perception", move_c1)
+        move_f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function0.currentIndex()].format("velocity", move_c1)
 
-        move_f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function2.currentIndex()].format("memory_points", move_c3)
+        move_f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function2.currentIndex()].format("masse", move_c3)
 
         self.move_label.setText("bob.energy_move = {}*{} {} {}*{}".format(move_c0, move_f0, move_main, move_c2, move_f2))
 
