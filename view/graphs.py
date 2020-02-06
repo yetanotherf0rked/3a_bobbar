@@ -6,7 +6,7 @@ matplotlib.use('TkAgg')
 
 from view.debug import update_stats_graphs
 
-matplotlib.style.use('dark_background')
+# matplotlib.style.use('dark_background')
 
 class Graph():
 

@@ -101,7 +101,8 @@ class View:
         """Obligé de séparaer cette boucle de l'affichage du sol car elle change les cases."""
         current_food = 0
         for bob in self.listebob:
-            bob.see(self.grid, show=True)
+            if (bob.bobController.select or self.config.show_Perception):
+                bob.see(self.grid, show=True)
 
         # # Affichages des lignes extérieures du haut
         # pygame.draw.line(self.simu_surface, (255, 155, 65),

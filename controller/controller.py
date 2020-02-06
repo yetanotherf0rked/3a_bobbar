@@ -67,38 +67,37 @@ class Controller:
             continuer = False
         while continuer and self.world.listebob:
             wait = self.view.gui.gui_pause if affichage else False
-            if self.file.full():
-                self._thread.join()
-            # Comptage des ticks/Days
-            if tick % self.config.TICK_DAY == 0:
-                # Suppression de la nourriture restante
-                self.world.removefood()
-                day += 1
+            if not self.file.full():
+                # Comptage des ticks/Days
+                if tick % self.config.TICK_DAY == 0:
+                    # Suppression de la nourriture restante
+                    self.world.removefood()
+                    day += 1
+                    if affichage:
+                        for s in self.view.gui.sliders:
+                            eval(
+                                "print(sliders_Config.get_info(s),str(self.config.%s).rjust(40-len(sliders_Config.get_info(s))))" % s)
+                        print()
+
+                    # Spawn de la nouvelle food
+                    self.world.spawnfood()
+                tick += 1
+                if self.config.g_updated :
+                    self.config.g_updated =False
+                    self.graph.update_parameter(self.config.g_animation,self.config.g_parameters)
+                if self.config.g_animation and tick%self.config.g_update_rate==0:
+                    self.graph.anim()
+                if self.config.show_graph :
+                    #self.graph.set_animation(False)
+                    self.graph.update_parameter(False,self.config.g_parameters)
+                    self.graph.plot()
+
+                    self.config.show_graph=False
+
+                self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
+                self.world.update_listebob()
                 if affichage:
-                    for s in self.view.gui.sliders:
-                        eval(
-                            "print(sliders_Config.get_info(s),str(self.config.%s).rjust(40-len(sliders_Config.get_info(s))))" % s)
-                    print()
-
-                # Spawn de la nouvelle food
-                self.world.spawnfood()
-            tick += 1
-            if self.config.g_updated :
-                self.config.g_updated =False
-                self.graph.update_parameter(self.config.g_animation,self.config.g_parameters)
-            if self.config.g_animation and tick%self.config.g_update_rate==0:
-                self.graph.anim()
-            if self.config.show_graph :
-                #self.graph.set_animation(False)
-                self.graph.update_parameter(False,self.config.g_parameters)
-                self.graph.plot()
-
-                self.config.show_graph=False
-
-            self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
-            self.world.update_listebob()
-            if affichage:
-                self.file.enfile(self.world)
+                    self.file.enfile(self.world)
             sleep(0.001)
             if affichage:
                 # Update de la fenêtre

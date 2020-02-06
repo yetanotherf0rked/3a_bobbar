@@ -280,7 +280,7 @@ class Bob:
             # génère toutes les couples (dx, dy) dans un cercle de norme radius en distance euclidienne et de centre (0, 0)
             if 0 <= self.x + dx < self.config.TAILLE and 0 <= self.y + dy < self.config.TAILLE:  # si la position qu'on regarde est bien dans la grille
                 case = grille[self.x + dx][self.y + dy]
-                if show and (self.bobController.select or self.config.show_Perception):
+                if show :
                     case.type = "Perception"
                     case.nbPerception += 1
                     continue
