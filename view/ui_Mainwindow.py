@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'view\Mainwindow.ui'
+# Form implementation generated from reading ui file 'Mainwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(813, 590)
+        Form.resize(966, 711)
         self.verticalLayout_20 = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout_20.setObjectName("verticalLayout_20")
         self.verticalLayout_19 = QtWidgets.QVBoxLayout()
@@ -33,7 +31,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 795, 493))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 942, 586))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_17.setObjectName("verticalLayout_17")
@@ -325,6 +323,7 @@ class Ui_Form(object):
         self.NB_FOOD.valueChanged['int'].connect(self.horizontalSlider_3.setValue)
         self.TICK_DAY.valueChanged['int'].connect(self.TICK_DAY_S.setValue)
         self.TICK_DAY_S.valueChanged['int'].connect(self.TICK_DAY.setValue)
+        self.Day_Box.valueChanged['int'].connect(Form.update_dayBox)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -349,3 +348,4 @@ class Ui_Form(object):
         self.label_4.setText(_translate("Form", "Population   "))
         self.label_3.setText(_translate("Form", "Taille            "))
         self.pushButton.setText(_translate("Form", "Lancer"))
+
