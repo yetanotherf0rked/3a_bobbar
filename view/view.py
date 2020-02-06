@@ -120,6 +120,10 @@ class View:
         """Obligé de séparaer cette boucle de l'affichage du sol car elle change les cases."""
         current_food = 0
         for bob in self.listebob:
+            if bob.velocity > self.velocity_max:
+                self.velocity_max = bob.velocity
+            if bob.velocity < self.velocity_min:
+                self.velocity_min = bob.velocity
             if (bob.bobController.select or self.config.show_Perception):
                 bob.see(self.grid, show=True)
 
@@ -270,25 +274,20 @@ class View:
             size_X = max(1,int(1.5 * xdec - 7.5))
             size_Y = int(size_X*bob.masse**2 + size_X/2 *(1- bob.masse))
 
-            #  Get max and min velocity for showing it
-            if bob.velocity > self.velocity_max:
-                self.velocity_max = bob.velocity
-            if bob.velocity < self.velocity_min:
-                self.velocity_min = bob.velocity
-
             if bob.bobController.select:
                 self.draw_Stats(bob, simu_x)
                 perso = pygame.transform.scale(self.bobRedImage, (size_X,size_Y))
             else:
                 perso = pygame.transform.scale(self.bobImage, (size_X,size_Y))
             PosX, PosY = Pos[i]
-
-            velocity_percentage = (bob.velocity / self.velocity_max)
+            if self.velocity_min == self.velocity_max:
+                velocity_percentage = 1
+            else:
+                velocity_percentage = (bob.velocity - self.velocity_min)/((self.velocity_max - self.velocity_min)*255)
             for i in range(0,9):
                 interval = [i,i+2]
                 if interval[0]*0.1 < velocity_percentage < interval[1]*0.1:
                     velocity_percentage = interval[1]*0.1
-
             bob_velocity_color = (velocity_percentage * velocity_color[0],
                                   velocity_percentage * velocity_color[1],
                                   velocity_percentage * velocity_color[2])
