@@ -50,66 +50,75 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         elif  self.config.weather == "Rain":
             self.Rain.setChecked(True)
 
+    def masse(self):
+        if self.tab_7.isHidden():
+            self.move_lineEdit.setText(self.move_lineEdit.text()+"masse")
+            self.move_lineEdit.setFocus()
+        else:
+            self.brain_lineEdit.setText(self.brain_lineEdit.text()+"masse")
+            self.brain_lineEdit.setFocus()
+
+    def velocity(self):
+        if self.tab_7.isHidden():
+            self.move_lineEdit.setText(self.move_lineEdit.text()+"velocity")
+            self.move_lineEdit.setFocus()
+        else:
+            self.brain_lineEdit.setText(self.brain_lineEdit.text()+"velocity")
+            self.brain_lineEdit.setFocus()
+
+    def perception(self):
+        if self.tab_7.isHidden():
+            self.move_lineEdit.setText(self.move_lineEdit.text()+"perception")
+            self.move_lineEdit.setFocus()
+        else:
+            self.brain_lineEdit.setText(self.brain_lineEdit.text()+"perception")
+
+    def memory(self):
+        if self.tab_7.isHidden():
+            self.move_lineEdit.setText(self.move_lineEdit.text()+"memory")
+            self.move_lineEdit.setFocus()
+        else:
+            self.brain_lineEdit.setText(self.brain_lineEdit.text()+"memory")
+            self.brain_lineEdit.setFocus()
+
+    def sqrt_button(self):
+        if self.tab_7.isHidden():
+            self.move_lineEdit.setText(self.move_lineEdit.text()+"sqrt()")
+            self.move_lineEdit.setFocus()
+        else:
+            self.brain_lineEdit.setText(self.brain_lineEdit.text()+"sqrt()")
+            self.brain_lineEdit.setFocus()
+
+    def exp_button(self):
+        if self.tab_7.isHidden():
+            self.move_lineEdit.setText(self.move_lineEdit.text()+"exp()")
+            self.move_lineEdit.setFocus()
+        else:
+            self.brain_lineEdit.setText(self.brain_lineEdit.text()+"exp()")
+            self.brain_lineEdit.setFocus()
+
+    def pow_button(self):
+        if self.tab_7.isHidden():
+            self.move_lineEdit.setText(self.move_lineEdit.text()+"pow()")
+            self.move_lineEdit.setFocus()
+        else:
+            self.brain_lineEdit.setText(self.brain_lineEdit.text()+"pow()")
+            self.brain_lineEdit.setFocus()
+
+    def log_button(self):
+        if self.tab_7.isHidden():
+            self.move_lineEdit.setText(self.move_lineEdit.text()+"log()")
+            self.move_lineEdit.setFocus()
+        else:
+            self.brain_lineEdit.setText(self.brain_lineEdit.text()+"log()")
+            self.brain_lineEdit.setFocus()
 
     def update_consommation_label(self):
-        add = lambda x, y: x+y
-        sou = lambda x, y: x-y
-        mul = lambda x, y: x*y
-        div = lambda x, y: x/y
-
-        # Update de la fonction de consommation de l'énergie lors du mouvement
-
-        velocity_function = [lambda x,y: exp(x*y), lambda x,y:log(abs(x*y) + 1), pow][self.move_function0.currentIndex()]
-        velocity_transform = lambda x: self.move_coeff0.value()*velocity_function(x, self.move_coeff1.value())
-
-        move_main_operation = [add, sou, mul, div][self.move_function1.currentIndex()]
-
-        mass_function = [lambda x,y: exp(x*y), lambda x,y:log(abs(x*y) + 1), pow][self.move_function2.currentIndex()]
-        mass_transform = lambda x: self.move_coeff2.value()*mass_function(x, self.move_coeff3.value())
-
-        self.config.move_consommation = lambda velocity, mass: move_main_operation(velocity_transform(velocity), mass_transform(mass))
-
-        # Update de la fonction de consommation de l'énergie lors de l'utilisation du cerveau
-
-        perception_function = [lambda x,y: exp(x*y), lambda x,y:log(abs(x*y) + 1), pow][self.brain_function0.currentIndex()]
-        perception_transform = lambda x: self.brain_coeff0.value()*perception_function(x, self.brain_coeff1.value())
-
-        brain_main_operation = [add, sou, mul, div][self.brain_function1.currentIndex()]
-
-        memory_points_function = [lambda x,y: exp(x*y), lambda x,y:log(abs(x*y) + 1), pow][self.brain_function2.currentIndex()]
-        memory_points_transform = lambda x: self.brain_coeff2.value()*memory_points_function(x, self.brain_coeff3.value())
-
-        self.config.brain_consommation = lambda perception, memory_points: brain_main_operation(perception_transform(perception), memory_points_transform(memory_points))
-
-
-        brain_c0 = str(self.brain_coeff0.value())
-        brain_c1 = str(self.brain_coeff1.value())
-        brain_c2 = str(self.brain_coeff2.value())
-        brain_c3 = str(self.brain_coeff3.value())
-
-        brain_main = ["+", "-", "*", "/"][self.brain_function1.currentIndex()]
-
-        brain_f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.brain_function0.currentIndex()].format("perception", brain_c1)
-
-        brain_f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.brain_function2.currentIndex()].format("memory_points", brain_c3)
-
-        self.brain_label.setText("bob.energy_brain = {}*{} {} {}*{}".format(brain_c0, brain_f0, brain_main, brain_c2, brain_f2))
-
-        move_c0 = str(self.move_coeff0.value())
-        move_c1 = str(self.move_coeff1.value())
-        move_c2 = str(self.move_coeff2.value())
-        move_c3 = str(self.move_coeff3.value())
-
-        move_main = ["+", "-", "*", "/"][self.move_function1.currentIndex()]
-
-        move_f0 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function0.currentIndex()].format("velocity", move_c1)
-
-        move_f2 = ["exp({}*{})", "log(1 + |{}*{}|)", "{}^{}"][self.move_function2.currentIndex()].format("masse", move_c3)
-
-        self.move_label.setText("bob.energy_move = {}*{} {} {}*{}".format(move_c0, move_f0, move_main, move_c2, move_f2))
-
+        if self.tab_7.isHidden():
+            exec("self.config.move_consommation = lambda velocity, masse:" + self.move_lineEdit.text())
+        else:
+            exec("self.config.brain_consommation = lambda perception, memory:" + self.brain_lineEdit.text())
         self.config.change_consommation = True
-
 
 
     def update_Config(self):

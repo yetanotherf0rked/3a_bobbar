@@ -184,7 +184,7 @@
        <item row="0" column="0">
         <widget class="QTabWidget" name="tabWidget_2">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_7">
           <attribute name="title">
@@ -666,12 +666,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>496</x>
-     <y>96</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>372</x>
-     <y>98</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -682,12 +682,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>72</x>
-     <y>96</y>
+     <x>106</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>612</x>
-     <y>97</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -698,8 +698,8 @@
    <slot>gshow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>612</x>
-     <y>97</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
      <x>448</x>
@@ -723,11 +723,163 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_17</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>masse()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>643</x>
+     <y>351</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_16</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>velocity()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>68</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>2</x>
+     <y>301</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_9</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>log_button()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>477</x>
+     <y>388</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>645</x>
+     <y>403</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_6</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>sqrt_button()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>411</x>
+     <y>414</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>644</x>
+     <y>458</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>exp_button()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>385</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>645</x>
+     <y>307</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>pow_button()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>236</x>
+     <y>414</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>642</x>
+     <y>511</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_7</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>memory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>469</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>641</x>
+     <y>241</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_8</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>perception()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>183</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>267</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>update_consommation_label()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>322</x>
+     <y>470</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>642</x>
+     <y>447</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>update_Config()</slot>
   <slot>gshow()</slot>
   <slot>update_consommation_label()</slot>
   <slot>restart()</slot>
+  <slot>masse()</slot>
+  <slot>velocity()</slot>
+  <slot>log_button()</slot>
+  <slot>exp_button()</slot>
+  <slot>pow_button()</slot>
+  <slot>sqrt_button()</slot>
+  <slot>memory()</slot>
+  <slot>perception()</slot>
  </slots>
 </ui>

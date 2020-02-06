@@ -261,7 +261,7 @@ class Ui_Settings(object):
 
         self.retranslateUi(Settings)
         self.tabWidget.setCurrentIndex(2)
-        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(0)
         self.buttonBox.accepted.connect(Settings.hide)
         self.buttonBox.accepted.connect(Settings.update_Config)
         self.buttonBox.rejected.connect(Settings.hide)
@@ -269,6 +269,15 @@ class Ui_Settings(object):
         self.animationY.toggled['bool'].connect(self.pushButton_2.setDisabled)
         self.pushButton_2.clicked.connect(Settings.gshow)
         self.pushButton_4.clicked.connect(Settings.restart)
+        self.pushButton_17.clicked.connect(Settings.masse)
+        self.pushButton_16.clicked.connect(Settings.velocity)
+        self.pushButton_9.clicked.connect(Settings.log_button)
+        self.pushButton_6.clicked.connect(Settings.sqrt_button)
+        self.pushButton_3.clicked.connect(Settings.exp_button)
+        self.pushButton_5.clicked.connect(Settings.pow_button)
+        self.pushButton_7.clicked.connect(Settings.memory)
+        self.pushButton_8.clicked.connect(Settings.perception)
+        self.pushButton.clicked.connect(Settings.update_consommation_label)
         QtCore.QMetaObject.connectSlotsByName(Settings)
 
     def retranslateUi(self, Settings):
