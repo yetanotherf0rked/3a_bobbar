@@ -1,5 +1,6 @@
 import ressources.config
 
+""" Méthodes utilisées pour le calcul de statistiques. Utilisées par gui.py et graphs.py"""
 
 def velocity_stat(pop):
     if len(pop):
@@ -37,7 +38,7 @@ def total_food(grille):
 
 def init_stats():
     """
-    initialise les noms des statistiques à afficher sur l'interface GUI
+    envoie les noms des statistiques à afficher à l'interface GUI
     Les deux premières valeurs sont obligatoirement Day et Tick
     :return: liste de strings contenant les labels des statistiques
     """

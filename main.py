@@ -6,7 +6,7 @@ import qdarkstyle
 
 from view.Mainwindow import MainWindow
 
-# Affiche la fenêtre au centre
+# To center the window
 os.environ["SDL_VIDEO_CENTERED"] = "1"
 
 app = QApplication(sys.argv)

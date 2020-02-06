@@ -6,7 +6,7 @@ import matplotlib.animation as animation
 import matplotlib
 matplotlib.use('TkAgg')
 
-from view.debug import update_stats_graphs
+from view.statutils import update_stats_graphs
 
 matplotlib.style.use('dark_background')
 
