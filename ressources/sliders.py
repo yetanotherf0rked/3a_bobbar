@@ -71,15 +71,24 @@ class Sliders:
         self.make("ENERGY_SON", 25, config.para.ENERGY_SON, 75, info="Son Energy")
 
     def make(self, name, min, init, max, type=int, show=True, info=""):
-        """Initialise un paramètre
-             type = int ou float
-             show = True génère un slider pour le paramètre
-                  = False crée un paramètre mais ne génère pas de slider dans l'interface gui"""
+        """Crée un paramètre et l'ajoute au dictionnaire
+                :param name: string contenant le nom de la variable à mettre à jour (voir config.py)
+
+                :param min: valeur minimale (int ou float)
+                :param init: valeur initiale (int ou float)
+                :param max: valeur maximale (int ou float)
+                :param type: int ou float
+                :param show: True pour afficher le slider, False pour cacher le slider
+                :param info: string contenant le label à afficher au-dessus du slider
+                """
         self.default[name] = (min, init, max, type, show, info)
 
     def get_info(self, name):
-        """Retourne la valeur du paramètre dans Actual
-            Exemple : bob.energy = parameters.get("Son Energy") renvoie la valeur actuelle du slider Son Energy"""
+        """
+        Retourne le nom de la variable contenant le paramètre
+
+        :param name: string contenant le nom de la variable
+        """
         if self.default[name][-1] != "":
             return self.default[name][-1]
         else:

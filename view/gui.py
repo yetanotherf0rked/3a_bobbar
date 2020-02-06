@@ -7,12 +7,12 @@ from view.debug import *
 
 
 class Gui:
-    """ Gui : initialise l'interface utilisateur
+    """ Interface utilisateur
         Les différents éléments sont stockés dans des objets thorpy.Box
 
         Hiérarchie des boxs :
 
-        --- Box: box prinxcipale self.main_box (the father of all the boxes)
+        --- Box: box principale self.main_box (the father of all the boxes)
         ------ Box: Box Titre Stats
         --------- Texte: Titre Stats
         ------ Box: box des stats self.stats_box. Pour tous les deux stats :
@@ -27,12 +27,20 @@ class Gui:
         --------- Texte: Titre du paramètre
         --------- Slider.
         ...
-        ------ Boutton  Quitter
-        ------ Boutton Pause
+        ------ Boutons
+
+        Tous ces éléments sont stockés dans un objet thorpy.Menu. La méthode thorpy.Menu.update() met à jour
+        récursivement tous les éléments du menu.
     """
 
+
     def __init__(self, menu_surface):
+        """
+        Initialise la GUI
+        :param menu_surface: surface support de la GUI, déclarée dans la view
+        """
         self.isupdate = False
+        # On importe les paramètres de config.py
         self.config = ressources.config.para
         # Thème par défaut
         thorpy.set_theme("human")
@@ -63,7 +71,7 @@ class Gui:
         img = thorpy.Image(path=self.config.image_LOGO)
         self.elements.append(img)
 
-        # On génère la box des stats
+        # On génère la box des statistiques
         self.init_stats_box()
 
         # On génère pour chaque paramètre son slider associé
@@ -102,7 +110,10 @@ class Gui:
         self.menu = thorpy.Menu(self.main_box)
 
     def update(self, stats):
-        """update : met à jour les paramètres et les visuels à chaque tick"""
+        """
+            Met à jour : les paramètres, les statistiques, l'affichage de la GUI.
+            :param stats: liste contenant les nouvelles valeurs des statistiques
+        """
         if self.isupdate:
             self.update_values()  # pour les paramètres
             self.isupdate = False
@@ -112,7 +123,7 @@ class Gui:
 
     def init_stats_box(self):
         """Initialise la box d'affichage des stats
-        Dépend du debug.py"""
+        Dépend de debug.py"""
 
         # Titre du Menu Statistics
         thorpy.set_theme("classic")
@@ -155,8 +166,12 @@ class Gui:
         self.elements.append(self.stats_box)
 
     def update_stats_box(self, stats):
-        """"Met à jour l'affichage des stats
-        Dépend de debug.py"""
+        """
+        Met à jour l'affichage des stats
+        Dépend de debug.py
+
+        :param stats: liste contenant les nouvelles valeurs des statistiques
+        """
 
         # On génère les éléments textuels avec les nouvelles valeurs
         for k in range(len(stats)):
@@ -263,20 +278,31 @@ class Gui:
             element.set_main_color((9, 132, 227, 100))
 
     def set_font_style(self, element, font_color, font_size, font):
-        """Prend en argument un élément textuel et lui affecte une police (str),
-        une couleur ((R,G,B)) et une taille (int)"""
+        """
+        Prend en argument un élément textuel et lui affecte une police,
+        une couleur ((R,G,B)) et une taille (int)
+        :param element: élement textuel généré par thorpy.make_text()
+        :param font_color: tuple (R, G, B)
+        :param font_size: int
+        :param font: string contenant le nom de la font
+        """
+
         element.set_font_color(font_color)
         element.set_font_size(font_size)
         element.set_font(font)
 
     def assign_surface(self, mon_menu, ma_surface):
-        """Très importante : assigne une surface aux éléments d'un menu"""
+        """
+        Assigne une surface aux éléments d'un menu
+        :param mon_menu: objet thorpy.Menu
+        :param ma_surface: objet pygame.Surface
+        """
+
         for element in mon_menu.get_population():
             element.surface = ma_surface
 
     def update_values(self):
-        """update_values : met à jour les valeurs des paramètres dans parametres.actual
-        avec la méthode parametres.set()"""
+        """Met à jour les paramètres des sliders dans self.config"""
         for name, slider in self.sliders.items():
             exec("self.config.%s=%s" % (name, slider.get_value()))
 
@@ -291,18 +317,6 @@ class Gui:
     def pause_button_pressed(self):
         """pause_button_pressed : appelée quand on clique sur le Bouton Pause"""
         self.gui_pause = not self.gui_pause
-
-    def button_day_plus_pressed(self):
-        pass
-
-    def button_day_minus_pressed(self):
-        pass
-
-    def button_tick_plus_pressed(self):
-        pass
-
-    def button_tick_minus_pressed(self):
-        pass
 
     def progress_bar(self, pos, size, progress, screen, bar_color, bg=False, bg_color=BLACK, vertical=False,
                      reverse=False, round=False, radius=20):

@@ -36,9 +36,12 @@ def total_food(grille):
 
 
 def init_stats():
-    """initialise les noms des statistiques à afficher sur l'interface GUI
+    """
+    initialise les noms des statistiques à afficher sur l'interface GUI
     Les deux premières valeurs sont obligatoirement Day et Tick
-    Retourne un tableau de strings."""
+    :return: liste de strings contenant les labels des statistiques
+    """
+
     return ["Day",
             "Tick",
             "Population",
@@ -52,8 +55,9 @@ def init_stats():
 def update_stats(grille, liste_bobs, tick):
     """met à jour les statistiques pour la GUI
     Les deux premières valeurs sont obligatoirement Day et Tick
-    Retourne un tableau des valeurs des statistiques
-    Les valeurs peuvent des nombres (int, float) ou des tuples"""
+    Les valeurs peuvent des nombres (int, float) ou des tuples
+    :return: liste contenant les nouvelles statistiques"""
+
 
     return [tick // ressources.config.para.TICK_DAY + 1,
             tick % ressources.config.para.TICK_DAY,
