@@ -40,6 +40,11 @@ class Bob:
         self.age = 0
         # Life for progress bar
         self.life = (self.energy % self.config.ENERGY_MAX) / 100
+        self.meteoeffect = 1
+    def update_meteoeffect(self):
+        if self.meteoeffect == 1:
+            self.energy=self.energy-200*(1/(16*self.config.TICK_DAY))
+
 
     def copie(self):
         bob = Bob((self.x, self.y))
@@ -61,6 +66,7 @@ class Bob:
         bob.childs = self.childs
         bob.age = self.age
         bob.life = self.life
+        bob.meteoeffect = self.meteoeffect
         return bob
 
     def stats(self):

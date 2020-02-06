@@ -56,6 +56,7 @@ class Config():
         # Energie dépensée lors de la reproduction sexuée
         self.ENERGY_REPRO = 150
 
+
         self.DIFF_AGE_FOR_REPRODUCTION = 500  # valeur en tick
         self.DISTANCE_TO_BE_IN_SAME_FAMILY=2
 
@@ -98,6 +99,9 @@ class Config():
         self.image_EMPTY_BEER = "ressources/images/empty_beer_icon.png"
         self.image_TREE = "ressources/images/tree2.png"
         self.image_GRASS = "ressources/images/grass.png"
-
-
+        self.image_GRELE = "ressources/images/grele.png"
+        self.image_SANDSTORM = "ressources/images/tempête.png"
+        self.image_SUN = "ressources/images/Suncloud.png"
+        self.image_PLUIE = "ressources/images/meteopluie.png"
+        self.image_FOG = "ressources/images/fog.png"
 para = Config()

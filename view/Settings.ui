@@ -405,8 +405,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>165</width>
-            <height>270</height>
+            <width>503</width>
+            <height>284</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
@@ -548,7 +548,7 @@
           <item>
            <widget class="QRadioButton" name="Fogue">
             <property name="text">
-             <string>Fogue</string>
+             <string>Fog</string>
             </property>
            </widget>
           </item>

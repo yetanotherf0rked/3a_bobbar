@@ -61,6 +61,9 @@ class View:
         # Création d'un soleil
         self.soleil = Star()
 
+        # Création des météos
+        self.meteo = Meteo_picto()
+
     def draw_Stats(self, bob, xmax):
         # Initialisation text
         font = pygame.font.Font('freesansbold.ttf', 16)
@@ -77,10 +80,20 @@ class View:
         self.grid = world.grid
         self.listebob = world.listebob
         self.run = True
-
         # Initialisation of the view
         PosX_init, PosY_init, cote_x, cote_y, simu_x, xdec, ydec = self.init_view(tick)
+        #Affichage du picto meteo
 
+        if self.config.weather=="Sun":
+            self.meteo.blit = self.simu_surface.blit(self.meteo.image_sun,(self.dim_simu[0]/2.4,0) )
+        if self.config.weather == "Hail":
+            self.meteo.blit = self.simu_surface.blit(self.meteo.image_hail, (self.dim_simu[0] / 2.3, 0))
+        if self.config.weather == "Sandstorm":
+            self.meteo.blit = self.simu_surface.blit(self.meteo.image_sandstorm, (self.dim_simu[0] / 2.5, 0))
+        if self.config.weather == "Rain":
+            self.meteo.blit = self.simu_surface.blit(self.meteo.image_rain, (self.dim_simu[0] / 2.3, 0))
+        if self.config.weather == "Fogue":
+            self.meteo.blit = self.simu_surface.blit(self.meteo.image_fog, (self.dim_simu[0] / 2.3, 0))
         # Update et affichage Soleil
         self.soleil.updateListeX(cote_x)
         Pos = self.soleil.Pos(tick, cote_x, cote_y, PosX_init, PosY_init, self.depx, self.depy)
