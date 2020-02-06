@@ -134,7 +134,7 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         text = lineEdit.text()
         if text =="":
             return True
-        if text[-1] == "0" or text[-1] == "1" or text[-1] == "2" or text[-1] == "3" or text[-1] == "4" or text[-1] == "5" or text[-1] == "6" or text[-1] == "7" or text[-1] == "8" or text[-1] == "9" or text[-1] == "+" or text[-1] == "-" or text[-1] == "/" or text[-1] == "*" or text[-1] == ")" or text[-1] == "(":
+        if text[-1].isnumeric() or text[-1] == "+" or text[-1] == "-" or text[-1] == "/" or text[-1] == "*" or text[-1] == ")" or text[-1] == "(":
             return True
         if text[-6:] == "memory" or text[-10:] == "perception" or text[-8:] == "velocity" or text[-5:] == "masse":
             return True
