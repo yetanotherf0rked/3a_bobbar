@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Settings.ui'
+# Form implementation generated from reading ui file 'view\Settings.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Settings(object):
     def setupUi(self, Settings):
@@ -82,7 +84,6 @@ class Ui_Settings(object):
         self.brain_function0.addItem("")
         self.brain_consommation_layout.addWidget(self.brain_function0)
         self.brain_coeff1 = QtWidgets.QSpinBox(self.layoutWidget2)
-        self.brain_coeff1.setProperty("value", 1)
         self.brain_coeff1.setObjectName("brain_coeff1")
         self.brain_consommation_layout.addWidget(self.brain_coeff1)
         self.brain_function1 = QtWidgets.QComboBox(self.layoutWidget2)
@@ -102,7 +103,6 @@ class Ui_Settings(object):
         self.brain_function2.addItem("")
         self.brain_consommation_layout.addWidget(self.brain_function2)
         self.brain_coeff3 = QtWidgets.QSpinBox(self.layoutWidget2)
-        self.brain_coeff3.setProperty("value", 1)
         self.brain_coeff3.setObjectName("brain_coeff3")
         self.brain_consommation_layout.addWidget(self.brain_coeff3)
         self.verticalLayout_2.addLayout(self.brain_consommation_layout)
@@ -113,7 +113,6 @@ class Ui_Settings(object):
         self.move_consommation_layout = QtWidgets.QHBoxLayout()
         self.move_consommation_layout.setObjectName("move_consommation_layout")
         self.move_coeff0 = QtWidgets.QSpinBox(self.layoutWidget2)
-        self.move_coeff0.setProperty("value", 1)
         self.move_coeff0.setObjectName("move_coeff0")
         self.move_consommation_layout.addWidget(self.move_coeff0)
         self.move_function0 = QtWidgets.QComboBox(self.layoutWidget2)
@@ -123,7 +122,6 @@ class Ui_Settings(object):
         self.move_function0.addItem("")
         self.move_consommation_layout.addWidget(self.move_function0)
         self.move_coeff1 = QtWidgets.QSpinBox(self.layoutWidget2)
-        self.move_coeff1.setProperty("value", 2)
         self.move_coeff1.setObjectName("move_coeff1")
         self.move_consommation_layout.addWidget(self.move_coeff1)
         self.move_function1 = QtWidgets.QComboBox(self.layoutWidget2)
@@ -134,7 +132,6 @@ class Ui_Settings(object):
         self.move_function1.addItem("")
         self.move_consommation_layout.addWidget(self.move_function1)
         self.move_coeff2 = QtWidgets.QSpinBox(self.layoutWidget2)
-        self.move_coeff2.setProperty("value", 1)
         self.move_coeff2.setObjectName("move_coeff2")
         self.move_consommation_layout.addWidget(self.move_coeff2)
         self.move_function2 = QtWidgets.QComboBox(self.layoutWidget2)
@@ -144,7 +141,6 @@ class Ui_Settings(object):
         self.move_function2.addItem("")
         self.move_consommation_layout.addWidget(self.move_function2)
         self.move_coeff3 = QtWidgets.QSpinBox(self.layoutWidget2)
-        self.move_coeff3.setProperty("value", 1)
         self.move_coeff3.setObjectName("move_coeff3")
         self.move_consommation_layout.addWidget(self.move_coeff3)
         self.verticalLayout_2.addLayout(self.move_consommation_layout)
@@ -189,7 +185,7 @@ class Ui_Settings(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 503, 284))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 106, 176))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.formLayout = QtWidgets.QFormLayout(self.scrollAreaWidgetContents_2)
         self.formLayout.setObjectName("formLayout")
@@ -270,12 +266,7 @@ class Ui_Settings(object):
         self.verticalLayout_3.addWidget(self.buttonBox)
 
         self.retranslateUi(Settings)
-        self.tabWidget.setCurrentIndex(4)
-        self.brain_function0.setCurrentIndex(2)
-        self.brain_function2.setCurrentIndex(2)
-        self.move_function0.setCurrentIndex(2)
-        self.move_function1.setCurrentIndex(2)
-        self.move_function2.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         self.buttonBox.accepted.connect(Settings.hide)
         self.buttonBox.accepted.connect(Settings.update_Config)
         self.buttonBox.rejected.connect(Settings.hide)
@@ -311,7 +302,6 @@ class Ui_Settings(object):
         self.brain_function2.setItemText(1, _translate("Settings", "Logarithme"))
         self.brain_function2.setItemText(2, _translate("Settings", "Polynôme"))
         self.move_label.setText(_translate("Settings", "Move function"))
-        self.move_function0.setCurrentText(_translate("Settings", "Polynôme"))
         self.move_function0.setItemText(0, _translate("Settings", "Exponentielle"))
         self.move_function0.setItemText(1, _translate("Settings", "Logarithme"))
         self.move_function0.setItemText(2, _translate("Settings", "Polynôme"))
@@ -346,6 +336,5 @@ class Ui_Settings(object):
         self.Sun.setText(_translate("Settings", "Sun"))
         self.Hail.setText(_translate("Settings", "Hail"))
         self.Rain.setText(_translate("Settings", "Rain"))
-        self.Fogue.setText(_translate("Settings", "Fog"))
+        self.Fogue.setText(_translate("Settings", "Fogue"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("Settings", "Biome/Meteo"))
-
