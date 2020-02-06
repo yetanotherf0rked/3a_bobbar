@@ -61,7 +61,7 @@ class Controller:
         
         if affichage:
             if self.config.tick_by_tick:
-                self.speed = 1
+                self.speed = 0.1
             else:
                 self.speed = 0.001
             self.view = View()
@@ -161,10 +161,8 @@ class Controller:
                     #Change speed of the simulation
                     if event.type == KEYDOWN and event.key == K_KP2:
                         self.speed = max(0.001, self.speed-0.005)
-                        print(self.speed)
                     if event.type == KEYDOWN and event.key == K_KP8:
                         self.speed += 0.005
-                        print(self.speed)
 
                     # Réagit si l'on bouge les sliders
                     self.view.menu_surface.unlock()
