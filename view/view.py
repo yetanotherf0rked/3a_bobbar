@@ -1,6 +1,5 @@
 from math import ceil
 
-import pygame
 from pygame.locals import *
 
 import ressources.config
@@ -10,7 +9,9 @@ from .gui import *
 
 
 class View:
-
+    """
+    Class View.
+    """
     def __init__(self):
         self.config = ressources.config.para
         self.initView()

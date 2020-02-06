@@ -14,11 +14,24 @@ from view.graphs import Graph
 
 
 class Controller:
+    """
+    Class of the controller.
+    Intermediary between the model and the view
+    """
 
     def __init__(self, simul=0, bar=None, settings = None):
+        """
+        Constructor of the controller
+
+        :param simul: number of days to be simulated before launching the view
+        :param bar: progress bar of the simulation
+        :param settings: settings windows
+        """
+
         self.settings = settings
         self.first = True
-        # Initialisation de la grille
+
+        # Initializes the grid
         self.config = ressources.config.para
         self.world = World()
         self.file = File()
@@ -30,6 +43,13 @@ class Controller:
         self.run(self.config.affichage, self.simul)
 
     def run(self, affichage, simul=0):
+        """
+        The main loop
+
+        :param affichage: if equal to True, then display the simulation
+        :param simul: number of days to be simulated
+        """
+
         tick = 0
         day = 0
         continuer = True
@@ -37,22 +57,20 @@ class Controller:
             self.simuBar.setValue(100)
         for _ in range((simul-1) * self.config.TICK_DAY):
             if tick % self.config.TICK_DAY == 0:
-                # Suppression de la nourriture restante
+                # Suppressing the remain food
                 self.world.removefood()
                 day += 1
-                # Spawn de la nouvelle food
+                # Spawn of the new food
                 self.world.spawnfood()
             tick += 1
 
-            #update du graph TODO regroupé dans une seule fonction de Graph 
+            # Graph update TODO regrouper dans une seule fonction de Graph
             self.graph.update_data(self.world.grid,self.world.listebob,tick)
             if self.config.g_animation :
                 self.graph.anim()
             if self.config.g_updated :
                 self.config.g_updated =False
                 self.graph.update_parameter(self.config.g_animation,self.config.g_parameters)
-                
-            
             
             self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.world.update_listebob()
@@ -78,9 +96,9 @@ class Controller:
         while continuer and self.world.listebob:
             wait = self.view.gui.gui_pause if affichage else False
             if not self.file.full():
-                # Comptage des ticks/Days
+                # At each new day
                 if tick % self.config.TICK_DAY == 0:
-                    # Suppression de la nourriture restante
+                    # Deletes the remaining food
                     self.world.removefood()
                     day += 1
                     # if affichage:
@@ -89,7 +107,7 @@ class Controller:
                         #         "print(sliders_Config.get_info(s),str(self.config.%s).rjust(40-len(sliders_Config.get_info(s))))" % s)
                         # print()
 
-                    # Spawn de la nouvelle food
+                    # Spawn of the new food
                     self.world.spawnfood()
                 tick += 1
                 if self.config.g_updated :
@@ -110,7 +128,7 @@ class Controller:
                     self.file.enfile(self.world)
             sleep(self.speed)
             if affichage:
-                # Update de la fenêtre
+                # Update of the windows
                 if not self.view.run:
                     if not wait:
                         aff_world = self.file.defile()
@@ -121,7 +139,7 @@ class Controller:
                         self._thread = Thread(target=self.view.affichage,
                                               args=(self.file.get_Current(), self.file.tick))
                     self._thread.start()
-                # Test de fin
+                # Ending test
                 if self.config.restart:
                     continuer = False
                     self.viewSize = self.view.width, self.view.height
@@ -131,12 +149,13 @@ class Controller:
                     self.config.settings = False
                     if not wait :
                         self.view.gui.pause_button_pressed()
-                # Boucle sur les events
-                for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
+
+                # Event loop
+                for event in pygame.event.get():
 
                     # Stop
-                    if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
-                        continuer = False  # On arrête la boucle
+                    if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:
+                        continuer = False
                         self.settings.close()
                         self.view.gui.gui_quit=False
                        
@@ -145,11 +164,12 @@ class Controller:
                     if affichage and event.type == KEYDOWN and event.key == K_SPACE:
                         self.view.gui.pause_button_pressed()
 
+                    # Resize
                     if event.type == VIDEORESIZE:
                         self.view.width, self.view.height = event.size
                         self.viewSize = event.size
 
-                    # Permet le déplacement dans la fenêtre
+                    # Window movement
                     if event.type == KEYDOWN and (event.key == K_UP or event.key == K_z):
                         self.view.depy += self.config.DEP_STEP * (1 + 0.1 * self.view.zoom)
                     if event.type == KEYDOWN and (event.key == K_DOWN or event.key == K_s):
@@ -158,22 +178,24 @@ class Controller:
                         self.view.depx += self.config.DEP_STEP * (1 + 0.1 * self.view.zoom)
                     if event.type == KEYDOWN and (event.key == K_RIGHT or event.key == K_d):
                         self.view.depx -= self.config.DEP_STEP * (1 + 0.1 * self.view.zoom)
-                    # Permet d'avancer/reculer dans l'historique quand on est en pause
+
+                    # Previous Tick/Next Tick
                     if wait and event.type == KEYDOWN and event.key == K_KP4:
                         self.file.precTick()
                     if wait and event.type == KEYDOWN and event.key == K_KP6:
                         self.file.nextTick()
-                    #Change speed of the simulation
+
+                    # Changes the speed of the simulation
                     if event.type == KEYDOWN and event.key == K_KP8:
                         self.speed = max(0.001, self.speed-0.005)
                     if event.type == KEYDOWN and event.key == K_KP2:
                         self.speed += 0.005
 
-                    # Réagit si l'on bouge les sliders
+                    # Reacts if we move a slider
                     self.view.menu_surface.unlock()
                     self.view.gui.menu.react(event)
 
-                    # Permet la sélection d'un bob
+                    # To select a bob
                     if event.type == MOUSEBUTTONDOWN:
                         x, y = pygame.mouse.get_pos()
                         x -= self.view.dim_menu[0]
@@ -190,19 +212,20 @@ class Controller:
                                 self.view.gui.zoom_position.mouse_click()
                                 self.view.depx = self.view.depy = self.view.zoom = 0
 
-                    # Permet le zoom
+                    # Zoom
                     if event.type == KEYDOWN and event.key == K_KP_PLUS:
                         self.view.zoom += 1
                     if event.type == KEYDOWN and event.key == K_KP_MINUS:
                         self.view.zoom = max(0, self.view.zoom - 1)
-            #Permet de cacher la fenêtre de settings au départ.
+
+            # Hide the settings window
             if self.first:
                 self.settings.hide()
                 self.settings.setEnabled(True)
                 self.first = False
 
         # After simulation
-        #if we want to restart new simulation
+        # if we want to restart new simulation
         if self.config.restart:
             self._thread.join()
             pygame.display.quit()
@@ -212,11 +235,12 @@ class Controller:
             self.file = File()
             self.run(self.config.affichage, self.simul)
         else:
-            # If pygame is close
+            # If pygame is closed
             if self.config.affichage:
                 self._thread.join()
                 pygame.display.quit()
-            # Show the Graph
+
+            # Displays the Graph
             self.graph.hide()
             self.graph.animation = False
             self.graph.set_parameter(x='days', pop=True, age=True, velocity=True, perception=True, memory=True,

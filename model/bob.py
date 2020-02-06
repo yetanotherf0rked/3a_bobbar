@@ -1,16 +1,23 @@
 from random import uniform, random
 
-import pygame
-
 import ressources.config
 from model.case import *
 from model.utils import *
 
 
 class Bob:
+    """
+    Class Bob.
+    Contains the attributes and the methods of a bob
+    """
     def __init__(self, pos):
+        """
+        Constructor of a bob
+        :param pos: (x,y) tuple of the position of a bob
+        """
+
         self.config = ressources.config.para
-        self.x, self.y = pos  # Case où se trouve le Bob
+        self.x, self.y = pos  # Cell position of a bob
         self.energy = self.config.ENERGY_SPAWN
         self.velocity = 1.0
         self.masse = 1.0
@@ -31,12 +38,20 @@ class Bob:
         # Life for progress bar
         self.life = (self.energy % self.config.ENERGY_MAX) / 100
         self.meteoeffect = 1
+
     def update_meteoeffect(self):
+        """
+        Updates a bob energy in case of harsh weather
+        """
         if self.meteoeffect == 1:
             self.energy=self.energy-200*(1/(16*self.config.TICK_DAY))
 
 
     def copie(self):
+        """
+        Makes a copy of a bob
+        :return: the copy of a bob
+        """
         bob = Bob((self.x, self.y))
         bob.energy = self.energy
         bob.velocity = self.velocity
@@ -60,6 +75,11 @@ class Bob:
         return bob
 
     def stats(self):
+        """
+        For debuging purposes
+        :return: list of strings with the statistics
+        """
+
         text=[]
         text.append("Energy : %s" % round(self.energy,2))
         text.append("Velocity : %s" % round(self.velocity,2))
@@ -70,36 +90,38 @@ class Bob:
         return text
 
     def update(self, grille):
-        """update le bob : combats, manger, déplacement...
-        Si le bob se reproduit update retourne une liste contenant le nouveau fils sinon une liste vide"""
+        """
+        :param grille: a grid of bobs
+        :return: If the bob reproduces itself then returns a list with the new son, else returns an empty list
+        """
 
         self.age += 1
 
         is_moving = False
         current_case = grille[self.x][self.y]
 
-        sons = []  # liste contenant les enventuels enfants du bob à ce tour
+        sons = []  # list of the prospective sons of the bob
 
-        # Fight ?
+        # Fights
         self.fight(current_case)
 
-        # Mange la nourriture restante si possible
+        # Eats
         if current_case.food != 0:
             current_case.food = self.eat(current_case.food)
 
-        # boucle tant que le bob peut  faire une action (speedbuffer > 1)
+        # If the bob can still do another action
         self.speed_buffer += self.velocity
         while self.speed_buffer >= 1:
             self.speed_buffer -= 1
 
-            # Mange la nourriture restante si possible
+            # Eats the remaining food
             if current_case.food != 0:
                 current_case.food = self.eat(current_case.food)
 
-            # choix direction déplacement
+            # Chooses the direction
             dx, dy = self.move_preference(grille)  # choice([(-1, 0), (1, 0), (0, -1), (0, 1)]
 
-            # déplacement
+            # Moves
             is_moving = self.move(grille, dx, dy)
             self.place_historic.add(
                 current_case)  # ajoute la case qu'il vient de quitter a son historique des cases visités
@@ -107,17 +129,17 @@ class Bob:
             self.place_historic.forgot(
                 current_case)  # si on arrive le bob arrive à une case dont il se souvenait il la supprime de sa memoire.
 
-            # perte d'energie due au deplacement
+            # Loses energy as he's moving
             self.energy -= self.energy_move if is_moving else self.config.ENERGY_STAY
 
             # fight ?
             self.fight(current_case)
 
-            # Bob mange si nouriture sur la  nouvelle case
+            # Eats if there is food in the Cell he moved in
             if current_case.food != 0:
                 current_case.food = self.eat(current_case.food)
 
-            # Reproduction ou parthenogenese si possible
+            # Reproduction or parthenogenesis
             if self.config.REPRO : sons += self.reproduction(current_case)
             if self.config.PARTH : sons += self.parthenogenesis(current_case)
 
@@ -131,21 +153,19 @@ class Bob:
         elif self.life > 1:
             self.life = 1
 
-        # reproduction si possible :
+        # reproduction if possible :
         return sons
 
     def move(self, grille, dx, dy):
-        """Déplace le bob sur la grille
-
-        Parametres:
-            grille (world.grid): une liste bidimensionnelle contenant des objets Case
-            dx (int): déplacement sur x
-            dy (int): déplacement sur y
-
-        Returns:
-            Boolean: représente le fait que le bob ait bougé ou pas (pour savoir combien il faut lui enlever d'énergie)
-
         """
+        Movement of a bob on the grid
+
+        :param grille: (world.grid) 2-dimension list containing Case objects
+        :param dx: x movement
+        :param dy: y movement
+        :return: a boolean that says if the bob has moved or not (so we remove energy)
+        """
+
         nx = self.x+dx
         ny = self.y+dy
         if(0<=nx<self.config.TAILLE and 0<=ny<self.config.TAILLE):  # test limites du monde
@@ -157,11 +177,20 @@ class Bob:
         return False
 
     def is_dead(self):
-        """Test si le bob est mort"""
+        """
+        Tests if a bob is dead in a grid
+        :return: a boolean that says if a bob is dead or not
+        """
         return self.energy <= 0
 
-    def eat(self, food, rate=1):
-        eaten_food = rate * food
+    def eat(self, food):
+        """
+        Action of eating
+
+        :param food: the quantity of food in the Cell
+        :return: the new quantity of food in a Cell
+        """
+        eaten_food = food
         if eaten_food + self.energy <= self.config.ENERGY_MAX:
             self.energy += eaten_food
             food -= eaten_food
@@ -171,15 +200,20 @@ class Bob:
         return food
 
     def parthenogenesis(self, case):
-        """naissance d'un nouveau bob si assez d'energie
-        retourne une liste contenant le fils"""
+        """
+        Birth of a new bob by parthenogenesis if the mother reaches ENERGY_MAX
+
+        :param case: the Cell where the new bob will eventually spawn
+        :return: a list with the new bob if he's born, else an empty list
+        """
         if self.energy == self.config.ENERGY_MAX:
             self.energy = self.config.ENERGY_MOTHER
 
-            # Nouveau bob
+            # New bob
             son = Bob([self.x, self.y])
             son.energy = self.config.ENERGY_SON
-            # Fonction max pour eviter qu'un bob est une vitesse < 1
+
+            # Max function to avoid that a bob gets a velocity < 1
             son.velocity = max(0, self.velocity + uniform(-self.config.MUT_VELOCITY, self.config.MUT_VELOCITY))
             son.masse = max(1, self.masse + uniform(-self.config.MUT_MASSE, self.config.MUT_MASSE))
             son.perception = max(0, self.perception + choice([-self.config.MUT_PERCEPT, 0, self.config.MUT_PERCEPT]))
@@ -188,24 +222,24 @@ class Bob:
                                     self.memory_points + choice([-self.config.MUT_MEMORY, 0, self.config.MUT_MEMORY]))
             son.energy_move = self.config.move_consommation(son.velocity, son.masse)
             son.energy_brain = self.config.brain_consommation(son.perception, son.memory_points)
-            # Ajout du fils dans la case
+
+            # Appends the son in the Cell
             case.place.append(son)
             self.childs.add(son)
             son.parents.add(self)
             return [son]
-        # si le bob n'enfante pas on retourne une liste vide
+
+        # If no parthenogenesis, returns an empty list
         return []
 
     def fight(self, case):
-        """test si des combats sont possibles sur la case actuelle, dévore les autres bobs dans ce cas
-
-        Parametres:
-            case (Case): la case où les fights vont se produire
-        Returns:
+        """
+        Test if fights are available in the current Cell, eats the other bobs if a fight is available
+        :param case: Cell where the fight will eventually happen
         """
         if len(case.place) > 1:  # Fight
             for other_bob in case.place:
-                # if other_bob != bob:  # inutile car bob.masse/bob.masse > 2/3
+                # if other_bob != bob:  # useless because bob.masse/bob.masse > 2/3
                 if other_bob.masse / self.masse < 2 / 3 and (self.config.family_Agression or (
                         not self.config.family_Agression and not self.areInSameFamily(other_bob))):
                     self.energy = min(self.config.ENERGY_MAX,
@@ -213,13 +247,10 @@ class Bob:
                     other_bob.energy = 0
 
     def reproduction(self, case):
-        """Réalise les reproduction sur une case entre self et les bobs sur cette case
-
-        Parametres:
-            case (Case): la case où le bob va se reproduire
-
-        Return:
-            sons [Bob]: une liste de Bob représentant les enfants nés de self et de other_bob pendant ce tick
+        """
+        Sexual reproduction between one bob and another in a cell
+        :param case: the concerned cell
+        :return: list of born bobs
         """
 
         sons = []
@@ -257,8 +288,10 @@ class Bob:
                     sons.append(son)
         return sons
 
-    def see(self, grille,show=False,deselect=False):
-        """parcours les cases que voit le bob et retourne des listes des eventuels cases dangereuses,de nouriture et/ou de proies
+    def see(self, grille,show=False):
+        """
+        Iterates on the cells that a bob can see and returns lists of eventual dangerous cell, cells with food or
+         cells with preys
 
         Parametres:
             grille (world.grid): une liste bidimensionnelle contenant des objets Case
@@ -267,6 +300,12 @@ class Bob:
             dangers [Bob]: Une liste de Bob plus gros de 2/3 selon la masse par rapport à self.masse
             foods [Case]: Une liste de Case avec de la nourriture
             preys [Bob]: Une liste de Bob plus petit de 2/3 selon la masse par rapport à self.masse
+
+        :param grille: a 2-dimension list with a Case object
+        :param show:
+        :return: dangers [Bob] : list of bobs which have a mass 2/3 bigger compared to self.masse
+                 foods [Case]: list of cells with food in it
+                 preys [Bob] : list of bobs which have a mass 2/3 less bigger compared to self.masse
         """
         danger = False
         dangers = []
