@@ -423,7 +423,7 @@ class Gui:
     def draw_reset_button(self, screen):
         self.zoom_position = Button("Reset zoom and position",
                                     (screen.get_width() * 0.85,
-                                     screen.get_height() * 0.45),
+                                     screen.get_height() * 0.88),
                                     self,
                                     GREEN,
                                     BLACK,
