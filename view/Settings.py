@@ -123,12 +123,27 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
 
     def update_consommation_label(self):
         if self.tab_7.isHidden():
-            exec("self.config.move_consommation = lambda velocity, masse:" + self.move_lineEdit.text())
-            self.label_4.setText(self.move_lineEdit.text())
+            tmp = self.config.move_consommation
+            try:
+                exec("self.config.move_consommation = lambda velocity, masse:" + self.move_lineEdit.text())
+                self.config.move_consommation(0, 0) #  test function without modify self.config
+                self.label_4.setText(self.move_lineEdit.text())
+                self.config.change_consommation = True
+            except:
+                self.config.move_consommation = tmp
+                self.label_4.setText("Erreur, fonction move non modifiée")
+            
         else:
-            exec("self.config.brain_consommation = lambda perception, memory:" + self.brain_lineEdit.text())
-            self.label_3.setText(self.brain_lineEdit.text())
-        self.config.change_consommation = True
+            tmp = self.config.brain_consommation
+            try:
+                exec("self.config.brain_consommation = lambda perception, memory:" + self.brain_lineEdit.text())
+                self.config.brain_consommation(0, 0)
+                self.label_3.setText(self.brain_lineEdit.text())
+                self.config.change_consommation = True
+            except:
+                self.config.brain_consommation = tmp
+                self.label_3.setText("Erreur, fonction brain non modifiée")
+        
 
     def test_lineEdit(self,lineEdit):
         text = lineEdit.text()
