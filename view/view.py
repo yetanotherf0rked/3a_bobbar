@@ -20,6 +20,7 @@ class View:
         self.depy = 0
         self.zoom = 0
         self.velocity_max = -1
+        self.velocity_min = 100
 
     def initView(self):
         # Initialisation de pygame
@@ -268,9 +269,11 @@ class View:
             size_X = max(1,int(1.5 * xdec - 7.5))
             size_Y = int(size_X*bob.masse**2 + size_X/2 *(1- bob.masse))
 
-            #  Get max velocity for showing it
+            #  Get max and min velocity for showing it
             if bob.velocity > self.velocity_max:
                 self.velocity_max = bob.velocity
+            if bob.velocity < self.velocity_min:
+                self.velocity_min = bob.velocity
 
             if bob.bobController.select:
                 self.draw_Stats(bob, simu_x)
@@ -280,6 +283,11 @@ class View:
             PosX, PosY = Pos[i]
 
             velocity_percentage = (bob.velocity / self.velocity_max)
+            for i in range(0,9):
+                interval = [i,i+2]
+                if interval[0]*0.1 < velocity_percentage < interval[1]*0.1:
+                    velocity_percentage = interval[1]*0.1
+
             bob_velocity_color = (velocity_percentage * velocity_color[0],
                                   velocity_percentage * velocity_color[1],
                                   velocity_percentage * velocity_color[2])
