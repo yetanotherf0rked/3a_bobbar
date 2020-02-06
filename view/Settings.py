@@ -15,14 +15,13 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         QtWidgets.QWidget.__init__(self)
         self.config = ressources.config.para
         self.setupUi(self)
-        rx = QRegExp("[0-9()+\-*/.]{0,}")
-        self.move_lineEdit.setValidator(QRegExpValidator(rx))
-        self.brain_lineEdit.setValidator(QRegExpValidator(rx))
+        self.rx = QRegExp("(log|exp|pow|sqrt|masse|velocity|perception|memory|[0-9]|\\.|\\*|\\-|\\+|\\(|\\)|\\/)*")
+        self.move_lineEdit.setValidator(QRegExpValidator(self.rx))
+        self.brain_lineEdit.setValidator(QRegExpValidator(self.rx))
         self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
         self.setEnabled(False)
         self.initial_Config()
         self.setWindowTitle("Settings")
-        # self.update_consommation_label()
 
     def restart(self):
         self.config.restart = True
@@ -52,74 +51,94 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
 
     def masse(self):
         if self.tab_7.isHidden():
-            self.move_lineEdit.setText(self.move_lineEdit.text()+"masse")
-            self.move_lineEdit.setFocus()
-        else:
+            if self.test_lineEdit(self.move_lineEdit):
+                self.move_lineEdit.setText(self.move_lineEdit.text()+"masse")
+                self.move_lineEdit.setFocus()
+        elif self.test_lineEdit(self.brain_lineEdit):
             self.brain_lineEdit.setText(self.brain_lineEdit.text()+"masse")
             self.brain_lineEdit.setFocus()
 
     def velocity(self):
         if self.tab_7.isHidden():
-            self.move_lineEdit.setText(self.move_lineEdit.text()+"velocity")
-            self.move_lineEdit.setFocus()
-        else:
+            if self.test_lineEdit(self.move_lineEdit):
+                self.move_lineEdit.setText(self.move_lineEdit.text()+"velocity")
+                self.move_lineEdit.setFocus()
+        elif self.test_lineEdit(self.brain_lineEdit):
             self.brain_lineEdit.setText(self.brain_lineEdit.text()+"velocity")
             self.brain_lineEdit.setFocus()
 
     def perception(self):
         if self.tab_7.isHidden():
-            self.move_lineEdit.setText(self.move_lineEdit.text()+"perception")
-            self.move_lineEdit.setFocus()
-        else:
+            if self.test_lineEdit(self.move_lineEdit):
+                self.move_lineEdit.setText(self.move_lineEdit.text()+"perception")
+                self.move_lineEdit.setFocus()
+        elif self.test_lineEdit(self.brain_lineEdit):
             self.brain_lineEdit.setText(self.brain_lineEdit.text()+"perception")
+            self.brain_lineEdit.setFocus()
 
     def memory(self):
         if self.tab_7.isHidden():
-            self.move_lineEdit.setText(self.move_lineEdit.text()+"memory")
-            self.move_lineEdit.setFocus()
-        else:
+            if self.test_lineEdit(self.move_lineEdit):
+                self.move_lineEdit.setText(self.move_lineEdit.text()+"memory")
+                self.move_lineEdit.setFocus()
+        elif self.test_lineEdit(self.brain_lineEdit):
             self.brain_lineEdit.setText(self.brain_lineEdit.text()+"memory")
             self.brain_lineEdit.setFocus()
 
     def sqrt_button(self):
         if self.tab_7.isHidden():
-            self.move_lineEdit.setText(self.move_lineEdit.text()+"sqrt()")
-            self.move_lineEdit.setFocus()
-        else:
+            if self.test_lineEdit(self.move_lineEdit):
+                self.move_lineEdit.setText(self.move_lineEdit.text()+"sqrt()")
+                self.move_lineEdit.setFocus()
+        elif self.test_lineEdit(self.brain_lineEdit):
             self.brain_lineEdit.setText(self.brain_lineEdit.text()+"sqrt()")
             self.brain_lineEdit.setFocus()
 
     def exp_button(self):
         if self.tab_7.isHidden():
-            self.move_lineEdit.setText(self.move_lineEdit.text()+"exp()")
-            self.move_lineEdit.setFocus()
-        else:
+            if self.test_lineEdit(self.move_lineEdit):
+                self.move_lineEdit.setText(self.move_lineEdit.text()+"exp()")
+                self.move_lineEdit.setFocus()
+        elif self.test_lineEdit(self.brain_lineEdit):
             self.brain_lineEdit.setText(self.brain_lineEdit.text()+"exp()")
             self.brain_lineEdit.setFocus()
 
     def pow_button(self):
         if self.tab_7.isHidden():
-            self.move_lineEdit.setText(self.move_lineEdit.text()+"pow()")
-            self.move_lineEdit.setFocus()
-        else:
+            if self.test_lineEdit(self.move_lineEdit):
+                self.move_lineEdit.setText(self.move_lineEdit.text()+"pow()")
+                self.move_lineEdit.setFocus()
+        elif self.test_lineEdit(self.brain_lineEdit):
             self.brain_lineEdit.setText(self.brain_lineEdit.text()+"pow()")
             self.brain_lineEdit.setFocus()
 
     def log_button(self):
         if self.tab_7.isHidden():
-            self.move_lineEdit.setText(self.move_lineEdit.text()+"log()")
-            self.move_lineEdit.setFocus()
-        else:
+            if self.test_lineEdit(self.move_lineEdit):
+                self.move_lineEdit.setText(self.move_lineEdit.text()+"log()")
+                self.move_lineEdit.setFocus()
+        elif self.test_lineEdit(self.brain_lineEdit):
             self.brain_lineEdit.setText(self.brain_lineEdit.text()+"log()")
             self.brain_lineEdit.setFocus()
 
     def update_consommation_label(self):
         if self.tab_7.isHidden():
             exec("self.config.move_consommation = lambda velocity, masse:" + self.move_lineEdit.text())
+            self.label_4.setText(self.move_lineEdit.text())
         else:
             exec("self.config.brain_consommation = lambda perception, memory:" + self.brain_lineEdit.text())
+            self.label_3.setText(self.brain_lineEdit.text())
         self.config.change_consommation = True
 
+    def test_lineEdit(self,lineEdit):
+        text = lineEdit.text()
+        if text =="":
+            return True
+        if text[-1] == "0" or text[-1] == "1" or text[-1] == "2" or text[-1] == "3" or text[-1] == "4" or text[-1] == "5" or text[-1] == "6" or text[-1] == "7" or text[-1] == "8" or text[-1] == "9" or text[-1] == "+" or text[-1] == "-" or text[-1] == "/" or text[-1] == "*" or text[-1] == ")" or text[-1] == "(":
+            return True
+        if text[-6:] == "memory" or text[-10:] == "perception" or text[-8:] == "velocity" or text[-5:] == "masse":
+            return True
+        return False
 
     def update_Config(self):
         self.config.show_Minimap = self.show_Minimap.isChecked()
