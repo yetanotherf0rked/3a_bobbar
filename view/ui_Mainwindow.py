@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'view\Mainwindow.ui'
+# Form implementation generated from reading ui file 'Mainwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -33,7 +31,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 948, 614))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 928, 653))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_17.setObjectName("verticalLayout_17")
@@ -372,4 +370,5 @@ class Ui_Form(object):
         self.label_5.setText(_translate("Form", "Food             "))
         self.label_4.setText(_translate("Form", "Population   "))
         self.label_3.setText(_translate("Form", "Size"))
-        self.pushButton.setText(_translate("Form", "Lauch"))
+        self.pushButton.setText(_translate("Form", "Launch"))
+
