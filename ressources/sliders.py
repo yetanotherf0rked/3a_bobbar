@@ -24,9 +24,7 @@ DIM_SLIDER = (DIM_SLIDER_X, DIM_SLIDER_Y)
 
 DIM_DRAGGER = (5, 20)
 DIM_SLIDER_BOX = (DIM_MENU_X - 10, 50)
-# DIM_STATEBOX = (DIM_MENU_X-10, 100)
 DIM_STAT_BOX = ((DIM_MENU_X - 25) / 2, 40)
-# DIM_PLUSMINUSBUTTON = (20, 30)
 
 POS_LOGO_X = int((DIM_MENU_X - DIM_LOGO_X) / 2)  # logo centré p/r à menu_surface
 POS_LOGO_Y = 20  # marges
@@ -45,36 +43,26 @@ FONT = "verdana"
 class Sliders:
 
     def __init__(self):
-        """ À retenir :
-                - une instance parameters de la classe Parameters est déclarée dans sliders.py
-                - cette instance permet d'accéder aux paramètres depuis n'importe quel fichier .py
+        """ Automatise la création des sliders
                 - on déclare un nouveau paramètre avec make()
                 - on accède au paramètre avec get()
-
-
-            default :       Dictionnaire initialisateur des paramètres
-                            Sert à automatiser l'initialisation des sliders
-                            nom_du_paramètre:(valeur_min, valeur_initiale, valeur_max, type=int ou float,
-                            show=False si l'on veut cacher le paramètre)
         """
 
-        # default : nom_du_paramètre:(valeur_min, valeur_initiale, valeur_max, type=int ou float, True : afficher le paramètre dans le menu, info = nom à afficher)
+        # Dictionnaire contenant les paramètres à initialiser
         self.default = {}
 
         # Créez vos paramètres ici
-        self.make("NB_FOOD", 0, config.para.NB_FOOD, 250, info="Food Number")
-        self.make("ENERGY_FOOD", 50, config.para.ENERGY_FOOD, 150, info="Food Energy")
-        self.make("ENERGY_SPAWN", 50, config.para.ENERGY_SPAWN, 150, info="Spawn Energy")
-        self.make("ENERGY_MOVE", 0.0, config.para.ENERGY_MOVE, 5.0, float, info="Energy Cost while Moving")
-        self.make("ENERGY_STAY", 0.0, config.para.ENERGY_STAY, 5.0, float, info="Energy Cost at Stay")
-        # self.make("Max Energy", 50, config.para.ENERGY_MAX, 300)
-        self.make("ENERGY_MOTHER", 25, config.para.ENERGY_MOTHER, 75, info="Mother Energy")
-        self.make("ENERGY_SON", 25, config.para.ENERGY_SON, 75, info="Son Energy")
+        self.make("NB_FOOD", 1, config.para.NB_FOOD, 500, info="Food Number")
+        self.make("ENERGY_FOOD", 1, config.para.ENERGY_FOOD, 150, info="Food Energy")
+        self.make("ENERGY_SPAWN", 1, config.para.ENERGY_SPAWN, 150, info="Spawn Energy")
+        self.make("ENERGY_MOVE", 0.1, config.para.ENERGY_MOVE, 30.0, float, info="Energy Cost while Moving")
+        self.make("ENERGY_STAY", 0.1, config.para.ENERGY_STAY, 30.0, float, info="Energy Cost at Stay")
+        self.make("ENERGY_MOTHER", 1, config.para.ENERGY_MOTHER, 75, info="Mother Energy")
+        self.make("ENERGY_SON", 1, config.para.ENERGY_SON, 75, info="Son Energy")
 
     def make(self, name, min, init, max, type=int, show=True, info=""):
         """Crée un paramètre et l'ajoute au dictionnaire
                 :param name: string contenant le nom de la variable à mettre à jour (voir config.py)
-
                 :param min: valeur minimale (int ou float)
                 :param init: valeur initiale (int ou float)
                 :param max: valeur maximale (int ou float)
@@ -87,7 +75,6 @@ class Sliders:
     def get_info(self, name):
         """
         Retourne le nom de la variable contenant le paramètre
-
         :param name: string contenant le nom de la variable
         """
         if self.default[name][-1] != "":

@@ -1,6 +1,5 @@
 import ressources.config
 
-
 def velocity_stat(pop):
     if len(pop):
         return (sum(b.velocity for b in pop) / len(pop), max(b.velocity for b in pop), min(b.velocity for b in pop))

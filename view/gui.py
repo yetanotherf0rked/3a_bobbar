@@ -41,6 +41,7 @@ class Gui:
         :param menu_surface: surface support de la GUI, déclarée dans la view
         """
         self.isupdate = False
+
         # On importe les paramètres de config.py
         self.config = ressources.config.para
 
@@ -53,6 +54,7 @@ class Gui:
                                     BLACK,
                                     (180, 40),
                                     font_size=14)
+
         # Thème par défaut
         thorpy.set_theme("human")
 
@@ -160,8 +162,6 @@ class Gui:
             stat_box = thorpy.Box(elements=[text, value], size=DIM_STAT_BOX)
             stat_box.set_main_color(BLACK)
             self.elements_stats.append(stat_box)
-            # text.set_topleft(POS_STAT_TITLE)
-            # value.set_topleft(POS_STAT_VALUE)
 
         # On les regroupe horizontalement deux par deux en faisant attention au cas impair
         boxesH = []
@@ -185,7 +185,6 @@ class Gui:
         """
         Met à jour l'affichage des stats
         Dépend de debug.py
-
         :param stats: liste contenant les nouvelles valeurs des statistiques
         """
 
@@ -215,6 +214,7 @@ class Gui:
     def generate_sliders(self):
         """ Génère des sliders à partir des paramètres déclarés dans sliders_Config.default{}
             Vérifie si l'argument SHOW est bien égal à True avant de créer le slider"""
+
         # Titre du Menu Paramètres
         thorpy.set_theme("classic")
         menu_title = thorpy.make_text("sliders_Config")
@@ -272,7 +272,6 @@ class Gui:
             slider.get_dragger().set_size(DIM_DRAGGER)
             slider.get_slider().set_main_color(WHITE)
             slider.get_slider().set_size(DIM_SLIDER)
-            self.set_font_style(slider._value_element, FONT_COLOR, FONT_SIZE, FONT)
 
         # Obliger de redonner les valeurs ici sinon elles sont toute incrémentées d'un cran
         for name, k in sliders_Config.default.items():

@@ -217,7 +217,7 @@ class Ui_Form(object):
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.NB_FOOD = QtWidgets.QSpinBox(self.scrollAreaWidgetContents)
         self.NB_FOOD.setMinimum(1)
-        self.NB_FOOD.setMaximum(100000)
+        self.NB_FOOD.setMaximum(500)
         self.NB_FOOD.setObjectName("NB_FOOD")
         self.gridLayout_5.addWidget(self.NB_FOOD, 0, 1, 1, 1)
         self.label_5 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
