@@ -83,11 +83,11 @@ class Controller:
                     # Suppression de la nourriture restante
                     self.world.removefood()
                     day += 1
-                    if affichage:
-                        for s in self.view.gui.sliders:
-                            eval(
-                                "print(sliders_Config.get_info(s),str(self.config.%s).rjust(40-len(sliders_Config.get_info(s))))" % s)
-                        print()
+                    # if affichage:
+                        # for s in self.view.gui.sliders:
+                        #     eval(
+                        #         "print(sliders_Config.get_info(s),str(self.config.%s).rjust(40-len(sliders_Config.get_info(s))))" % s)
+                        # print()
 
                     # Spawn de la nouvelle food
                     self.world.spawnfood()
@@ -164,9 +164,9 @@ class Controller:
                     if wait and event.type == KEYDOWN and event.key == K_KP6:
                         self.file.nextTick()
                     #Change speed of the simulation
-                    if event.type == KEYDOWN and event.key == K_KP2:
-                        self.speed = max(0.001, self.speed-0.005)
                     if event.type == KEYDOWN and event.key == K_KP8:
+                        self.speed = max(0.001, self.speed-0.005)
+                    if event.type == KEYDOWN and event.key == K_KP2:
                         self.speed += 0.005
 
                     # Réagit si l'on bouge les sliders
