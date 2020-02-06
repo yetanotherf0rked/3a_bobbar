@@ -167,7 +167,7 @@ class Bob:
             food -= eaten_food
         else:
             food -= self.config.ENERGY_MAX - self.energy
-            self.energy = 200
+            self.energy = self.config.ENERGY_MAX
         return food
 
     def parthenogenesis(self, case):
