@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Settings.ui'
+# Form implementation generated from reading ui file 'view\Settings.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Settings(object):
     def setupUi(self, Settings):
@@ -183,7 +185,7 @@ class Ui_Settings(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 165, 270))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 106, 176))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.formLayout = QtWidgets.QFormLayout(self.scrollAreaWidgetContents_2)
         self.formLayout.setObjectName("formLayout")
@@ -264,7 +266,7 @@ class Ui_Settings(object):
         self.verticalLayout_3.addWidget(self.buttonBox)
 
         self.retranslateUi(Settings)
-        self.tabWidget.setCurrentIndex(4)
+        self.tabWidget.setCurrentIndex(0)
         self.buttonBox.accepted.connect(Settings.hide)
         self.buttonBox.accepted.connect(Settings.update_Config)
         self.buttonBox.rejected.connect(Settings.hide)
@@ -336,4 +338,3 @@ class Ui_Settings(object):
         self.Rain.setText(_translate("Settings", "Rain"))
         self.Fogue.setText(_translate("Settings", "Fogue"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("Settings", "Biome/Meteo"))
-
