@@ -1,4 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
 
 from view.ui_Settings import Ui_Settings
 
@@ -13,11 +15,14 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         QtWidgets.QWidget.__init__(self)
         self.config = ressources.config.para
         self.setupUi(self)
+        rx = QRegExp("[0-9()+\-*/.]{0,}")
+        self.move_lineEdit.setValidator(QRegExpValidator(rx))
+        self.brain_lineEdit.setValidator(QRegExpValidator(rx))
         self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
         self.setEnabled(False)
         self.initial_Config()
         self.setWindowTitle("Settings")
-        self.update_consommation_label()
+        # self.update_consommation_label()
 
     def restart(self):
         self.config.restart = True
