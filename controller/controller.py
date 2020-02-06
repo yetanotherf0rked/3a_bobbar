@@ -204,6 +204,7 @@ class Controller:
         else:
             # If pygame is close
             if self.config.affichage:
+                self._thread.join()
                 pygame.display.quit()
             # Show the Graph
             self.graph.hide()
