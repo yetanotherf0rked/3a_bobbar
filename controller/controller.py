@@ -57,6 +57,11 @@ class Controller:
             self.world.update_listebob()
             self.simuBar.setValue(tick/((simul-1) * self.config.TICK_DAY) * 100)
             self.file.tick = tick
+
+        if self.config.show_graph_simul :
+            self.graph.animation=False
+            self.graph.set_parameter(x='days',pop=True,age=True,velocity=True,perception=True,memory=True,mass=True)
+            self.graph.plot()
         
         if affichage:
             self.view = View()

@@ -61,6 +61,7 @@ class Config():
 
         #parametres des graphiques
         self.show_graph = False
+        self.show_graph_simul = False
         self.g_animation = False
         self.g_parameters = {'x':"ticks",
                             'pop':True,

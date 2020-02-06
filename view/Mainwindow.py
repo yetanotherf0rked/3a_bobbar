@@ -36,7 +36,7 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.config.family_Agression = self.family_Agression.isChecked()
         self.config.affichage = self.affichage.isChecked()
         self.config.TAILLE = self.TAILLE.value()
-        self.config.show_graph = self.show_grpah.isChecked()
+        self.config.show_graph_simul = self.show_grpah.isChecked()
         self.config.NB_POP = self.NB_POP.value()
         self.config.NB_FOOD = self.NB_FOOD.value()
 
