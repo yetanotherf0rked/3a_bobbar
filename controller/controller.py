@@ -109,6 +109,12 @@ class Controller:
                 if affichage:
                     self.file.enfile(self.world)
             sleep(self.speed)
+            if self.config.show_graph :
+                    #self.graph.set_animation(False)
+                    self.graph.update_parameter(False,self.config.g_parameters)
+                    self.graph.plot()
+
+                    self.config.show_graph=False
             if affichage:
                 # Update de la fenêtre
                 if not self.view.run:
