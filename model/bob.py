@@ -361,6 +361,16 @@ class Bob:
             if vector[1] != 0: directions.append((0, vector[1] // abs(vector[1])))
             return choice(directions)
 
+        visited_cases = self.place_historic.remember(self.memory_points)
+        for case in visited_cases :
+            for dx,dy in directions:
+                if (case.x,case.y) == (self.x + dx,self.y+dy):
+                    directions.remove((dx,dy))
+        
+
+        
+        
+
         # print("RANDOM")
         return choice(directions)
 
