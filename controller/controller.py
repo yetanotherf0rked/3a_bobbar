@@ -127,11 +127,6 @@ class Controller:
                     # Stop
                     if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT or self.view.gui.gui_quit:  # Si un de ces événements est de type QUIT
                         continuer = False  # On arrête la boucle
-                       
-                        self.graph.hide()
-                        self.graph.animation=False
-                        self.graph.set_parameter(x='days',pop=True,age=True,velocity=True,perception=True,memory=True,mass=True,rows=2,collumns=3)
-                        self.graph.plot()
                         self.settings.close()
                         self.view.gui.gui_quit=False
                        
@@ -183,13 +178,9 @@ class Controller:
                 self.settings.hide()
                 self.settings.setEnabled(True)
                 self.first = False
-        if self.config.affichage:
-            pygame.display.quit()
-        self.graph.hide()
-        self.graph.animation = False
-        self.graph.set_parameter(x='days', pop=True, age=True, velocity=True, perception=True, memory=True, mass=True,
-                                 rows=2, collumns=3)
-        self.graph.plot()
+
+        # After simulation
+        #if we want to restart new simulation
         if self.config.restart:
             self._thread.join()
             pygame.display.quit()
@@ -198,3 +189,14 @@ class Controller:
             self.world = World()
             self.file = File()
             self.run(self.config.affichage, self.simul)
+        else:
+            # If pygame is close
+            if self.config.affichage:
+                pygame.display.quit()
+            # Show the Graph
+            self.graph.hide()
+            self.graph.animation = False
+            self.graph.set_parameter(x='days', pop=True, age=True, velocity=True, perception=True, memory=True,
+                                     mass=True,
+                                     rows=2, collumns=3)
+            self.graph.plot()
