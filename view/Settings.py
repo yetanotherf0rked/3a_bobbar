@@ -4,7 +4,7 @@ from PyQt5.QtGui import QRegExpValidator
 
 from view.ui_Settings import Ui_Settings
 
-from math import exp, log
+from math import exp, log, pow, sqrt
 
 import ressources.config
 
@@ -15,7 +15,7 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         QtWidgets.QWidget.__init__(self)
         self.config = ressources.config.para
         self.setupUi(self)
-        self.rx = QRegExp("(log|exp|pow|sqrt|masse|velocity|perception|memory|[0-9]|\\.|\\*|\\-|\\+|\\(|\\)|\\/)*")
+        self.rx = QRegExp("(log|exp|pow|sqrt|masse|velocity|perception|memory|[0-9]|\\.|\\*|\\-|\\+|\\(|\\)|\\/|\\,)*")
         self.move_lineEdit.setValidator(QRegExpValidator(self.rx))
         self.brain_lineEdit.setValidator(QRegExpValidator(self.rx))
         self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
