@@ -3,7 +3,7 @@ import thorpy
 
 import ressources.config
 from ressources.sliders import *
-from view.debug import *
+from view.statutils import *
 from view.button import Button
 
 
@@ -141,7 +141,7 @@ class Gui:
 
     def init_stats_box(self):
         """Initialise la box d'affichage des stats
-        Dépend de debug.py"""
+        Dépend de statutils.py"""
 
         # Titre du Menu Statistics
         thorpy.set_theme("classic")
@@ -184,7 +184,7 @@ class Gui:
     def update_stats_box(self, stats):
         """
         Met à jour l'affichage des stats
-        Dépend de debug.py
+        Dépend de statutils.py
         :param stats: liste contenant les nouvelles valeurs des statistiques
         """
 

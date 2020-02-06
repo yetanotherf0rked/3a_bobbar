@@ -9,7 +9,7 @@ from ressources.sliders import *
 import ressources.config
 from model import *
 from view import View
-from view.debug import *
+from view.statutils import *
 from view.graphs import Graph
 
 
