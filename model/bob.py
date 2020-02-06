@@ -122,8 +122,8 @@ class Bob:
                 current_case.food = self.eat(current_case.food)
 
             # Reproduction ou parthenogenese si possible
-            sons += self.reproduction(current_case)
-            sons += self.parthenogenesis(current_case)
+            if self.config.REPRO : sons += self.reproduction(current_case)
+            if self.config.PARTH : sons += self.parthenogenesis(current_case)
 
         self.energy -= self.energy_brain
 

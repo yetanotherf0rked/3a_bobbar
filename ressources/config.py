@@ -54,6 +54,10 @@ class Config():
         self.ENERGY_SON_REPRO = 100
         # Energie dépensée lors de la reproduction sexuée
         self.ENERGY_REPRO = 150
+        #Reprodudtion séxuée activée ou non 
+        self.REPRO = True
+        #Parthénogenese activée ou nom 
+        self.PARTH =True
 
         self.DIFF_AGE_FOR_REPRODUCTION = 500  # valeur en tick
         self.DISTANCE_TO_BE_IN_SAME_FAMILY=2
