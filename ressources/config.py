@@ -62,9 +62,8 @@ class Config():
 
         self.HISTORIQUE_MAX = 1  # nombre de jour stocker en historique si besoin
 
-        # self.WEATHER_ENERGY_COEFF = self.ENERGY_MAX * 1/(16 * self.TICK_DAY)
-        # self.WEATHER_PERCEPTION_COEFF = 1/2
-        # self.WEATHER_VELOCITY_COEFF = 2
+        self.move_consommation = lambda velocity, masse: velocity ** 2 * masse
+        self.brain_consommation = lambda perception, memory_points: perception / 5 + memory_points / 5
 
         #parametres des graphiques
         self.show_graph = False

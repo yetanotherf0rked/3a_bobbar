@@ -7,19 +7,9 @@ from model.case import *
 from model.utils import *
 
 
-def new_id_generator():
-    i = 0
-    while 1:
-        yield i
-        i+=1
-
-new_id = new_id_generator()
-
-
 class Bob:
     def __init__(self, pos):
         self.config = ressources.config.para
-        self.id = next(new_id)
         self.x, self.y = pos  # Case où se trouve le Bob
         self.energy = self.config.ENERGY_SPAWN
         self.velocity = 1.0
@@ -196,8 +186,8 @@ class Bob:
             son.perception_pos = [(i, j) for i in range(-son.perception, son.perception + 1) for j in range(abs(i) - son.perception, son.perception + 1 - abs(i))]
             son.memory_points = max(0,
                                     self.memory_points + choice([-self.config.MUT_MEMORY, 0, self.config.MUT_MEMORY]))
-            son.energy_move = son.velocity ** 2 * son.masse
-            son.energy_brain = son.perception / 5 + son.memory_points / 5
+            son.energy_move = self.config.move_consommation(son.velocity, son.masse)
+            son.energy_brain = self.config.brain_consommation(son.perception, son.memory_points)
             # Ajout du fils dans la case
             case.place.append(son)
             self.childs.add(son)
@@ -253,8 +243,8 @@ class Bob:
                     son.perception_pos = [(i, j) for i in range(-son.perception, son.perception + 1) for j in range(abs(i) - son.perception, son.perception + 1 - abs(i))]
                     son.memory_points = max(0, round((self.memory_points + other_bob.memory_points) / 2) + choice(
                         [-self.config.MUT_MEMORY, 0, self.config.MUT_MEMORY]))
-                    son.energy_move = son.velocity ** 2 * son.masse
-                    son.energy_brain = son.perception / 5 + son.memory_points / 5
+                    son.energy_move = self.config.move_consommation(son.velocity, son.masse)
+                    son.energy_brain = self.config.brain_consommation(son.perception, son.memory_points)
 
                     case.place.append(son)
 

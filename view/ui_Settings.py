@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Settings.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -84,6 +84,7 @@ class Ui_Settings(object):
         self.brain_function0.addItem("")
         self.brain_consommation_layout.addWidget(self.brain_function0)
         self.brain_coeff1 = QtWidgets.QSpinBox(self.layoutWidget2)
+        self.brain_coeff1.setProperty("value", 1)
         self.brain_coeff1.setObjectName("brain_coeff1")
         self.brain_consommation_layout.addWidget(self.brain_coeff1)
         self.brain_function1 = QtWidgets.QComboBox(self.layoutWidget2)
@@ -103,6 +104,7 @@ class Ui_Settings(object):
         self.brain_function2.addItem("")
         self.brain_consommation_layout.addWidget(self.brain_function2)
         self.brain_coeff3 = QtWidgets.QSpinBox(self.layoutWidget2)
+        self.brain_coeff3.setProperty("value", 1)
         self.brain_coeff3.setObjectName("brain_coeff3")
         self.brain_consommation_layout.addWidget(self.brain_coeff3)
         self.verticalLayout_2.addLayout(self.brain_consommation_layout)
@@ -113,6 +115,7 @@ class Ui_Settings(object):
         self.move_consommation_layout = QtWidgets.QHBoxLayout()
         self.move_consommation_layout.setObjectName("move_consommation_layout")
         self.move_coeff0 = QtWidgets.QSpinBox(self.layoutWidget2)
+        self.move_coeff0.setProperty("value", 1)
         self.move_coeff0.setObjectName("move_coeff0")
         self.move_consommation_layout.addWidget(self.move_coeff0)
         self.move_function0 = QtWidgets.QComboBox(self.layoutWidget2)
@@ -122,6 +125,7 @@ class Ui_Settings(object):
         self.move_function0.addItem("")
         self.move_consommation_layout.addWidget(self.move_function0)
         self.move_coeff1 = QtWidgets.QSpinBox(self.layoutWidget2)
+        self.move_coeff1.setProperty("value", 2)
         self.move_coeff1.setObjectName("move_coeff1")
         self.move_consommation_layout.addWidget(self.move_coeff1)
         self.move_function1 = QtWidgets.QComboBox(self.layoutWidget2)
@@ -132,6 +136,7 @@ class Ui_Settings(object):
         self.move_function1.addItem("")
         self.move_consommation_layout.addWidget(self.move_function1)
         self.move_coeff2 = QtWidgets.QSpinBox(self.layoutWidget2)
+        self.move_coeff2.setProperty("value", 1)
         self.move_coeff2.setObjectName("move_coeff2")
         self.move_consommation_layout.addWidget(self.move_coeff2)
         self.move_function2 = QtWidgets.QComboBox(self.layoutWidget2)
@@ -141,6 +146,7 @@ class Ui_Settings(object):
         self.move_function2.addItem("")
         self.move_consommation_layout.addWidget(self.move_function2)
         self.move_coeff3 = QtWidgets.QSpinBox(self.layoutWidget2)
+        self.move_coeff3.setProperty("value", 1)
         self.move_coeff3.setObjectName("move_coeff3")
         self.move_consommation_layout.addWidget(self.move_coeff3)
         self.verticalLayout_2.addLayout(self.move_consommation_layout)
@@ -266,7 +272,12 @@ class Ui_Settings(object):
         self.verticalLayout_3.addWidget(self.buttonBox)
 
         self.retranslateUi(Settings)
-        self.tabWidget.setCurrentIndex(4)
+        self.tabWidget.setCurrentIndex(2)
+        self.brain_function0.setCurrentIndex(2)
+        self.brain_function2.setCurrentIndex(2)
+        self.move_function0.setCurrentIndex(2)
+        self.move_function1.setCurrentIndex(2)
+        self.move_function2.setCurrentIndex(2)
         self.buttonBox.accepted.connect(Settings.hide)
         self.buttonBox.accepted.connect(Settings.update_Config)
         self.buttonBox.rejected.connect(Settings.hide)
@@ -302,6 +313,7 @@ class Ui_Settings(object):
         self.brain_function2.setItemText(1, _translate("Settings", "Logarithme"))
         self.brain_function2.setItemText(2, _translate("Settings", "Polynôme"))
         self.move_label.setText(_translate("Settings", "Move function"))
+        self.move_function0.setCurrentText(_translate("Settings", "Polynôme"))
         self.move_function0.setItemText(0, _translate("Settings", "Exponentielle"))
         self.move_function0.setItemText(1, _translate("Settings", "Logarithme"))
         self.move_function0.setItemText(2, _translate("Settings", "Polynôme"))
