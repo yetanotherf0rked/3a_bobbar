@@ -47,13 +47,13 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.config.MUT_PERCEPT=self.mut_perception.value()
        
 
-    #def activate_button(self):  
-    #    self.historique.setEnabled(self.affichage.isChecked())
+    def activate_button(self):  
+        self.historique.setEnabled(self.affichage.isChecked())
 
 
-    def update_dayBox(self):
-        self.show_grpah.setEnabled((self.Day_Box.value()!=1))
-        print(self.Day_Box.value())
+    #def update_dayBox(self):
+    #    self.show_grpah.setEnabled((self.Day_Box.value()!=1))
+    #    print(self.Day_Box.value())
 
     def initial_Config(self):
         self.affichage.setChecked(self.config.affichage)
