@@ -67,7 +67,7 @@ class View:
         self.soleil = Star()
 
         # Création des météos
-        self.meteo = Meteo_picto()
+        self.meteo = Weather_picto()
 
     def draw_Stats(self, bob, xmax):
         # Initialisation text

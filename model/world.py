@@ -1,7 +1,7 @@
 from random import randint,random
 import ressources.config
 from model import *
-from model.Weather import Weather
+from model.weather import Weather
 
 
 class World:

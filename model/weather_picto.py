@@ -1,7 +1,7 @@
 import pygame
 
 import ressources.config
-class Meteo_picto():
+class Weather_picto():
 
     def __init__(self):
         self.config = ressources.config.para
