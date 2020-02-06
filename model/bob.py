@@ -67,6 +67,7 @@ class Bob:
         text.append("Perception : %s" % round(self.perception, 2))
         text.append("Memory : %s" % round(self.memory_points,2))
         text.append("Age : %s" % round(self.age//self.config.TICK_DAY, 2))
+        text.append("Consommation : %s" % round(self.energy_brain + self.energy_move, 2))
         return text
 
     def update(self, grille):

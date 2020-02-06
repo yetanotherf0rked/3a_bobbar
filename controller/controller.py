@@ -126,6 +126,11 @@ class Controller:
                     continuer = False
                     self.viewSize = self.view.width, self.view.height
 
+                #Test si on a changé la formule de consommation
+                if self.config.change_consommation:
+                    self.config.change_consommation = False
+                    self.world.update_consommation()
+
                 if self.config.settings:
                     self.settings.show()
                     self.config.settings = False

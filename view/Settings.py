@@ -103,6 +103,8 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
 
         self.move_label.setText("bob.energy_move = {}*{} {} {}*{}".format(move_c0, move_f0, move_main, move_c2, move_f2))
 
+        self.config.change_consommation = True
+
 
 
     def update_Config(self):

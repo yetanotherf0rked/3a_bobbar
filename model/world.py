@@ -72,6 +72,11 @@ class World:
         # on ajoute les nouveaux nés dans la liste de bobs qui sera actualisé au prochain tick
         self.listebob += new_bobs
 
+    def update_consommation(self):
+        for bob in self.listebob:
+            bob.energy_move = self.config.move_consommation(bob.velocity, bob.masse)
+            bob.energy_brain = self.config.brain_consommation(bob.perception, bob.memory_points)
+
     def createBiome(self):
         cases = []
         for _ in range(16):

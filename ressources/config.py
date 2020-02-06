@@ -16,6 +16,7 @@ class Config():
         self.restart = False
         self.weather = "Sun"
         self.tick_by_tick = False
+        self.change_consommation = False
 
         # Tick par jour 100
         self.TICK_DAY = 100
