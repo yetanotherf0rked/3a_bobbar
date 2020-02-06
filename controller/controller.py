@@ -184,7 +184,7 @@ class Controller:
                     if event.type == KEYDOWN and event.key == K_KP_PLUS:
                         self.view.zoom += 1
                     if event.type == KEYDOWN and event.key == K_KP_MINUS:
-                        self.view.zoom -= 1
+                        self.view.zoom = max(0, self.view.zoom - 1)
             #Permet de cacher la fenêtre de settings au départ.
             if self.first:
                 self.settings.hide()
