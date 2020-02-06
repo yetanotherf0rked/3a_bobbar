@@ -366,12 +366,10 @@ class Bob:
             for dx,dy in directions:
                 if (case.x,case.y) == (self.x + dx,self.y+dy):
                     directions.remove((dx,dy))
-        
+        if directions :
+            directions =[(-1, 0), (1, 0), (0, -1), (0, 1)]
 
         
-        
-
-        # print("RANDOM")
         return choice(directions)
 
     def areInSameFamily(self, other_bob):
