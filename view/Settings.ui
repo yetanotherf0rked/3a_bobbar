@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -152,9 +152,6 @@
           </item>
           <item>
            <widget class="QComboBox" name="brain_function0">
-            <property name="currentIndex">
-             <number>2</number>
-            </property>
             <item>
              <property name="text">
               <string>Exponentielle</string>
@@ -173,11 +170,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="brain_coeff1">
-            <property name="value">
-             <number>1</number>
-            </property>
-           </widget>
+           <widget class="QSpinBox" name="brain_coeff1"/>
           </item>
           <item>
            <widget class="QComboBox" name="brain_function1">
@@ -208,9 +201,6 @@
           </item>
           <item>
            <widget class="QComboBox" name="brain_function2">
-            <property name="currentIndex">
-             <number>2</number>
-            </property>
             <item>
              <property name="text">
               <string>Exponentielle</string>
@@ -229,11 +219,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="brain_coeff3">
-            <property name="value">
-             <number>1</number>
-            </property>
-           </widget>
+           <widget class="QSpinBox" name="brain_coeff3"/>
           </item>
          </layout>
         </item>
@@ -250,20 +236,10 @@
         <item>
          <layout class="QHBoxLayout" name="move_consommation_layout">
           <item>
-           <widget class="QSpinBox" name="move_coeff0">
-            <property name="value">
-             <number>1</number>
-            </property>
-           </widget>
+           <widget class="QSpinBox" name="move_coeff0"/>
           </item>
           <item>
            <widget class="QComboBox" name="move_function0">
-            <property name="currentText">
-             <string>Polynôme</string>
-            </property>
-            <property name="currentIndex">
-             <number>2</number>
-            </property>
             <item>
              <property name="text">
               <string>Exponentielle</string>
@@ -282,17 +258,10 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="move_coeff1">
-            <property name="value">
-             <number>2</number>
-            </property>
-           </widget>
+           <widget class="QSpinBox" name="move_coeff1"/>
           </item>
           <item>
            <widget class="QComboBox" name="move_function1">
-            <property name="currentIndex">
-             <number>2</number>
-            </property>
             <item>
              <property name="text">
               <string>+</string>
@@ -316,17 +285,10 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="move_coeff2">
-            <property name="value">
-             <number>1</number>
-            </property>
-           </widget>
+           <widget class="QSpinBox" name="move_coeff2"/>
           </item>
           <item>
            <widget class="QComboBox" name="move_function2">
-            <property name="currentIndex">
-             <number>2</number>
-            </property>
             <item>
              <property name="text">
               <string>Exponentielle</string>
@@ -345,11 +307,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="move_coeff3">
-            <property name="value">
-             <number>1</number>
-            </property>
-           </widget>
+           <widget class="QSpinBox" name="move_coeff3"/>
           </item>
          </layout>
         </item>
@@ -447,8 +405,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>503</width>
-            <height>284</height>
+            <width>106</width>
+            <height>176</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
@@ -590,7 +548,7 @@
           <item>
            <widget class="QRadioButton" name="Fogue">
             <property name="text">
-             <string>Fog</string>
+             <string>Fogue</string>
             </property>
            </widget>
           </item>

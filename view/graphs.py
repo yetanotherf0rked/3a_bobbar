@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt 
 import matplotlib.style
 import matplotlib.animation as animation
@@ -57,8 +59,8 @@ class Graph():
             y = self.data[c]
             ax = self.axes[sub]
             if type(y)== tuple :
-                l1, =ax.plot(x,y[0],label='moyene')
-                l2, =ax.plot(x,y[1],label='max')
+                l1, =ax.plot(x,y[0],label='moyenne')
+                l2, =ax.plot(x,y[1],label='max',color='green')
                 l3, = ax.plot(x,y[2],label='min')
                 line=(l1,l2,l3)
             else :    
@@ -142,8 +144,8 @@ class Graph():
             ax.set_ylabel(c)
             if type(y)== tuple :
                 ax.plot(x,y[0],label='moyenne')
-                ax.scatter(x,y[1],label='max',marker='+')
-                ax.scatter(x,y[2],label='min',marker='1')
+                ax.scatter(x,y[1],label='max',marker='+',color='green')
+                ax.scatter(x,y[2],label='min',marker='+')
                 ax.legend(loc='upper left')
             else :    
                 ax.plot(x,y)

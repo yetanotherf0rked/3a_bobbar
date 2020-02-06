@@ -55,6 +55,10 @@ class Config():
         self.ENERGY_SON_REPRO = 100
         # Energie dépensée lors de la reproduction sexuée
         self.ENERGY_REPRO = 150
+        #Reprodudtion séxuée activée ou non 
+        self.REPRO = True
+        #Parthénogenese activée ou nom 
+        self.PARTH =True
 
 
         self.DIFF_AGE_FOR_REPRODUCTION = 500  # valeur en tick
@@ -67,6 +71,7 @@ class Config():
 
         #parametres des graphiques
         self.show_graph = False
+        self.show_graph_simul = False
         self.g_animation = False
         self.g_parameters = {'x':"ticks",
                             'pop':True,
