@@ -2,13 +2,11 @@
 
 # Form implementation generated from reading ui file 'Settings.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.2
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_Settings(object):
     def setupUi(self, Settings):
@@ -272,7 +270,7 @@ class Ui_Settings(object):
         self.verticalLayout_3.addWidget(self.buttonBox)
 
         self.retranslateUi(Settings)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(4)
         self.brain_function0.setCurrentIndex(2)
         self.brain_function2.setCurrentIndex(2)
         self.move_function0.setCurrentIndex(2)
@@ -350,3 +348,4 @@ class Ui_Settings(object):
         self.Rain.setText(_translate("Settings", "Rain"))
         self.Fogue.setText(_translate("Settings", "Fog"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("Settings", "Biome/Meteo"))
+
