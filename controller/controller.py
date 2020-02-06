@@ -26,6 +26,7 @@ class Controller:
         self.graph = Graph(animation=False)
         self.simul = simul
         self.simuBar = bar
+        self.speed = 0.001
         self.run(self.config.affichage, self.simul)
 
     def run(self, affichage, simul=0):
@@ -59,6 +60,10 @@ class Controller:
             self.file.tick = tick
         
         if affichage:
+            if self.config.tick_by_tick:
+                self.speed = 1
+            else:
+                self.speed = 0.001
             self.view = View()
             if self.viewSize:
                 self.view.width, self.view.height = self.viewSize
@@ -98,7 +103,7 @@ class Controller:
                 self.world.update_listebob()
                 if affichage:
                     self.file.enfile(self.world)
-            sleep(0.001)
+            sleep(self.speed)
             if affichage:
                 # Update de la fenêtre
                 if not self.view.run:
@@ -153,6 +158,13 @@ class Controller:
                         self.file.precTick()
                     if wait and event.type == KEYDOWN and event.key == K_KP6:
                         self.file.nextTick()
+                    #Change speed of the simulation
+                    if event.type == KEYDOWN and event.key == K_KP2:
+                        self.speed = max(0.001, self.speed-0.005)
+                        print(self.speed)
+                    if event.type == KEYDOWN and event.key == K_KP8:
+                        self.speed += 0.005
+                        print(self.speed)
 
                     # Réagit si l'on bouge les sliders
                     self.view.menu_surface.unlock()

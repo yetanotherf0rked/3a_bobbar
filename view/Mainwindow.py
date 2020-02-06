@@ -39,6 +39,7 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
         self.config.show_graph = self.show_grpah.isChecked()
         self.config.NB_POP = self.NB_POP.value()
         self.config.NB_FOOD = self.NB_FOOD.value()
+        self.config.tick_by_tick = self.step_Tick_By_Tick.isChecked()
 
         self.config.MUT_MASSE=self.mut_mass.value()
         self.config.MUT_VELOCITY=self.mut_velocity.value()
@@ -48,12 +49,16 @@ class MainWindow(QtWidgets.QWidget, Ui_Form):
 
     def activate_button(self):
         self.historique.setEnabled(self.affichage.isChecked())
+        self.step_Tick_By_Tick.setEnabled(self.affichage.isChecked())
+        self.step_Continue.setEnabled(self.affichage.isChecked())
 
     def initial_Config(self):
         self.affichage.setChecked(self.config.affichage)
         self.activate_button()
         if self.affichage.isChecked():
             self.historique.setChecked(self.config.historique)
+            self.step_Tick_By_Tick.setChecked(self.config.tick_by_tick)
+            self.step_Continue.setChecked(not self.config.tick_by_tick)
         self.family_Reproduction.setChecked(self.config.family_Reproduction)
         self.family_Agression.setChecked(self.config.family_Agression)
         self.TAILLE.setValue(self.config.TAILLE)

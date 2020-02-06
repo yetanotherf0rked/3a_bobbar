@@ -15,6 +15,7 @@ class Config():
         self.show_Food_ProgressBar = True
         self.restart = False
         self.weather = "Sun"
+        self.tick_by_tick = False
 
         # Tick par jour 100
         self.TICK_DAY = 100
