@@ -3,6 +3,8 @@ matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt 
 import matplotlib.style
 import matplotlib.animation as animation
+import matplotlib
+matplotlib.use('TkAgg')
 
 from view.debug import update_stats_graphs
 

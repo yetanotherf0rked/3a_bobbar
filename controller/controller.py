@@ -96,7 +96,6 @@ class Controller:
                 self.graph.plot()
                
                 self.config.show_graph=False
-            
 
             self.world.listebob.sort(key=lambda x: x.velocity, reverse=True)
             self.world.update_listebob()

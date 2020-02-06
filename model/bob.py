@@ -54,8 +54,6 @@ class Bob:
         bob.speed_buffer = self.speed_buffer
         bob.mem_food = self.mem_food
         bob.place_historic = self.place_historic
-        bob.image = pygame.image.load(self.config.image_BOB).convert_alpha()
-        bob.redImage = pygame.image.load(self.config.image_REDBOB).convert_alpha()
         bob.blit = self.blit
         bob.select = self.select
         bob.bobController = self.bobController

@@ -47,6 +47,8 @@ class View:
         self.gui = Gui(self.menu_surface)
 
         # Chargement de la food
+        self.bobImage = pygame.image.load(self.config.image_BOB).convert_alpha()
+        self.bobRedImage = pygame.image.load(self.config.image_REDBOB).convert_alpha()
         self.foodImage = pygame.image.load(self.config.image_FOOD).convert_alpha()
         tree = pygame.image.load(self.config.image_TREE).convert_alpha()
         self.tree = pygame.transform.scale(tree, (40, 40))
@@ -240,9 +242,9 @@ class View:
             size_Y = int(size_X*bob.masse**2 + size_X/2 *(1- bob.masse))
             if bob.bobController.select:
                 self.draw_Stats(bob, simu_x)
-                perso = pygame.transform.scale(bob.redImage, (size_X,size_Y))
+                perso = pygame.transform.scale(self.bobRedImage, (size_X,size_Y))
             else:
-                perso = pygame.transform.scale(bob.image, (size_X,size_Y))
+                perso = pygame.transform.scale(self.bobImage, (size_X,size_Y))
             PosX, PosY = Pos[i]
             self.gui.progress_bar(pos_life_bar, size_life_bar, bob.life, perso, GREEN, True, RED, round=True,
                                   radius=3)

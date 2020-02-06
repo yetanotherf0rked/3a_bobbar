@@ -33,6 +33,16 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         self.gpop.setChecked(True)
         self.update_rate.setRange(1,200)
         self.update_rate.setValue(self.config.g_update_rate)
+        if self.config.weather == "Sandstorm":
+            self.Sandstorm.setChecked(True)
+        elif self.config.weather == "Sun":
+            self.Sun.setChecked(True)
+        elif self.config.weather == "Hail":
+            self.Hail.setChecked(True)
+        elif self.config.weather == "Fogue":
+            self.Fogue.setChecked(True)
+        elif  self.config.weather == "Rain":
+            self.Rain.setChecked(True)
 
 
     def update_consommation_label(self):
@@ -76,6 +86,16 @@ class SettingsWindow(QtWidgets.QWidget, Ui_Settings):
         self.config.show_Bord_Case = self.show_Bord_Case.isChecked()
         self.config.show_Nature = self.show_Nature.isChecked()
         self.config.show_Food_ProgressBar = self.show_Food_ProgressBar.isChecked()
+        if self.Sandstorm.isChecked():
+            self.config.weather = "Sandstorm"
+        elif self.Sun.isChecked():
+            self.config.weather = "Sun"
+        elif self.Hail.isChecked():
+            self.config.weather = "Hail"
+        elif self.Fogue.isChecked():
+            self.config.weather = "Fogue"
+        elif self.Rain.isChecked():
+            self.config.weather = "Rain"
         self.update_graph()
         
 
