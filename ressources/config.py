@@ -23,7 +23,7 @@ class Config():
         # Population initiale 100
         self.NB_POP = 100
         # Taille de la carte 100
-        self.TAILLE = 100
+        self.TAILLE = 40
         # Nourriture sur la carte 200
         self.NB_FOOD = 200
         # Energy par food 100
