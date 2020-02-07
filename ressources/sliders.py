@@ -53,13 +53,12 @@ class Sliders:
         self.default = {}
 
         # Créez vos paramètres ici
-        self.make("NB_FOOD", 1, config.para.NB_FOOD, 500, info="Food Number")
-        self.make("ENERGY_FOOD", 1, config.para.ENERGY_FOOD, 150, info="Food Energy")
-        self.make("ENERGY_SPAWN", 1, config.para.ENERGY_SPAWN, 150, info="Spawn Energy")
-        self.make("ENERGY_MOVE", 0.1, config.para.ENERGY_MOVE, 30.0, float, info="Energy Cost while Moving")
-        self.make("ENERGY_STAY", 0.1, config.para.ENERGY_STAY, 30.0, float, info="Energy Cost at Stay")
-        self.make("ENERGY_MOTHER", 1, config.para.ENERGY_MOTHER, 75, info="Mother Energy")
-        self.make("ENERGY_SON", 1, config.para.ENERGY_SON, 75, info="Son Energy")
+        self.make("NB_FOOD", 0, config.para.NB_FOOD, 500, info="Food Number")
+        self.make("ENERGY_FOOD", 0, config.para.ENERGY_FOOD, 150, info="Food Energy")
+        self.make("ENERGY_SPAWN", 0, config.para.ENERGY_SPAWN, 150, info="Spawn Energy")
+        self.make("ENERGY_MAX", 0, config.para.ENERGY_MAX, 500, info="Energy max for Bob")
+        self.make("ENERGY_MOTHER", 0, config.para.ENERGY_MOTHER, 75, info="Mother Energy")
+        self.make("ENERGY_SON", 0, config.para.ENERGY_SON, 75, info="Son Energy")
 
     def make(self, name, min, init, max, type=int, show=True, info=""):
         """Crée un paramètre et l'ajoute au dictionnaire

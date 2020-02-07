@@ -283,11 +283,7 @@ class View:
             if self.velocity_min == self.velocity_max:
                 velocity_percentage = 1
             else:
-                velocity_percentage = (bob.velocity - self.velocity_min)/((self.velocity_max - self.velocity_min)*255)
-            for i in range(0,9):
-                interval = [i,i+2]
-                if interval[0]*0.1 < velocity_percentage < interval[1]*0.1:
-                    velocity_percentage = interval[1]*0.1
+                velocity_percentage = (bob.velocity - self.velocity_min)/(self.velocity_max - self.velocity_min)
             bob_velocity_color = (velocity_percentage * velocity_color[0],
                                   velocity_percentage * velocity_color[1],
                                   velocity_percentage * velocity_color[2])
